@@ -52,12 +52,12 @@ void DragWords::prepareToolBar()
     QAction* doneAction = new QAction(QIcon(":/icons/Resources/Icons/done.png"),
                                             "Done", this);
     doneAction->setToolTip("Check it");
-    connect(doneAction, SIGNAL(triggered(bool)), SLOT(done()));
+    connect(doneAction, &QAction::triggered, this, &DragWords::done);
     _commands->addAction(doneAction);
 
     QAction* skipAction = new QAction(QIcon(":/icons/Resources/Icons/fail.png"),
                                             "Skip", this);
     skipAction->setToolTip("Skip to next");
-    connect(skipAction, SIGNAL(triggered(bool)), SLOT(skip()));
+    connect(skipAction, &QAction::triggered, this, &DragWords::skip);
     _commands->addAction(skipAction);
 }
