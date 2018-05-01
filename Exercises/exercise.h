@@ -6,19 +6,15 @@
 class Exercise : public QWidget
 {
     Q_OBJECT
+
+public:
+    static const QString text;
+    static const QString toolTip;
+    static const QString whatsThis;
+    static const QString icon;
+
 public:
     explicit Exercise(QWidget *parent = nullptr) : QWidget(parent) {}
-
-    virtual QString text() const = 0;
-    virtual QString toolTip() const = 0;
-    virtual QString whatsThis() const = 0;
-    virtual QIcon icon() const = 0;
-
-signals:
-    virtual void runnedOut(Exercise *e);
-
-public slots:
-    virtual void run() = 0;
 };
 
 #endif // EXERCISE_H

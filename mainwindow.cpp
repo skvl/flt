@@ -28,11 +28,10 @@ void MainWindow::prepareToolBar()
     addToolBar(Qt::LeftToolBarArea, _panel);
     _panel->setIconSize(QSize(64, 64));
 
-    Exercise* e = new DragWords(this);
-    connect(e, SIGNAL(runnedOut(Exercise*)), SLOT(run(Exercise*)));
-    QAction* action = new QAction(e->icon(), e->text(), this);
-    action->setToolTip(e->toolTip());
-    action->setWhatsThis(e->whatsThis());
-    connect(action, SIGNAL(triggered(bool)), e, SLOT(run()));
+    QAction* action = new QAction(QIcon(DragWords::icon), DragWords::text,
+                                  this);
+    action->setToolTip(DragWords::toolTip);
+    action->setWhatsThis(DragWords::whatsThis);
+    connect(action, &QAction::triggered, [=](){run(new DragWords(this));});
     _panel->addAction(action);
 }

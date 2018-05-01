@@ -3,6 +3,11 @@
 #include <QBoxLayout>
 #include <QIcon>
 
+const QString DragWords::text = "Exercise 1";
+const QString DragWords::toolTip = "Drop words to make sentence";
+const QString DragWords::whatsThis = "";
+const QString DragWords::icon = ":/icons/Resources/Icons/simple_drag_drop.png";
+
 DragWords::DragWords(QWidget *parent)
     : Exercise(parent)
     , _commands(new QToolBar(this))
@@ -24,31 +29,6 @@ DragWords::DragWords(QWidget *parent)
 
     _words->setFrameStyle(QFrame::Box | QFrame::Plain);
     _words->setMinimumSize(256, 64);
-}
-
-QString DragWords::text() const
-{
-    return "Exercise 1";
-}
-
-QString DragWords::toolTip() const
-{
-    return "Drop words to make sentence";
-}
-
-QString DragWords::whatsThis() const
-{
-    return "Some longer description";
-}
-
-QIcon DragWords::icon() const
-{
-    return QIcon(":/icons/Resources/Icons/simple_drag_drop.png");
-}
-
-void DragWords::run()
-{
-    emit runnedOut(this);
 }
 
 void DragWords::done()

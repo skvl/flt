@@ -9,19 +9,15 @@
 class DragWords : public Exercise
 {
     Q_OBJECT
+
+public:
+    static const QString text;
+    static const QString toolTip;
+    static const QString whatsThis;
+    static const QString icon;
+
 public:
     explicit DragWords(QWidget *parent = nullptr);
-
-    QString text() const;
-    QString toolTip() const;
-    QString whatsThis() const;
-    QIcon icon() const;
-
-signals:
-    void runnedOut(Exercise *e);
-
-public slots:
-    void run();
 
 private slots:
     void done();
