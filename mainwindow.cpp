@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "Exercises/dragwords.h"
 
+#include <QMessageBox>
 #include <QToolBar>
 
 #include <QDebug>
@@ -19,7 +20,26 @@ MainWindow::~MainWindow()
 
 void MainWindow::run(Exercise *e)
 {
-    setCentralWidget(e);
+    auto current = centralWidget();
+
+    if (current)
+    {
+        auto dialog =
+                new QMessageBox(QMessageBox::Warning,
+                                "Exercise interruption",
+                                "You are going to interrupt the exercise."
+                                "All changes will be lost.\n\n"
+                                "Do You agree?",
+                                QMessageBox::Yes | QMessageBox::No);
+
+        if (QMessageBox::Yes == dialog->exec())
+        {
+            delete current;
+            setCentralWidget(e);
+        }
+    }
+    else
+        setCentralWidget(e);
 }
 
 // TODO Добавить перечисление классов упражнений
