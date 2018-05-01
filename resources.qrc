@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>Resources/Icons/simple_drag_drop.png</file>
+        <file>Resources/Icons/done.png</file>
+        <file>Resources/Icons/fail.png</file>
+    </qresource>
+</RCC>
