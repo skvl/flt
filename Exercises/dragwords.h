@@ -2,6 +2,7 @@
 #define DRAGWORDS_H
 
 #include "exercise.h"
+#include "Misc/desk.h"
 
 #include <QLabel>
 #include <QFrame>
@@ -33,8 +34,8 @@ private:
 private:
     QToolBar* _commands;
     QLabel* _translation;
-    QFrame* _sentence;
-    QFrame* _words;
+    Desk* _sentence;
+    Desk* _words;
 };
 
 #endif // DRAGWORDS_H

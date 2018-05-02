@@ -27,13 +27,15 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     Exercises/dragwords.cpp \
-    Exercises/exercisedata.cpp
+    Exercises/exercisedata.cpp \
+    Misc/desk.cpp
 
 HEADERS += \
         mainwindow.h \
     Exercises/dragwords.h \
     Exercises/exercise.h \
-    Exercises/exercisedata.h
+    Exercises/exercisedata.h \
+    Misc/desk.h
 
 RESOURCES += \
     resources.qrc

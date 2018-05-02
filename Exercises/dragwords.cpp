@@ -14,8 +14,8 @@ DragWords::DragWords(ExerciseData &data, QWidget *parent)
     : Exercise(data, parent)
     , _commands(new QToolBar(this))
     , _translation(new QLabel(this))
-    , _sentence(new QFrame(this))
-    , _words(new QFrame(this))
+    , _sentence(new Desk(this))
+    , _words(new Desk(this))
 {
     QBoxLayout* layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     layout->setSizeConstraint(QLayout::SetMinimumSize);
@@ -31,16 +31,9 @@ DragWords::DragWords(ExerciseData &data, QWidget *parent)
 
     _translation->setFrameStyle(QFrame::Box | QFrame::Plain);
     _translation->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    _translation->setStyleSheet("font-size: 15pt");
 
-    _sentence->setFrameStyle(QFrame::Box | QFrame::Plain);
-    _sentence->setMinimumSize(256, 128);
-
-    _words->setFrameStyle(QFrame::Box | QFrame::Plain);
-    _words->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    QGridLayout* wordsLayout = new QGridLayout(_words);
-    wordsLayout->setSizeConstraint(QLayout::SetMinimumSize);
-    wordsLayout->setMargin(5);
-    wordsLayout->setSpacing(5);
+    _sentence->setMinimumSize(128, 64);
 
     start();
 }
@@ -92,29 +85,8 @@ void DragWords::start()
 
 void DragWords::showSentence()
 {
-    auto wordsLayout = static_cast<QGridLayout*>(_words->layout());
-
-    QLayoutItem* old = nullptr;
-    while ((old = wordsLayout->takeAt(0)) != 0)
-    {
-        auto oldWidget = old->widget();
-        if (oldWidget)
-            delete oldWidget;
-    }
-
     _translation->setText(_data.translation("RU"));
-
-    int row = 0;
-    int column = 0;
-    for (auto word: _data.graphemes())
-    {
-        QLabel* label = new QLabel(word);
-
-        label->setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
-        label->setStyleSheet("font-size: 30pt");
-        label->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        wordsLayout->addWidget(label, row, column++);
-    }
+    _words->setItems(_data.graphemes());
 }
 
 void DragWords::showResults()
