@@ -1,6 +1,8 @@
 #ifndef EXERCISE_H
 #define EXERCISE_H
 
+#include "exercisedata.h"
+
 #include <QWidget>
 
 class Exercise : public QWidget
@@ -13,8 +15,14 @@ public:
     static const QString whatsThis;
     static const QString icon;
 
-public:
-    explicit Exercise(QWidget *parent = nullptr) : QWidget(parent) {}
+protected:
+    explicit Exercise(ExerciseData& data, QWidget *parent = nullptr)
+        : QWidget(parent)
+        , _data(data)
+    {}
+
+protected:
+    ExerciseData& _data;
 };
 
 #endif // EXERCISE_H

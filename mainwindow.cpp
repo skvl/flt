@@ -9,6 +9,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , _panel(new QToolBar)
+    , _data(ExerciseData())
 {
     prepareToolBar();
 }
@@ -52,6 +53,7 @@ void MainWindow::prepareToolBar()
                                   this);
     action->setToolTip(DragWords::toolTip);
     action->setWhatsThis(DragWords::whatsThis);
-    connect(action, &QAction::triggered, [=](){run(new DragWords(this));});
+    connect(action, &QAction::triggered,
+            [=](){run(new DragWords(_data, this));});
     _panel->addAction(action);
 }

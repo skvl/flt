@@ -4,4 +4,7 @@
         <file>Resources/Icons/done.png</file>
         <file>Resources/Icons/fail.png</file>
     </qresource>
+    <qresource prefix="/exercies">
+        <file>Resources/Exercises/sentences.xml</file>
+    </qresource>
 </RCC>

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -26,12 +26,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    Exercises/dragwords.cpp
+    Exercises/dragwords.cpp \
+    Exercises/exercisedata.cpp
 
 HEADERS += \
         mainwindow.h \
     Exercises/dragwords.h \
-    Exercises/exercise.h
+    Exercises/exercise.h \
+    Exercises/exercisedata.h
 
 RESOURCES += \
     resources.qrc

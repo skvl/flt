@@ -21,6 +21,8 @@ private:
 
 private:
     QToolBar* _panel;
+
+    ExerciseData _data;
 };
 
 #endif // MAINWINDOW_H

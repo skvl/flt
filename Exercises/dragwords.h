@@ -3,6 +3,7 @@
 
 #include "exercise.h"
 
+#include <QLabel>
 #include <QFrame>
 #include <QToolBar>
 
@@ -17,7 +18,7 @@ public:
     static const QString icon;
 
 public:
-    explicit DragWords(QWidget *parent = nullptr);
+    explicit DragWords(ExerciseData& data, QWidget *parent = nullptr);
 
 private slots:
     void done();
@@ -25,9 +26,13 @@ private slots:
 
 private:
     void prepareToolBar();
+    void start();
+    void showSentence();
+    void showResults();
 
 private:
     QToolBar* _commands;
+    QLabel* _translation;
     QFrame* _sentence;
     QFrame* _words;
 };
