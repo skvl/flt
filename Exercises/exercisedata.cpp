@@ -1,5 +1,7 @@
 #include "exercisedata.h"
 
+#include <QRandomGenerator>
+
 #include <QDebug>
 
 ExerciseData::ExerciseData()
@@ -54,7 +56,18 @@ QString ExerciseData::audio() const
 QVector<QString> ExerciseData::graphemes() const
 {
     Q_ASSERT(_iterator < _data.end());
-    return (*_iterator).graphemes;
+
+    QVector<QString> initial = (*_iterator).graphemes;
+    QVector<QString> result = QVector<QString>();
+
+    int count = 0;
+    while ((count = initial.count()) > 0)
+    {
+        auto idx = QRandomGenerator::global()->bounded(count);
+        result.push_back(initial.takeAt(idx));
+    }
+
+    return result;
 }
 
 QString ExerciseData::translation(QString language) const
