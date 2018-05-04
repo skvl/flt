@@ -10,6 +10,7 @@
             <grapheme>你</grapheme>
             <grapheme>好</grapheme>
             <grapheme>吗</grapheme>
+            <grapheme>?</grapheme>
         </graphemes>
     </sentence>
     <sentence>
@@ -21,6 +22,7 @@
             <grapheme>我</grapheme>
             <grapheme>很</grapheme>
             <grapheme>好</grapheme>
+            <grapheme>。</grapheme>
         </graphemes>
     </sentence>
 </sentences>

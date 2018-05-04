@@ -34,12 +34,15 @@ DragWords::DragWords(ExerciseData &data, QWidget *parent)
     _translation->setStyleSheet("font-size: 15pt");
 
     _sentence->setMinimumSize(128, 64);
+    _sentence->setAcceptDrops(true);
 
     start();
 }
 
 void DragWords::done()
 {
+    _sentence->clear();
+    _words->clear();
     _data.next();
     if ( _data.end() )
         showResults();
@@ -49,6 +52,8 @@ void DragWords::done()
 
 void DragWords::skip()
 {
+    _sentence->clear();
+    _words->clear();
     _data.next();
     if ( _data.end() )
         showResults();

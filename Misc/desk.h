@@ -1,9 +1,10 @@
 #ifndef DESK_H
 #define DESK_H
 
+#include "block.h"
+
 #include <QFrame>
 #include <QGridLayout>
-#include <QLabel>
 
 class Desk : public QFrame
 {
@@ -11,16 +12,28 @@ class Desk : public QFrame
 public:
     explicit Desk(QWidget *parent = nullptr);
 
+    void clear();
     void setItems(QVector<QString> items);
 
 private:
     void drawBorder();
     void addLayout();
-    void clear();
+
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dragLeaveEvent();
+    void dragMoveEvent(QDragMoveEvent *event);
+    void dropEvent(QDropEvent *event);
 
 private:
     QGridLayout* _layout;
-    QVector<QLabel*> _items;
+
+    struct Drag
+    {
+        Block* item;
+        QPoint start;
+    } _drag;
 };
 
 #endif // DESK_H
