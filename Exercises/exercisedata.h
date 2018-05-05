@@ -9,6 +9,9 @@
 class ExerciseData
 {
 public:
+    using CheckResult = QMap<QVector<QString>, QPair<QVector<QString>, bool>>;
+
+public:
     ExerciseData();
 
     void flush();
@@ -18,6 +21,12 @@ public:
     QString audio() const;
     QVector<QString> graphemes() const;
     QString translation(QString language) const;
+
+    void addAnswer(QVector<QString> answer);
+    QVector<QString> answer() const;
+    bool compare() const;
+
+    void startCheck();
 
 private:
     void parser(const QDomNode &node);
@@ -32,6 +41,13 @@ private:
 
     QVector<Sentence> _data;
     QVector<Sentence>::iterator _iterator;
+
+    struct Answer
+    {
+        QVector<QString> graphemes;
+    };
+
+    QVector<Answer> _answers;
 };
 
 #endif // EXERCISEDATA_H

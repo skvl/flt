@@ -7,6 +7,7 @@
 ExerciseData::ExerciseData()
     : _data(QVector<Sentence>())
     , _iterator(_data.begin())
+    , _answers(QVector<Answer>())
 {
     QDomDocument doc;
     QFile file(":/exercies/Resources/Exercises/sentences.xml");
@@ -26,11 +27,16 @@ ExerciseData::ExerciseData()
     }
     else
         qDebug() << "Failed to open file";
+
+    flush();
 }
 
 void ExerciseData::flush()
 {
     _iterator = _data.begin();
+
+    for (auto i = 0; i < _data.count(); ++i)
+        _answers.push_back(Answer());
 }
 
 void ExerciseData::next()
@@ -80,6 +86,29 @@ QString ExerciseData::translation(QString language) const
         return translations[language];
     else
         return "";
+}
+
+void ExerciseData::addAnswer(QVector<QString> answer)
+{
+    _answers[_iterator - _data.begin()].graphemes = answer;
+}
+
+QVector<QString> ExerciseData::answer() const
+{
+    Q_ASSERT(_iterator < _data.end());
+    return _answers[_iterator - _data.begin()].graphemes;
+}
+
+bool ExerciseData::compare() const
+{
+    Q_ASSERT(_iterator < _data.end());
+    return _answers[_iterator - _data.begin()].graphemes ==
+            (*_iterator).graphemes;
+}
+
+void ExerciseData::startCheck()
+{
+    _iterator = _data.begin();
 }
 
 void ExerciseData::parser(const QDomNode &node)

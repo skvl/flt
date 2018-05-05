@@ -40,6 +40,7 @@ DragWords::DragWords(ExerciseData &data, QWidget *parent)
 
 void DragWords::done()
 {
+    _translation->clear();
     _sentence->clear();
     _words->clear();
     _data.next();
@@ -51,6 +52,7 @@ void DragWords::done()
 
 void DragWords::skip()
 {
+    _translation->clear();
     _sentence->clear();
     _words->clear();
     _data.next();
