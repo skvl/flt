@@ -4,6 +4,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QIcon>
+#include <QScrollArea>
 
 const QString DragWords::text = "Drag words";
 const QString DragWords::toolTip = "Drop words to make sentence";
@@ -13,11 +14,52 @@ const QString DragWords::icon = ":/icons/Resources/Icons/simple_drag_drop.png";
 DragWords::DragWords(ExerciseData &data, QWidget *parent)
     : Exercise(data, parent)
     , _commands(new QToolBar(this))
+    , _comparisons(new QTextEdit(this))
     , _translation(new QLabel(this))
     , _sentence(new Desk(this))
     , _words(new Desk(this))
 {
-    QBoxLayout* layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    prepareExercise();
+    prepareResults();
+}
+
+void DragWords::done()
+{
+    _data.addAnswer(_sentence->items());
+    skip();
+}
+
+void DragWords::skip()
+{
+    _translation->clear();
+    _sentence->clear();
+    _words->clear();
+    _data.next();
+    if ( _data.end() )
+        showResults();
+    else
+        showSentence();
+}
+
+void DragWords::prepareResults()
+{
+    QBoxLayout* layout = new QBoxLayout(QBoxLayout::TopToBottom, _results);
+    layout->setSizeConstraint(QLayout::SetMinimumSize);
+    layout->setMargin(10);
+    layout->setSpacing(10);
+
+    _score = new QLabel();
+    layout->addWidget(_score);
+    _score->setFrameStyle(QFrame::Box | QFrame::Plain);
+    _score->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    _score->setStyleSheet("font-size: 15pt");
+
+    layout->addWidget(_comparisons);
+}
+
+void DragWords::prepareExercise()
+{
+    QBoxLayout* layout = new QBoxLayout(QBoxLayout::TopToBottom, _exercise);
     layout->setSizeConstraint(QLayout::SetMinimumSize);
     layout->setMargin(10);
     layout->setSpacing(10);
@@ -36,30 +78,6 @@ DragWords::DragWords(ExerciseData &data, QWidget *parent)
     _sentence->setMinimumSize(128, 64);
 
     start();
-}
-
-void DragWords::done()
-{
-    _translation->clear();
-    _sentence->clear();
-    _words->clear();
-    _data.next();
-    if ( _data.end() )
-        showResults();
-    else
-        showSentence();
-}
-
-void DragWords::skip()
-{
-    _translation->clear();
-    _sentence->clear();
-    _words->clear();
-    _data.next();
-    if ( _data.end() )
-        showResults();
-    else
-        showSentence();
 }
 
 void DragWords::prepareToolBar()
@@ -97,5 +115,23 @@ void DragWords::showSentence()
 
 void DragWords::showResults()
 {
+    _data.startCheck();
 
+    QString results = "<html><body>";
+
+    for (; !_data.end(); _data.next())
+    {
+        results += QString("<p>Original: ") + _data.correctSentence() + "<p>";
+        results += "<p>User answer: ";
+        if (_data.compare())
+            results += QString("<font color=green>");
+        else
+            results += QString("<font color=red>");
+        results += _data.userAnswer() + "</font></p>\n\n";
+    }
+    results += "</body></html>";
+    _comparisons->setText(results);
+
+    _score->setText(QString::number(int(_data.score() * 5)));
+    _pages->setCurrentWidget(_results);
 }

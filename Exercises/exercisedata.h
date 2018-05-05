@@ -18,13 +18,16 @@ public:
     void next();
     bool end();
 
+    int count() const;
     QString audio() const;
     QVector<QString> graphemes() const;
     QString translation(QString language) const;
 
-    void addAnswer(QVector<QString> answer);
-    QVector<QString> answer() const;
+    void addAnswer(QVector<QString> userAnswer);
+    QString correctSentence() const;
+    QString userAnswer() const;
     bool compare() const;
+    float score() const;
 
     void startCheck();
 

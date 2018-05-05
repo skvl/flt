@@ -52,6 +52,23 @@ void Desk::setItems(QVector<QString> items)
     }
 }
 
+QVector<QString> Desk::items() const
+{
+    QVector<QString> result = QVector<QString>();
+
+    for (auto i = 0; i < _layout->count(); ++i)
+    {
+        QLayoutItem* item = _layout->itemAt(i);
+        auto block = static_cast<Block*>(item->widget());
+        if (block)
+            result.push_back(block->text());
+        else
+            qDebug() << "Warning! Layout item without widget.";
+    }
+
+    return result;
+}
+
 void Desk::drawBorder()
 {
     setStyleSheet("Desk{background-color:rgb(255,255,255);"

@@ -6,6 +6,7 @@
 
 #include <QLabel>
 #include <QFrame>
+#include <QTextEdit>
 #include <QToolBar>
 
 class DragWords : public Exercise
@@ -26,6 +27,8 @@ private slots:
     void skip();
 
 private:
+    void prepareResults();
+    void prepareExercise();
     void prepareToolBar();
     void start();
     void showSentence();
@@ -36,6 +39,9 @@ private:
     QLabel* _translation;
     Desk* _sentence;
     Desk* _words;
+
+    QLabel* _score;
+    QTextEdit* _comparisons;
 };
 
 #endif // DRAGWORDS_H

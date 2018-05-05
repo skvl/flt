@@ -14,6 +14,7 @@ public:
 
     void clear();
     void setItems(QVector<QString> items);
+    QVector<QString> items() const;
 
 private:
     void drawBorder();

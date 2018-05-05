@@ -53,6 +53,11 @@ bool ExerciseData::end()
         return false;
 }
 
+int ExerciseData::count() const
+{
+    return _data.count();
+}
+
 QString ExerciseData::audio() const
 {
     Q_ASSERT(_iterator < _data.end());
@@ -93,10 +98,26 @@ void ExerciseData::addAnswer(QVector<QString> answer)
     _answers[_iterator - _data.begin()].graphemes = answer;
 }
 
-QVector<QString> ExerciseData::answer() const
+QString ExerciseData::correctSentence() const
 {
     Q_ASSERT(_iterator < _data.end());
-    return _answers[_iterator - _data.begin()].graphemes;
+
+    QString result = QString();
+    for (auto w: (*_iterator).graphemes)
+        result.append(w + "");
+
+    return result;
+}
+
+QString ExerciseData::userAnswer() const
+{
+    Q_ASSERT(_iterator < _data.end());
+
+    QString result = QString();
+    for (auto w: _answers[_iterator - _data.begin()].graphemes)
+        result.append(w + "");
+
+    return result;
 }
 
 bool ExerciseData::compare() const
@@ -104,6 +125,16 @@ bool ExerciseData::compare() const
     Q_ASSERT(_iterator < _data.end());
     return _answers[_iterator - _data.begin()].graphemes ==
             (*_iterator).graphemes;
+}
+
+float ExerciseData::score() const
+{
+    float score = 0;
+    for (auto i = 0; i < count(); ++i)
+        if (_answers[i].graphemes == _data[i].graphemes)
+            ++score;
+
+    return score / count();
 }
 
 void ExerciseData::startCheck()
