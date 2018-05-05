@@ -20,6 +20,7 @@ Desk::Desk(QWidget *parent)
     addLayout();
 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    setAcceptDrops(true);
 }
 
 void Desk::clear()
@@ -107,7 +108,7 @@ void Desk::mouseMoveEvent(QMouseEvent *event)
 
 void Desk::dragEnterEvent(QDragEnterEvent *event)
 {
-    if (event->mimeData()->hasFormat("text/plain"))
+    if (event->source() != this && event->mimeData()->hasFormat("text/plain"))
         event->acceptProposedAction();
 }
 
