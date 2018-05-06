@@ -6,7 +6,7 @@
 
 QT       += core gui xml
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia
 
 TARGET = ForeignLanguageTrainer_2
 TEMPLATE = app
@@ -29,7 +29,8 @@ SOURCES += \
     Exercises/dragwords.cpp \
     Exercises/exercisedata.cpp \
     Misc/desk.cpp \
-    Misc/block.cpp
+    Misc/block.cpp \
+    Exercises/listenwords.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -37,7 +38,8 @@ HEADERS += \
     Exercises/exercise.h \
     Exercises/exercisedata.h \
     Misc/desk.h \
-    Misc/block.h
+    Misc/block.h \
+    Exercises/listenwords.h
 
 RESOURCES += \
     resources.qrc

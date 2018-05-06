@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "Exercises/dragwords.h"
+#include "Exercises/listenwords.h"
 
 #include <QMessageBox>
 #include <QToolBar>
@@ -49,11 +50,20 @@ void MainWindow::prepareToolBar()
     addToolBar(Qt::LeftToolBarArea, _panel);
     _panel->setIconSize(QSize(64, 64));
 
-    QAction* action = new QAction(QIcon(DragWords::icon), DragWords::text,
-                                  this);
-    action->setToolTip(DragWords::toolTip);
-    action->setWhatsThis(DragWords::whatsThis);
-    connect(action, &QAction::triggered,
+    QAction* dragWords = new QAction(QIcon(DragWords::icon), DragWords::text,
+                                     this);
+    dragWords->setToolTip(DragWords::toolTip);
+    dragWords->setWhatsThis(DragWords::whatsThis);
+    connect(dragWords, &QAction::triggered,
             [=](){run(new DragWords(_data, this));});
-    _panel->addAction(action);
+    _panel->addAction(dragWords);
+
+    QAction* listenWords = new QAction(QIcon(ListenWords::icon),
+                                       ListenWords::text,
+                                       this);
+    listenWords->setToolTip(ListenWords::toolTip);
+    listenWords->setWhatsThis(ListenWords::whatsThis);
+    connect(listenWords, &QAction::triggered,
+            [=](){run(new ListenWords(_data, this));});
+    _panel->addAction(listenWords);
 }

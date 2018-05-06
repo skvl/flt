@@ -2,6 +2,7 @@
 <!-- Sentences data base -->
 <sentences>
     <sentence>
+        <audio>qrc:/audio/Resources/Audio/ni_hao_ma.wav</audio>
         <translations>
             <translation language="RU">Как у тебя дела?</translation>
             <translation language="EN">How are you?</translation>
@@ -14,6 +15,7 @@
         </graphemes>
     </sentence>
     <sentence>
+    <audio>qrc:/audio/Resources/Audio/wo_hen_hao.wav</audio>
         <translations>
             <translation language="RU">У меня всё хорошо.</translation>
             <translation language="EN">I am all right.</translation>

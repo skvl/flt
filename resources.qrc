@@ -3,8 +3,14 @@
         <file>Resources/Icons/simple_drag_drop.png</file>
         <file>Resources/Icons/done.png</file>
         <file>Resources/Icons/fail.png</file>
+        <file>Resources/Icons/play.png</file>
+        <file>Resources/Icons/simple_listen.png</file>
     </qresource>
     <qresource prefix="/exercies">
         <file>Resources/Exercises/sentences.xml</file>
+    </qresource>
+    <qresource prefix="/audio">
+        <file>Resources/Audio/ni_hao_ma.wav</file>
+        <file>Resources/Audio/wo_hen_hao.wav</file>
     </qresource>
 </RCC>
