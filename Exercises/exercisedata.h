@@ -18,6 +18,7 @@ public:
     void next();
     bool end();
 
+    int index() const;
     int count() const;
     QString audio() const;
     QVector<QString> graphemes() const;

@@ -53,6 +53,11 @@ bool ExerciseData::end()
         return false;
 }
 
+int ExerciseData::index() const
+{
+    return _iterator - _data.begin() + 1;
+}
+
 int ExerciseData::count() const
 {
     return _data.count();

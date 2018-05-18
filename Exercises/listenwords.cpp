@@ -18,6 +18,7 @@ const QString ListenWords::icon = ":/icons/Resources/Icons/simple_listen.png";
 ListenWords::ListenWords(ExerciseData &data, QWidget *parent)
     : Exercise(data, parent)
     , _commands(new QToolBar(this))
+    , _progressBar(new QLabel(this))
     , _comparisons(new QTextEdit(this))
     , _sentence(new Desk(this))
     , _words(new Desk(this))
@@ -112,6 +113,11 @@ void ListenWords::prepareToolBar()
 {
     _commands->setIconSize(QSize(32, 32));
 
+    _progressBar->setFrameStyle(QFrame::Box | QFrame::Plain);
+    _progressBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    _progressBar->setStyleSheet("font-size: 15pt");
+    _commands->addWidget(_progressBar);
+
     QWidget* spacer = new QWidget(this);
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     _commands->addWidget(spacer);
@@ -143,6 +149,7 @@ void ListenWords::start()
 
 void ListenWords::showSentence()
 {
+    _progressBar->setText(QString::number(_data.index()));
     _words->setItems(_data.graphemes());
 }
 
@@ -154,16 +161,17 @@ void ListenWords::showResults()
 
     for (; !_data.end(); _data.next())
     {
-        results += QString("<p>Original: ") + _data.correctSentence() + "<p>";
+        results += QString("<p>Original: <font size=\"12\">") + _data.correctSentence() + "<p>";
         results += "<p>User answer: ";
         if (_data.compare())
-            results += QString("<font color=green>");
+            results += QString("<font color=green size=\"14\">");
         else
-            results += QString("<font color=red>");
+            results += QString("<font color=red size=\"14\">");
         results += _data.userAnswer() + "</font></p>\n\n";
     }
     results += "</body></html>";
     _comparisons->setText(results);
+    _comparisons->setStyleSheet("font-size:15pt;");
 
     _score->setText(QString::number(int(_data.score() * 5)));
     _pages->setCurrentWidget(_results);

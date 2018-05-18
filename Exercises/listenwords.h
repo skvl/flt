@@ -37,6 +37,7 @@ private:
 
 private:
     QToolBar* _commands;
+    QLabel* _progressBar;
     Desk* _sentence;
     Desk* _words;
 
