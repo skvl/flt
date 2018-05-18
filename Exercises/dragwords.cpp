@@ -171,7 +171,7 @@ void DragWords::showResults()
     results += QString("<p>Время экзамена: ") + resultTime + QString("</p>\n\n");
     results += QString("<p>Оценка: ") + score + QString("</p>\n\n");
 
-    for (auto i = 0; !_data.end(); ++i, _data.next())
+    for (auto i = 1; !_data.end(); ++i, _data.next())
     {
         results += QString("<p>") + QString::number(i) + QString(". ");
         results += QString("Правильный ответ: <font size=\"12\">") + _data.correctSentence() + "</p>";
