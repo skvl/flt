@@ -2,6 +2,7 @@
 #include "Exercises/dragwords.h"
 #include "Exercises/listenwords.h"
 
+#include <QInputDialog>s
 #include <QMessageBox>
 #include <QToolBar>
 
@@ -23,6 +24,19 @@ MainWindow::~MainWindow()
 void MainWindow::run(Exercise *e)
 {
     auto current = centralWidget();
+
+    bool inputSuccess = false;
+    while (!inputSuccess)
+    {
+        auto userName = QInputDialog::getText(nullptr,
+                                              "Введите Ваше имя", "ФИО",
+                                              QLineEdit::Normal, "",
+                                              &inputSuccess);
+        _data.setUserName(userName);
+    }
+
+    auto title = QString("Экзамен сдаёт ") + _data.userName();
+    setWindowTitle(title);
 
     if (current)
     {

@@ -125,6 +125,7 @@ void DragWords::showResults()
     _data.startCheck();
 
     QString results = "<html><body>";
+    results += QString("<p>Экзаменуемый: ") + _data.userName() + QString("</p>\n\n");
 
     for (auto i = 0; !_data.end(); ++i, _data.next())
     {

@@ -14,6 +14,9 @@ public:
 public:
     ExerciseData();
 
+    void setUserName(QString name);
+    QString userName() const;
+
     void flush();
     void next();
     bool end();
@@ -52,6 +55,7 @@ private:
         QVector<QString> graphemes;
     };
 
+    QString _name;
     QVector<Answer> _answers;
 };
 

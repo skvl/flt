@@ -7,6 +7,7 @@
 ExerciseData::ExerciseData()
     : _data(QVector<Sentence>())
     , _iterator(_data.begin())
+    , _name("")
     , _answers(QVector<Answer>())
 {
     QDomDocument doc;
@@ -29,6 +30,16 @@ ExerciseData::ExerciseData()
         qDebug() << "Failed to open file";
 
     flush();
+}
+
+void ExerciseData::setUserName(QString name)
+{
+    _name = name;
+}
+
+QString ExerciseData::userName() const
+{
+    return _name;
 }
 
 void ExerciseData::flush()
