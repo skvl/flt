@@ -51,16 +51,7 @@ void ListenWords::play()
     }
     else
     {
-        // TODO Узнать по какой причине не работает
-        // QSound::play(_data.audio());
-
-        auto player = new QMediaPlayer;
-        player->setMedia(QUrl(_data.audio()));
-        player->setVolume(100);
-        player->play();
-
-        // TODO Узнать как освобождать память
-        // delete player;
+        QSound::play(_data.audio());
     }
 }
 

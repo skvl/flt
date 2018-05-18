@@ -10,7 +10,7 @@ ExerciseData::ExerciseData()
     , _answers(QVector<Answer>())
 {
     QDomDocument doc;
-    QFile file(":/exercies/Resources/Exercises/sentences.xml");
+    QFile file("HSK/HSK-I/sentences.xml");
 
     if (file.open(QIODevice::ReadOnly))
     {
