@@ -181,9 +181,18 @@ void ListenWords::showResults()
 
     _data.startCheck();
 
+    auto score = QString::number(int(_data.score() * 5));
+    score += QString(" (Правильно ") +
+            QString::number(_data.correctAnswers()) +
+            QString(" из ") +
+            QString::number(_data.count()) +
+            QString(")");
+    _score->setText(score);
+
     QString results = "<html><body>";
     results += QString("<p>Экзаменуемый: ") + _data.userName() + QString("</p>");
     results += QString("<p>Время экзамена: ") + resultTime + QString("</p>\n\n");
+    results += QString("<p>Оценка: ") + score + QString("</p>\n\n");
 
     for (auto i = 0; !_data.end(); ++i, _data.next())
     {
@@ -200,12 +209,5 @@ void ListenWords::showResults()
     _comparisons->setText(results);
     _comparisons->setStyleSheet("font-size:15pt;");
 
-    auto score = QString::number(int(_data.score() * 5));
-    score += QString(" (Правильно ") +
-            QString::number(_data.correctAnswers()) +
-            QString(" из ") +
-            QString::number(_data.count()) +
-            QString(")");
-    _score->setText(score);
     _pages->setCurrentWidget(_results);
 }

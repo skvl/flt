@@ -158,25 +158,6 @@ void DragWords::showResults()
 
     _data.startCheck();
 
-    QString results = "<html><body>";
-    results += QString("<p>Экзаменуемый: ") + _data.userName() + QString("</p>");
-    results += QString("<p>Время экзамена: ") + resultTime + QString("</p>\n\n");
-
-    for (auto i = 0; !_data.end(); ++i, _data.next())
-    {
-        results += QString("<p>") + QString::number(i) + QString(". ");
-        results += QString("Правильный ответ: <font size=\"12\">") + _data.correctSentence() + "</p>";
-        results += "<p>Ответ пользователя: ";
-        if (_data.compare())
-            results += QString("<font color=green size=\"14\">");
-        else
-            results += QString("<font color=red size=\"14\">");
-        results += _data.userAnswer() + "</font></p>\n\n";
-    }
-    results += "</body></html>";
-    _comparisons->setText(results);
-    _comparisons->setStyleSheet("font-size:15pt;");
-
     auto score = QString::number(int(_data.score() * 5));
     score += QString(" (Правильно ") +
             QString::number(_data.correctAnswers()) +
@@ -184,5 +165,26 @@ void DragWords::showResults()
             QString::number(_data.count()) +
             QString(")");
     _score->setText(score);
+
+    QString results = "<html><body>";
+    results += QString("<p>Экзаменуемый: ") + _data.userName() + QString("</p>");
+    results += QString("<p>Время экзамена: ") + resultTime + QString("</p>\n\n");
+    results += QString("<p>Оценка: ") + score + QString("</p>\n\n");
+
+    for (auto i = 0; !_data.end(); ++i, _data.next())
+    {
+        results += QString("<p>") + QString::number(i) + QString(". ");
+        results += QString("Правильный ответ: <font size=\"12\">") + _data.correctSentence() + "</p>";
+        results += "<p>Ответ пользователя (";
+        if (_data.compare())
+            results += QString("правильный): <font color=green size=\"14\">");
+        else
+            results += QString("неправильный): <font color=red size=\"14\">");
+        results += _data.userAnswer() + "</font></p>\n\n";
+    }
+    results += "</body></html>";
+    _comparisons->setText(results);
+    _comparisons->setStyleSheet("font-size:15pt;");
+
     _pages->setCurrentWidget(_results);
 }
