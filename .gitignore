@@ -1,5 +1,5 @@
 # Qt user specific settings
 ForeignLanguageTrainer_2.pro.user
 
-# Filter out heavy resources
-*.wav
+# Ignore submodules which must contain exercises data
+.gitmodules

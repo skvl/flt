@@ -7,10 +7,6 @@
         <file>Resources/Icons/simple_listen.png</file>
     </qresource>
     <qresource prefix="/exercies">
-        <file>Resources/Exercises/sentences.xml</file>
-    </qresource>
-    <qresource prefix="/audio">
-        <file>Resources/Audio/ni_hao_ma.wav</file>
-        <file>Resources/Audio/wo_hen_hao.wav</file>
+        <file>Resources/HSK/HSK-I/sentences.xml</file>
     </qresource>
 </RCC>
