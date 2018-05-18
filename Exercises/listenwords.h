@@ -7,6 +7,8 @@
 #include <QLabel>
 #include <QFrame>
 #include <QTextEdit>
+#include <QTime>
+#include <QTimer>
 #include <QToolBar>
 
 class ListenWords : public Exercise
@@ -26,6 +28,7 @@ private slots:
     void done();
     void play();
     void skip();
+    void timer();
 
 private:
     void prepareResults();
@@ -43,6 +46,10 @@ private:
 
     QLabel* _score;
     QTextEdit* _comparisons;
+
+    QTime* _startAt;
+    QTimer* _timer;
+    QLabel* _stopwatch;
 };
 
 #endif // LISTENWORDS_H

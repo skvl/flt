@@ -7,6 +7,8 @@
 #include <QLabel>
 #include <QFrame>
 #include <QTextEdit>
+#include <QTime>
+#include <QTimer>
 #include <QToolBar>
 
 class DragWords : public Exercise
@@ -25,6 +27,7 @@ public:
 private slots:
     void done();
     void skip();
+    void timer();
 
 private:
     void prepareResults();
@@ -43,6 +46,10 @@ private:
 
     QLabel* _score;
     QTextEdit* _comparisons;
+
+    QTime* _startAt;
+    QTimer* _timer;
+    QLabel* _stopwatch;
 };
 
 #endif // DRAGWORDS_H

@@ -22,9 +22,16 @@ ListenWords::ListenWords(ExerciseData &data, QWidget *parent)
     , _comparisons(new QTextEdit(this))
     , _sentence(new Desk(this))
     , _words(new Desk(this))
+    , _startAt(new QTime())
+    , _timer(new QTimer(this))
+    , _stopwatch(new QLabel(this))
 {
     prepareExercise();
     prepareResults();
+
+    connect(_timer, SIGNAL(timeout()), SLOT(timer()));
+    _startAt->start();
+    _timer->start(1000);
 }
 
 void ListenWords::done()
@@ -64,6 +71,19 @@ void ListenWords::skip()
         showResults();
     else
         showSentence();
+}
+
+void ListenWords::timer()
+{
+    auto elapsed = _startAt->elapsed();
+    auto secs = elapsed / 1000;
+    auto mins = secs / 60;
+    auto hours = mins / 60;
+    auto result = QString::number(hours) + QString(":") +
+            QString::number(mins) + QString(":") +
+            QString::number(secs);
+
+    _stopwatch->setText(result);
 }
 
 void ListenWords::prepareResults()
@@ -109,6 +129,11 @@ void ListenWords::prepareToolBar()
     _progressBar->setStyleSheet("font-size: 15pt");
     _commands->addWidget(_progressBar);
 
+    _stopwatch->setFrameStyle(QFrame::Box | QFrame::Plain);
+    _stopwatch->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    _stopwatch->setStyleSheet("font-size: 15pt");
+    _commands->addWidget(_stopwatch);
+
     QWidget* spacer = new QWidget(this);
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     _commands->addWidget(spacer);
@@ -146,10 +171,19 @@ void ListenWords::showSentence()
 
 void ListenWords::showResults()
 {
+    auto elapsed = _startAt->elapsed();
+    auto secs = elapsed / 1000;
+    auto mins = secs / 60;
+    auto hours = mins / 60;
+    auto resultTime = QString::number(hours) + QString(":") +
+            QString::number(mins) + QString(":") +
+            QString::number(secs);
+
     _data.startCheck();
 
     QString results = "<html><body>";
-    results += QString("<p>Экзаменуемый: ") + _data.userName() + QString("</p>\n\n");
+    results += QString("<p>Экзаменуемый: ") + _data.userName() + QString("</p>");
+    results += QString("<p>Время экзамена: ") + resultTime + QString("</p>\n\n");
 
     for (auto i = 0; !_data.end(); ++i, _data.next())
     {
