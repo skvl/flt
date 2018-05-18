@@ -132,14 +132,19 @@ bool ExerciseData::compare() const
             (*_iterator).graphemes;
 }
 
-float ExerciseData::score() const
+unsigned ExerciseData::correctAnswers() const
 {
-    float score = 0;
+    unsigned num = 0;
     for (auto i = 0; i < count(); ++i)
         if (_answers[i].graphemes == _data[i].graphemes)
-            ++score;
+            ++num;
 
-    return score / count();
+    return num;
+}
+
+float ExerciseData::score() const
+{
+    return correctAnswers() / count();
 }
 
 void ExerciseData::startCheck()

@@ -28,6 +28,7 @@ public:
     QString correctSentence() const;
     QString userAnswer() const;
     bool compare() const;
+    unsigned correctAnswers() const;
     float score() const;
 
     void startCheck();

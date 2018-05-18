@@ -28,10 +28,10 @@ void MainWindow::run(Exercise *e)
     {
         auto dialog =
                 new QMessageBox(QMessageBox::Warning,
-                                "Exercise interruption",
-                                "You are going to interrupt the exercise."
-                                "All changes will be lost.\n\n"
-                                "Do You agree?",
+                                "Прерывание упражнения",
+                                "Вы прерываете выполнение упражнения."
+                                "Все данные будут потеряны.\n\n"
+                                "Вы согласны?",
                                 QMessageBox::Yes | QMessageBox::No);
 
         if (QMessageBox::Yes == dialog->exec())

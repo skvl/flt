@@ -150,20 +150,27 @@ void ListenWords::showResults()
 
     QString results = "<html><body>";
 
-    for (; !_data.end(); _data.next())
+    for (auto i = 0; !_data.end(); ++i, _data.next())
     {
-        results += QString("<p>Original: <font size=\"12\">") + _data.correctSentence() + "<p>";
-        results += "<p>User answer: ";
+        results += QString("<p>") + QString::number(i) + QString(". ");
+        results += QString("Правильный ответ: <font size=\"12\">") + _data.correctSentence() + "</p>";
+        results += "<p>Ответ пользователя (";
         if (_data.compare())
-            results += QString("<font color=green size=\"14\">");
+            results += QString("правильный): <font color=green size=\"14\">");
         else
-            results += QString("<font color=red size=\"14\">");
+            results += QString("неправильный): <font color=red size=\"14\">");
         results += _data.userAnswer() + "</font></p>\n\n";
     }
     results += "</body></html>";
     _comparisons->setText(results);
     _comparisons->setStyleSheet("font-size:15pt;");
 
-    _score->setText(QString::number(int(_data.score() * 5)));
+    auto score = QString::number(int(_data.score() * 5));
+    score += QString(" (Правильно ") +
+            QString::number(_data.correctAnswers()) +
+            QString(" из ") +
+            QString::number(_data.count()) +
+            QString(")");
+    _score->setText(score);
     _pages->setCurrentWidget(_results);
 }
