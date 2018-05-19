@@ -2,7 +2,7 @@
 #include "Exercises/dragwords.h"
 #include "Exercises/listenwords.h"
 
-#include <QInputDialog>s
+#include <QInputDialog>
 #include <QMessageBox>
 #include <QToolBar>
 

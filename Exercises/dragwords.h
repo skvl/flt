@@ -47,7 +47,7 @@ private:
     QLabel* _score;
     QTextEdit* _comparisons;
 
-    QTime* _startAt;
+    QTime _startAt;
     QTimer* _timer;
     QLabel* _stopwatch;
 };

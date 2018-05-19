@@ -22,7 +22,7 @@ ListenWords::ListenWords(ExerciseData &data, QWidget *parent)
     , _comparisons(new QTextEdit(this))
     , _sentence(new Desk(this))
     , _words(new Desk(this))
-    , _startAt(new QTime())
+    , _startAt(QTime(0, 0, 0, 0))
     , _timer(new QTimer(this))
     , _stopwatch(new QLabel(this))
 {
@@ -30,7 +30,6 @@ ListenWords::ListenWords(ExerciseData &data, QWidget *parent)
     prepareResults();
 
     connect(_timer, SIGNAL(timeout()), SLOT(timer()));
-    _startAt->start();
     _timer->start(1000);
 }
 
@@ -75,15 +74,8 @@ void ListenWords::skip()
 
 void ListenWords::timer()
 {
-    auto elapsed = _startAt->elapsed();
-    auto secs = elapsed / 1000;
-    auto mins = secs / 60;
-    auto hours = mins / 60;
-    auto result = QString::number(hours) + QString(":") +
-            QString::number(mins) + QString(":") +
-            QString::number(secs);
-
-    _stopwatch->setText(result);
+    _startAt = _startAt.addSecs(1);
+    _stopwatch->setText(_startAt.toString("hh:mm:ss"));
 }
 
 void ListenWords::prepareResults()
@@ -171,13 +163,7 @@ void ListenWords::showSentence()
 
 void ListenWords::showResults()
 {
-    auto elapsed = _startAt->elapsed();
-    auto secs = elapsed / 1000;
-    auto mins = secs / 60;
-    auto hours = mins / 60;
-    auto resultTime = QString::number(hours) + QString(":") +
-            QString::number(mins) + QString(":") +
-            QString::number(secs);
+    auto resultTime = _startAt.toString("hh:mm:ss");
 
     _data.startCheck();
 

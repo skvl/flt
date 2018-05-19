@@ -19,7 +19,7 @@ DragWords::DragWords(ExerciseData &data, QWidget *parent)
     , _translation(new QLabel(this))
     , _sentence(new Desk(this))
     , _words(new Desk(this))
-    , _startAt(new QTime())
+    , _startAt(QTime(0, 0, 0, 0))
     , _timer(new QTimer(this))
     , _stopwatch(new QLabel(this))
 {
@@ -27,7 +27,6 @@ DragWords::DragWords(ExerciseData &data, QWidget *parent)
     prepareResults();
 
     connect(_timer, SIGNAL(timeout()), SLOT(timer()));
-    _startAt->start();
     _timer->start(1000);
 }
 
@@ -51,15 +50,8 @@ void DragWords::skip()
 
 void DragWords::timer()
 {
-    auto elapsed = _startAt->elapsed();
-    auto secs = elapsed / 1000;
-    auto mins = secs / 60;
-    auto hours = mins / 60;
-    auto result = QString::number(hours) + QString(":") +
-            QString::number(mins) + QString(":") +
-            QString::number(secs);
-
-    _stopwatch->setText(result);
+    _startAt = _startAt.addSecs(1);
+    _stopwatch->setText(_startAt.toString("hh:mm:ss"));
 }
 
 void DragWords::prepareResults()
@@ -148,13 +140,7 @@ void DragWords::showSentence()
 
 void DragWords::showResults()
 {
-    auto elapsed = _startAt->elapsed();
-    auto secs = elapsed / 1000;
-    auto mins = secs / 60;
-    auto hours = mins / 60;
-    auto resultTime = QString::number(hours) + QString(":") +
-            QString::number(mins) + QString(":") +
-            QString::number(secs);
+    auto resultTime = _startAt.toString("hh:mm:ss");
 
     _data.startCheck();
 

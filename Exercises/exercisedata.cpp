@@ -155,7 +155,7 @@ unsigned ExerciseData::correctAnswers() const
 
 float ExerciseData::score() const
 {
-    return correctAnswers() / count();
+    return ((float) correctAnswers()) / count();
 }
 
 void ExerciseData::startCheck()
