@@ -9,4 +9,7 @@
     <qresource prefix="/exercies">
         <file>Resources/HSK/HSK-I/sentences.xml</file>
     </qresource>
+    <qresource prefix="/styles">
+        <file>Resources/Styles/solarized-dark.qss</file>
+    </qresource>
 </RCC>

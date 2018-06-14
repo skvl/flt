@@ -17,7 +17,6 @@ public:
     QVector<QString> items() const;
 
 private:
-    void drawBorder();
     void addLayout();
 
     void mousePressEvent(QMouseEvent *event);

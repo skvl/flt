@@ -14,14 +14,14 @@ const QString DragWords::icon = ":/icons/Resources/Icons/simple_drag_drop.png";
 DragWords::DragWords(ExerciseData &data, QWidget *parent)
     : Exercise(data, parent)
     , _commands(new QToolBar(this))
-    , _progressBar(new QLabel(this))
+    , _progressBar(new QLCDNumber(4, this))
     , _comparisons(new QTextEdit(this))
     , _translation(new QLabel(this))
     , _sentence(new Desk(this))
     , _words(new Desk(this))
     , _startAt(QTime(0, 0, 0, 0))
     , _timer(new QTimer(this))
-    , _stopwatch(new QLabel(this))
+    , _stopwatch(new QLCDNumber(8, this))
 {
     prepareExercise();
     prepareResults();
@@ -51,7 +51,10 @@ void DragWords::skip()
 void DragWords::timer()
 {
     _startAt = _startAt.addSecs(1);
-    _stopwatch->setText(_startAt.toString("hh:mm:ss"));
+    auto current = _startAt.toString("hh:mm:ss");
+    if ((_startAt.second() % 2) == 0)
+        current.replace(':', ' ');
+    _stopwatch->display(current);
 }
 
 void DragWords::prepareResults()
@@ -64,8 +67,10 @@ void DragWords::prepareResults()
     _score = new QLabel();
     layout->addWidget(_score);
     _score->setFrameStyle(QFrame::Box | QFrame::Plain);
-    _score->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    _score->setStyleSheet("font-size: 15pt");
+    _score->setLineWidth(2);
+    _score->setContentsMargins(0, 0, 0, 2);
+    _score->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    _score->setStyleSheet("font-size: 24pt; color: #eeeeec");
 
     layout->addWidget(_comparisons);
 }
@@ -85,8 +90,10 @@ void DragWords::prepareExercise()
     prepareToolBar();
 
     _translation->setFrameStyle(QFrame::Box | QFrame::Plain);
-    _translation->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    _translation->setStyleSheet("font-size: 15pt");
+    _translation->setLineWidth(2);
+    _translation->setContentsMargins(0, 0, 0, 2);
+    _translation->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    _translation->setStyleSheet("font-size: 24pt; color: #eeeeec");
 
     _sentence->setMinimumSize(128, 64);
 
@@ -96,16 +103,28 @@ void DragWords::prepareExercise()
 void DragWords::prepareToolBar()
 {
 
-    _commands->setIconSize(QSize(32, 32));
+    _commands->setIconSize(QSize(64, 64));
 
     _progressBar->setFrameStyle(QFrame::Box | QFrame::Plain);
-    _progressBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    _progressBar->setStyleSheet("font-size: 15pt");
+    _progressBar->setLineWidth(2);
+    _progressBar->setContentsMargins(0, 0, 0, 2);
+    _progressBar->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    _progressBar->setMinimumSize(96, 64);
+    _progressBar->setStyleSheet("color: #eeeeec");
+    _progressBar->setSegmentStyle(QLCDNumber::Flat);
     _commands->addWidget(_progressBar);
 
+    auto separator = new QWidget(this);
+    separator->setMinimumSize(64, 64);
+    _commands->addWidget(separator);
+
     _stopwatch->setFrameStyle(QFrame::Box | QFrame::Plain);
-    _stopwatch->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    _stopwatch->setStyleSheet("font-size: 15pt");
+    _stopwatch->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    _stopwatch->setLineWidth(2);
+    _stopwatch->setContentsMargins(0, 0, 0, 2);
+    _stopwatch->setMinimumSize(192, 64);
+    _stopwatch->setSegmentStyle(QLCDNumber::Flat);
+    _stopwatch->setStyleSheet("color: #eeeeec");
     _commands->addWidget(_stopwatch);
 
     QWidget* spacer = new QWidget(this);
@@ -117,6 +136,10 @@ void DragWords::prepareToolBar()
     doneAction->setToolTip("Check it");
     connect(doneAction, &QAction::triggered, this, &DragWords::done);
     _commands->addAction(doneAction);
+
+    separator = new QWidget(this);
+    separator->setMinimumSize(64, 64);
+    _commands->addWidget(separator);
 
     QAction* skipAction = new QAction(QIcon(":/icons/Resources/Icons/fail.png"),
                                             "Skip", this);
@@ -133,7 +156,7 @@ void DragWords::start()
 
 void DragWords::showSentence()
 {
-    _progressBar->setText(QString::number(_data.index()));
+    _progressBar->display(_data.index());
     _translation->setText(_data.translation("RU"));
     _words->setItems(_data.graphemes());
 }
@@ -163,9 +186,9 @@ void DragWords::showResults()
         results += QString("Правильный ответ: <font size=\"12\">") + _data.correctSentence() + "</p>";
         results += "<p>Ответ пользователя (";
         if (_data.compare())
-            results += QString("правильный): <font color=green size=\"14\">");
+            results += QString("правильный): <font color=#859900 size=\"14\">");
         else
-            results += QString("неправильный): <font color=red size=\"14\">");
+            results += QString("неправильный): <font color=#dc322f size=\"14\">");
         results += _data.userAnswer() + "</font></p>\n\n";
     }
     results += "</body></html>";

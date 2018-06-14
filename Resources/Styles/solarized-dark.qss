@@ -1,0 +1,47 @@
+/*
+ * Основано на http://ethanschoonover.com/solarized
+ */
+
+MainWindow, QToolBar
+{
+border: none;
+background: #073642
+}
+
+QToolButton:hover
+{
+border: none;
+background: #93a1a1
+}
+
+QToolTip
+{
+font-size: 20px;
+color: #455b83;
+background-color: #f1f1f1
+}
+
+QTextEdit
+{
+color: #eeeeec;
+background-color: #002b36;
+}
+
+Desk
+{
+border-style:solid;
+border-color: #839496;
+border-radius:10px;
+background-color: #002b36;
+}
+
+Block
+{
+background-color: #cb4b16;
+border-width:1px;
+border-color :rgb(0,0,0);
+border-radius:10px;
+border-style:solid;
+color:white;
+font-size:30pt;
+}

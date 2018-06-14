@@ -5,6 +5,7 @@
 #include "Misc/desk.h"
 
 #include <QLabel>
+#include <QLCDNumber>
 #include <QFrame>
 #include <QTextEdit>
 #include <QTime>
@@ -39,7 +40,7 @@ private:
 
 private:
     QToolBar* _commands;
-    QLabel* _progressBar;
+    QLCDNumber* _progressBar;
     QLabel* _translation;
     Desk* _sentence;
     Desk* _words;
@@ -49,7 +50,7 @@ private:
 
     QTime _startAt;
     QTimer* _timer;
-    QLabel* _stopwatch;
+    QLCDNumber* _stopwatch;
 };
 
 #endif // DRAGWORDS_H

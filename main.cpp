@@ -15,5 +15,9 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.showMaximized();
 
+    QFile file(":/styles/Resources/Styles/solarized-dark.qss");
+    if (file.open(QFile::ReadOnly))
+        a.setStyleSheet(QLatin1String(file.readAll()));
+
     return a.exec();
 }

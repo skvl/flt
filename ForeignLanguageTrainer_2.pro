@@ -45,4 +45,5 @@ RESOURCES += \
     resources.qrc
 
 DISTFILES += \
-    doc/README.md
+    doc/README.md \
+    Resources/Styles/solarized-dark.qss

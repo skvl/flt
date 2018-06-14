@@ -16,7 +16,6 @@ Desk::Desk(QWidget *parent)
     : QFrame(parent)
     , _layout(new QGridLayout(this))
 {
-    drawBorder();
     addLayout();
 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -67,15 +66,6 @@ QVector<QString> Desk::items() const
     }
 
     return result;
-}
-
-void Desk::drawBorder()
-{
-    setStyleSheet("Desk{background-color:rgb(255,255,255);"
-                  "border-width:1px;"
-                  "border-color :rgb(0,0,0);"
-                  "border-radius:10px;"
-                  "border-style:solid;}");
 }
 
 /*
