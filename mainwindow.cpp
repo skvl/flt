@@ -56,6 +56,10 @@ void MainWindow::run(Exercise *e)
     }
     else
         setCentralWidget(e);
+
+    qDebug() << centralWidget()->size();
+    qDebug() << e << "starting...";
+    e->start();
 }
 
 // TODO Добавить перечисление классов упражнений

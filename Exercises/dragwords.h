@@ -25,6 +25,8 @@ public:
 public:
     explicit DragWords(ExerciseData& data, QWidget *parent = nullptr);
 
+    void start();
+
 private slots:
     void done();
     void skip();
@@ -34,7 +36,6 @@ private:
     void prepareResults();
     void prepareExercise();
     void prepareToolBar();
-    void start();
     void showSentence();
     void showResults();
 

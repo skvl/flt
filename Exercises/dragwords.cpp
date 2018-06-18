@@ -96,8 +96,10 @@ void DragWords::prepareExercise()
     _translation->setStyleSheet("font-size: 24pt; color: #eeeeec");
 
     _sentence->setMinimumSize(128, 64);
+    _words->setMinimumSize(128, 64);
 
-    start();
+    _sentence->updateGeometry();
+    _words->updateGeometry();
 }
 
 void DragWords::prepareToolBar()

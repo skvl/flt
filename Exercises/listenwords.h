@@ -16,6 +16,9 @@ class ListenWords : public Exercise
     Q_OBJECT
 
 public:
+    void start();
+
+public:
     static const QString text;
     static const QString toolTip;
     static const QString whatsThis;
@@ -34,7 +37,6 @@ private:
     void prepareResults();
     void prepareExercise();
     void prepareToolBar();
-    void start();
     void showSentence();
     void showResults();
 

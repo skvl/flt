@@ -11,6 +11,9 @@ class Exercise : public QWidget
     Q_OBJECT
 
 public:
+    virtual void start() = 0;
+
+public:
     static const QString text;
     static const QString toolTip;
     static const QString whatsThis;
