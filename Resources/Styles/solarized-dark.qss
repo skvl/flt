@@ -2,7 +2,7 @@
  * Основано на http://ethanschoonover.com/solarized
  */
 
-MainWindow, QToolBar
+MainWindow, QToolBar, QSplitter:handle
 {
 border: none;
 background: #073642

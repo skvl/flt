@@ -85,8 +85,7 @@ void Desk::setItems(QVector<QString> items)
     int row = 0;
     for (auto word: items)
     {
-        Block* label = new Block(word);
-        label->setMinimumSize(side, side);
+        Block* label = new Block(side, word);
 
         _layout->addWidget(label, row, column);
 
@@ -113,6 +112,11 @@ QVector<QString> Desk::items() const
     }
 
     return result;
+}
+
+void Desk::resizeSlot()
+{
+    setItems(items());
 }
 
 /*

@@ -4,7 +4,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QIcon>
-#include <QScrollArea>
+#include <QSplitter>
 
 const QString DragWords::text = "Drag words";
 const QString DragWords::toolTip = "Drop words to make sentence";
@@ -82,10 +82,19 @@ void DragWords::prepareExercise()
     layout->setMargin(10);
     layout->setSpacing(10);
 
-    layout->addWidget(_commands, 1);
-    layout->addWidget(_translation, 1);
-    layout->addWidget(_sentence, 3);
-    layout->addWidget(_words, 1);
+    layout->addWidget(_commands);
+    layout->addWidget(_translation);
+
+    auto splitter = new QSplitter(Qt::Vertical);
+    splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    layout->addWidget(splitter, 4);
+
+    splitter->addWidget(_sentence);
+    splitter->setStretchFactor(splitter->indexOf(_sentence), 3);
+    connect(splitter, &QSplitter::splitterMoved, _sentence, &Desk::resizeSlot);
+
+    splitter->addWidget(_words);
+    connect(splitter, &QSplitter::splitterMoved, _words, &Desk::resizeSlot);
 
     prepareToolBar();
 

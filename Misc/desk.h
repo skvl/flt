@@ -16,6 +16,10 @@ public:
     void setItems(QVector<QString> items);
     QVector<QString> items() const;
 
+public slots:
+    // TODO Попробовать применить `resizeEvent()`
+    void resizeSlot();
+
 private:
     void addLayout();
 
