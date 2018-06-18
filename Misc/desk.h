@@ -27,6 +27,7 @@ private:
     void dropEvent(QDropEvent *event);
 
 private:
+    static const int _spacing;
     QGridLayout* _layout;
 
     struct Drag

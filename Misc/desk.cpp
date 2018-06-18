@@ -9,8 +9,11 @@
 #include <QMoveEvent>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QtMath>
 
 #include <QDebug>
+
+const int Desk::_spacing = 10;
 
 Desk::Desk(QWidget *parent)
     : QFrame(parent)
@@ -42,12 +45,56 @@ void Desk::setItems(QVector<QString> items)
 {
     clear();
 
+    qDebug() << ">>>" << size() << items.size();
+
+    int _columns = items.size();
+    int _rows = 1;
+
+    // TODO Добавить статическую функцию `Block::minimalSize`
+    const int minSide = 64;
+    int side = minSide;
+
+    const int margins = 2 * _spacing;
+    for (int rows = 1; rows <= items.size(); ++rows)
+    {
+        int columns = qCeil(float(items.size()) / rows);
+
+        const int vSpaces = (rows - 1) * _spacing;
+        const int h = std::max((height() - margins - vSpaces) / rows, minSide);
+
+        const int hSpaces = (columns - 1) * _spacing;
+        const int w = std::max((width() - margins - hSpaces) / columns, minSide);
+        qDebug() << "  - [" << rows << columns << "]"
+                 << "Max height" << h
+                 << "Max width" << w;
+
+        const int s = std::min(w, h);
+        if (s > side)
+        {
+            qDebug() << "    -- New block size" << s;
+            side = s;
+            _columns = columns;
+            _rows = rows;
+        }
+    }
+
+    qDebug() << "RxC" << _rows << _columns
+             << "Side" << side << "<<<";
+
     int column = 0;
+    int row = 0;
     for (auto word: items)
     {
         Block* label = new Block(word);
+        label->setMinimumSize(side, side);
 
-        _layout->addWidget(label, 0, column++);
+        _layout->addWidget(label, row, column);
+
+        if (++column >= _columns)
+        {
+            column = 0;
+            ++row;
+        }
     }
 }
 
@@ -80,8 +127,8 @@ QVector<QString> Desk::items() const
 void Desk::addLayout()
 {
     _layout->setSizeConstraint(QLayout::SetMinimumSize);
-    _layout->setMargin(15);
-    _layout->setSpacing(15);
+    _layout->setMargin(_spacing);
+    _layout->setSpacing(_spacing);
 }
 
 void Desk::mousePressEvent(QMouseEvent *event)
@@ -129,7 +176,9 @@ void Desk::dragMoveEvent(QDragMoveEvent *event)
 
 void Desk::dropEvent(QDropEvent *event)
 {
-    Block* label = new Block(event->mimeData()->text());
-    _layout->addWidget(label, 0, _layout->count());
+    auto i = items();
+    i.append(event->mimeData()->text());
+    setItems(i);
+
     event->acceptProposedAction();
 }
