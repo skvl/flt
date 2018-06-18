@@ -76,12 +76,14 @@ int ExerciseData::count() const
 
 QString ExerciseData::audio() const
 {
+    Q_ASSERT(_data.count() > 0);
     Q_ASSERT(_iterator < _data.end());
     return (*_iterator).audio;
 }
 
 QVector<QString> ExerciseData::graphemes() const
 {
+    Q_ASSERT(_data.count() > 0);
     Q_ASSERT(_iterator < _data.end());
 
     QVector<QString> initial = (*_iterator).graphemes;
@@ -99,6 +101,7 @@ QVector<QString> ExerciseData::graphemes() const
 
 QString ExerciseData::translation(QString language) const
 {
+    Q_ASSERT(_data.count() > 0);
     Q_ASSERT(_iterator < _data.end());
 
     QMap<QString, QString> translations = (*_iterator).translations;
@@ -116,6 +119,7 @@ void ExerciseData::addAnswer(QVector<QString> answer)
 
 QString ExerciseData::correctSentence() const
 {
+    Q_ASSERT(_data.count() > 0);
     Q_ASSERT(_iterator < _data.end());
 
     QString result = QString();
@@ -127,6 +131,7 @@ QString ExerciseData::correctSentence() const
 
 QString ExerciseData::userAnswer() const
 {
+    Q_ASSERT(_data.count() > 0);
     Q_ASSERT(_iterator < _data.end());
 
     QString result = QString();
@@ -138,6 +143,7 @@ QString ExerciseData::userAnswer() const
 
 bool ExerciseData::compare() const
 {
+    Q_ASSERT(_data.count() > 0);
     Q_ASSERT(_iterator < _data.end());
     return _answers[_iterator - _data.begin()].graphemes ==
             (*_iterator).graphemes;
