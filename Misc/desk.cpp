@@ -16,11 +16,9 @@
 const int Desk::_spacing = 10;
 
 Desk::Desk(QWidget *parent)
-    : QFrame(parent)
+    : QTableWidget(1, 1, parent)
     , _layout(new QGridLayout(this))
 {
-    addLayout();
-
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setAcceptDrops(true);
 }
@@ -117,22 +115,6 @@ QVector<QString> Desk::items() const
 void Desk::resizeSlot()
 {
     setItems(items());
-}
-
-/*
- * TODO Создать собственный Layout
- *
- * Собственный Layout мог бы отслеживать изменения размеров родительского
- * QWidget и рассчитывать количество столбцов, строк, размеры пустых областей.
- *
- * Источники:
- * - Flow Layout Example
- */
-void Desk::addLayout()
-{
-    _layout->setSizeConstraint(QLayout::SetMinimumSize);
-    _layout->setMargin(_spacing);
-    _layout->setSpacing(_spacing);
 }
 
 void Desk::mousePressEvent(QMouseEvent *event)

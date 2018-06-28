@@ -3,10 +3,10 @@
 
 #include "block.h"
 
-#include <QFrame>
+#include <QTableWidget>
 #include <QGridLayout>
 
-class Desk : public QFrame
+class Desk : public QTableWidget
 {
     Q_OBJECT
 public:
@@ -32,7 +32,6 @@ private:
 
 private:
     static const int _spacing;
-    QGridLayout* _layout;
 
     struct Drag
     {
