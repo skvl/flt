@@ -12,7 +12,9 @@ public:
     using CheckResult = QMap<QVector<QString>, QPair<QVector<QString>, bool>>;
 
 public:
-    ExerciseData();
+    ExerciseData(QString path);
+
+    QString text() const;
 
     void setUserName(QString surname, QString name);
     QString userName() const;
@@ -55,6 +57,7 @@ private:
         QVector<QString> graphemes;
     };
 
+    QString _text;
     QString _name;
     QVector<Answer> _answers;
 };

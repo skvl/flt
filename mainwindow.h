@@ -14,13 +14,16 @@ public:
     ~MainWindow();
 
 private:
-    void prepareToolBar();
+    void loadData();
     QWidget *userNameForm();
+    QWidget *selectLevel();
 
 private:
     QToolBar* _panel;
 
-    ExerciseData _data;
+    QVector<ExerciseData *> _data;
+    QString _userName;
+    QString _userSurname;
 };
 
 #endif // MAINWINDOW_H

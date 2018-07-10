@@ -11,14 +11,24 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , _panel(new QToolBar)
-    , _data(ExerciseData())
+    , _data(QVector<ExerciseData *>())
 {
+    loadData();
     setCentralWidget(userNameForm());
 }
 
 MainWindow::~MainWindow()
 {
 
+}
+
+void MainWindow::loadData()
+{
+    QDir dir("data");
+
+    for (auto e: dir.entryInfoList())
+        if (e.isDir() && !e.baseName().isEmpty())
+            _data.append(new ExerciseData(e.filePath()));
 }
 
 QWidget *MainWindow::userNameForm()
@@ -37,12 +47,10 @@ QWidget *MainWindow::userNameForm()
         if (surname->text().isEmpty() || name->text().isEmpty())
             return;
 
-        _data.setUserName(surname->text(), name->text());
+        _userName = name->text();
+        _userSurname = surname->text();
 
-        auto title = QString(tr("Экзамен сдаёт ")) + _data.userName();
-        setWindowTitle(title);
-
-        setCentralWidget(new DragWords(_data, this));
+        setCentralWidget(selectLevel());
     });
 
     auto l = new QVBoxLayout;
@@ -66,6 +74,37 @@ QWidget *MainWindow::userNameForm()
     auto w = new QWidget(this);
     w->setObjectName("UserNameForm");
     w->setLayout(ml);
+
+    return w;
+}
+
+QWidget *MainWindow::selectLevel()
+{
+    auto l = new QVBoxLayout;
+    l->setMargin(25);
+    l->setSpacing(25);
+    l->setSizeConstraint(QLayout::SetMinimumSize);
+
+    for (auto d: _data)
+    {
+        auto b = new QPushButton(d->text());
+        b->setMinimumSize(128, 128);
+        l->addWidget(b, 0, Qt::AlignCenter);
+
+        connect(b, &QPushButton::clicked, [=]()
+        {
+            d->setUserName(_userSurname, _userName);
+
+            auto title = QString(tr("Экзамен сдаёт ")) + d->userName();
+            setWindowTitle(title);
+
+            setCentralWidget(new DragWords(d, this));
+        });
+    }
+
+    auto w = new QWidget(this);
+    w->setLayout(l);
+    w->setObjectName("SelectLevel");
 
     return w;
 }

@@ -17,7 +17,7 @@ public:
     static const QString icon;
 
 protected:
-    explicit Exercise(ExerciseData& data, QWidget *parent = nullptr)
+    explicit Exercise(ExerciseData* data, QWidget *parent = nullptr)
         : QWidget(parent)
         , _data(data)
         , _pages(new QStackedLayout(this))
@@ -34,7 +34,7 @@ protected:
     }
 
 protected:
-    ExerciseData& _data;
+    ExerciseData* _data;
     QStackedLayout* _pages;
     QWidget* _exercise;
     QWidget* _results;

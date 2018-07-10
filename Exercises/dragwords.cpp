@@ -13,7 +13,7 @@ const QString DragWords::toolTip = "Drop words to make sentence";
 const QString DragWords::whatsThis = "";
 const QString DragWords::icon = ":/icons/Resources/Icons/simple_drag_drop.png";
 
-DragWords::DragWords(ExerciseData &data, QWidget *parent)
+DragWords::DragWords(ExerciseData *data, QWidget *parent)
     : Exercise(data, parent)
     , _commands(new QToolBar(this))
     , _progressBar(new QLCDNumber(4, this))
@@ -40,18 +40,18 @@ void DragWords::timerEvent(QTimerEvent *event)
 
 void DragWords::done()
 {
-    _data.addAnswer(_sentence->items());
+    _data->addAnswer(_sentence->items());
     skip();
 }
 
 void DragWords::play()
 {
-    if (_data.audio().isEmpty())
+    if (_data->audio().isEmpty())
     {
         QString message =
                 QString("This sentence does not have associatedd audio.\n\n") +
                 QString("You should compose this one:\n") +
-                _data.translation("RU");
+                _data->translation("RU");
 
         auto dialog =
                 new QMessageBox(QMessageBox::Warning,
@@ -62,7 +62,7 @@ void DragWords::play()
     }
     else
     {
-        QSound::play(_data.audio());
+        QSound::play(_data->audio());
     }
 }
 
@@ -82,7 +82,7 @@ void DragWords::restart()
 
 void DragWords::show()
 {
-    _translation->setText(_data.translation("RU"));
+    _translation->setText(_data->translation("RU"));
     startTimer(2000);
 }
 
@@ -91,8 +91,8 @@ void DragWords::skip()
     _translation->clear();
     _sentence->clear();
     _words->clear();
-    _data.next();
-    if ( _data.end() )
+    _data->next();
+    if ( _data->end() )
         showResults();
     else
         load();
@@ -258,7 +258,7 @@ void DragWords::start()
     _translation->clear();
     _sentence->clear();
     _words->clear();
-    _data.flush();
+    _data->flush();
     load();
 }
 
@@ -266,31 +266,31 @@ void DragWords::showResults()
 {
     auto resultTime = _startAt.toString("hh:mm:ss");
 
-    _data.startCheck();
+    _data->startCheck();
 
-    auto score = QString::number(int(_data.score() * 5));
+    auto score = QString::number(int(_data->score() * 5));
     score += QString(" (Правильно ") +
-            QString::number(_data.correctAnswers()) +
+            QString::number(_data->correctAnswers()) +
             QString(" из ") +
-            QString::number(_data.count()) +
+            QString::number(_data->count()) +
             QString(")");
     _score->setText(score);
 
     QString results = "<html><body>";
-    results += QString("<p>Экзаменуемый: ") + _data.userName() + QString("</p>");
+    results += QString("<p>Экзаменуемый: ") + _data->userName() + QString("</p>");
     results += QString("<p>Время экзамена: ") + resultTime + QString("</p>\n\n");
     results += QString("<p>Оценка: ") + score + QString("</p>\n\n");
 
-    for (auto i = 1; !_data.end(); ++i, _data.next())
+    for (auto i = 1; !_data->end(); ++i, _data->next())
     {
         results += QString("<p>") + QString::number(i) + QString(". ");
-        results += QString("Правильный ответ: <font size=\"12\">") + _data.correctSentence() + "</p>";
+        results += QString("Правильный ответ: <font size=\"12\">") + _data->correctSentence() + "</p>";
         results += "<p>Ответ пользователя (";
-        if (_data.compare())
+        if (_data->compare())
             results += QString("правильный): <font color=#859900 size=\"14\">");
         else
             results += QString("неправильный): <font color=#dc322f size=\"14\">");
-        results += _data.userAnswer() + "</font></p>\n\n";
+        results += _data->userAnswer() + "</font></p>\n\n";
     }
     results += "</body></html>";
     _comparisons->setText(results);
@@ -301,6 +301,6 @@ void DragWords::showResults()
 
 void DragWords::load()
 {
-    _progressBar->display(_data.index());
-    _words->setItems(_data.graphemes());
+    _progressBar->display(_data->index());
+    _words->setItems(_data->graphemes());
 }

@@ -23,7 +23,7 @@ public:
     static const QString icon;
 
 public:
-    explicit DragWords(ExerciseData& data, QWidget *parent = nullptr);
+    explicit DragWords(ExerciseData* data, QWidget *parent = nullptr);
 
 protected:
     void timerEvent(QTimerEvent *event);

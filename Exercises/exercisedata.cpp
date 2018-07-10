@@ -4,14 +4,15 @@
 
 #include <QDebug>
 
-ExerciseData::ExerciseData()
+ExerciseData::ExerciseData(QString path)
     : _data(QVector<Sentence>())
     , _iterator(_data.begin())
+    , _text(QDir(path).dirName())
     , _name("")
     , _answers(QVector<Answer>())
 {
     QDomDocument doc;
-    QFile file("HSK/HSK-I/sentences.xml");
+    QFile file(path + "/sentences.xml");
 
     if (file.open(QIODevice::ReadOnly))
     {
@@ -30,6 +31,11 @@ ExerciseData::ExerciseData()
         qDebug() << "Failed to open file";
 
     flush();
+}
+
+QString ExerciseData::text() const
+{
+    return _text;
 }
 
 void ExerciseData::setUserName(QString surname, QString name)
