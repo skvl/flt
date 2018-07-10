@@ -14,7 +14,7 @@ public:
 public:
     ExerciseData();
 
-    void setUserName(QString name);
+    void setUserName(QString surname, QString name);
     QString userName() const;
 
     void flush();

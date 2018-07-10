@@ -45,8 +45,6 @@ void Desk::setItems(QVector<QString> items)
 {
     clear();
 
-    qDebug() << ">>>" << size() << items.size();
-
     int _columns = items.size();
     int _rows = 1;
 
@@ -64,22 +62,15 @@ void Desk::setItems(QVector<QString> items)
 
         const int hSpaces = (columns - 1) * _spacing;
         const int w = std::max((width() - margins - hSpaces) / columns, minSide);
-        qDebug() << "  - [" << rows << columns << "]"
-                 << "Max height" << h
-                 << "Max width" << w;
 
         const int s = std::min(w, h);
         if (s > side)
         {
-            qDebug() << "    -- New block size" << s;
             side = s;
             _columns = columns;
             _rows = rows;
         }
     }
-
-    qDebug() << "RxC" << _rows << _columns
-             << "Side" << side << "<<<";
 
     int column = 0;
     int row = 0;
@@ -174,7 +165,7 @@ void Desk::dragLeaveEvent()
 {
 }
 
-void Desk::dragMoveEvent(QDragMoveEvent *event)
+void Desk::dragMoveEvent(QDragMoveEvent *)
 {
 }
 

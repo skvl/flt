@@ -3,7 +3,9 @@
 #include <QBoxLayout>
 #include <QGridLayout>
 #include <QLabel>
+#include <QMessageBox>
 #include <QIcon>
+#include <QSound>
 #include <QSplitter>
 
 const QString DragWords::text = "Drag words";
@@ -15,10 +17,10 @@ DragWords::DragWords(ExerciseData &data, QWidget *parent)
     : Exercise(data, parent)
     , _commands(new QToolBar(this))
     , _progressBar(new QLCDNumber(4, this))
-    , _comparisons(new QTextEdit(this))
     , _translation(new QLabel(this))
     , _sentence(new Desk(this))
     , _words(new Desk(this))
+    , _comparisons(new QTextEdit(this))
     , _startAt(QTime(0, 0, 0, 0))
     , _timer(new QTimer(this))
     , _stopwatch(new QLCDNumber(8, this))
@@ -30,10 +32,58 @@ DragWords::DragWords(ExerciseData &data, QWidget *parent)
     _timer->start(1000);
 }
 
+void DragWords::timerEvent(QTimerEvent *event)
+{
+    _translation->setText("");
+    killTimer(event->timerId());
+}
+
 void DragWords::done()
 {
     _data.addAnswer(_sentence->items());
     skip();
+}
+
+void DragWords::play()
+{
+    if (_data.audio().isEmpty())
+    {
+        QString message =
+                QString("This sentence does not have associatedd audio.\n\n") +
+                QString("You should compose this one:\n") +
+                _data.translation("RU");
+
+        auto dialog =
+                new QMessageBox(QMessageBox::Warning,
+                                "Exercise interruption",
+                                message,
+                                QMessageBox::Ok);
+        dialog->exec();
+    }
+    else
+    {
+        QSound::play(_data.audio());
+    }
+}
+
+void DragWords::restart()
+{
+    auto dialog =
+            new QMessageBox(QMessageBox::Warning,
+                            tr("Прерывание упражнения"),
+                            tr("Вы прерываете выполнение упражнения."
+                            "Все данные будут потеряны.\n\n"
+                            "Вы согласны?"),
+                            QMessageBox::Yes | QMessageBox::No);
+
+    if (QMessageBox::Yes == dialog->exec())
+        flush();
+}
+
+void DragWords::show()
+{
+    _translation->setText(_data.translation("RU"));
+    startTimer(2000);
 }
 
 void DragWords::skip()
@@ -45,7 +95,7 @@ void DragWords::skip()
     if ( _data.end() )
         showResults();
     else
-        showSentence();
+        load();
 }
 
 void DragWords::timer()
@@ -55,6 +105,12 @@ void DragWords::timer()
     if ((_startAt.second() % 2) == 0)
         current.replace(':', ' ');
     _stopwatch->display(current);
+}
+
+void DragWords::flush()
+{
+    _startAt = QTime(0, 0, 0, 0);
+    start();
 }
 
 void DragWords::prepareResults()
@@ -140,6 +196,26 @@ void DragWords::prepareToolBar()
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     _commands->addWidget(spacer);
 
+    QAction* showAction = new QAction(QIcon(":/icons/Resources/Icons/show.png"),
+                                            "Play", this);
+    showAction->setToolTip("Play it");
+    connect(showAction, &QAction::triggered, this, &DragWords::show);
+    _commands->addAction(showAction);
+
+    separator = new QWidget(this);
+    separator->setMinimumSize(64, 64);
+    _commands->addWidget(separator);
+
+    QAction* playAction = new QAction(QIcon(":/icons/Resources/Icons/play.png"),
+                                            "Play", this);
+    playAction->setToolTip("Play it");
+    connect(playAction, &QAction::triggered, this, &DragWords::play);
+    _commands->addAction(playAction);
+
+    separator = new QWidget(this);
+    separator->setMinimumSize(64, 64);
+    _commands->addWidget(separator);
+
     QAction* doneAction = new QAction(QIcon(":/icons/Resources/Icons/done.png"),
                                             "Done", this);
     doneAction->setToolTip("Check it");
@@ -155,19 +231,35 @@ void DragWords::prepareToolBar()
     skipAction->setToolTip("Skip to next");
     connect(skipAction, &QAction::triggered, this, &DragWords::skip);
     _commands->addAction(skipAction);
+
+    separator = new QWidget(this);
+    separator->setMinimumSize(64, 64);
+    _commands->addWidget(separator);
+
+    QAction* finishAction = new QAction(QIcon(":/icons/Resources/Icons/finish.png"),
+                                            "Finish", this);
+    finishAction->setToolTip("Finish");
+    connect(finishAction, &QAction::triggered, this, &DragWords::showResults);
+    _commands->addAction(finishAction);
+
+    separator = new QWidget(this);
+    separator->setMinimumSize(64, 64);
+    _commands->addWidget(separator);
+
+    QAction* restartAction = new QAction(QIcon(":/icons/Resources/Icons/restart.png"),
+                                            "Restart", this);
+    restartAction->setToolTip("Restart");
+    connect(restartAction, &QAction::triggered, this, &DragWords::restart);
+    _commands->addAction(restartAction);
 }
 
 void DragWords::start()
 {
+    _translation->clear();
+    _sentence->clear();
+    _words->clear();
     _data.flush();
-    showSentence();
-}
-
-void DragWords::showSentence()
-{
-    _progressBar->display(_data.index());
-    _translation->setText(_data.translation("RU"));
-    _words->setItems(_data.graphemes());
+    load();
 }
 
 void DragWords::showResults()
@@ -205,4 +297,10 @@ void DragWords::showResults()
     _comparisons->setStyleSheet("font-size:15pt;");
 
     _pages->setCurrentWidget(_results);
+}
+
+void DragWords::load()
+{
+    _progressBar->display(_data.index());
+    _words->setItems(_data.graphemes());
 }

@@ -1,19 +1,19 @@
 #include "mainwindow.h"
 #include "Exercises/dragwords.h"
-#include "Exercises/listenwords.h"
 
+#include <QFrame>
 #include <QInputDialog>
-#include <QMessageBox>
+#include <QLineEdit>
+#include <QPushButton>
 #include <QToolBar>
-
-#include <QDebug>
+#include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , _panel(new QToolBar)
     , _data(ExerciseData())
 {
-    prepareToolBar();
+    setCentralWidget(userNameForm());
 }
 
 MainWindow::~MainWindow()
@@ -21,63 +21,51 @@ MainWindow::~MainWindow()
 
 }
 
-void MainWindow::run(Exercise *e)
+QWidget *MainWindow::userNameForm()
 {
-    auto current = centralWidget();
+    auto nameL = new QLabel(tr("Enter Your Name"));
+    nameL->setObjectName("UserNameFormText");
+    auto name = new QLineEdit("");
+    auto surnameL = new QLabel(tr("Enter Your Surname"));
+    surnameL->setObjectName("UserNameFormText");
+    auto surname = new QLineEdit("");
+    auto confirm = new QPushButton(tr("Continue"));
 
-    bool inputSuccess = false;
-    while (!inputSuccess)
+    connect(confirm, &QPushButton::clicked,
+            [=]()
     {
-        auto userName = QInputDialog::getText(nullptr,
-                                              "Введите Ваше имя", "ФИО",
-                                              QLineEdit::Normal, "",
-                                              &inputSuccess);
-        _data.setUserName(userName);
-    }
+        if (surname->text().isEmpty() || name->text().isEmpty())
+            return;
 
-    auto title = QString("Экзамен сдаёт ") + _data.userName();
-    setWindowTitle(title);
+        _data.setUserName(surname->text(), name->text());
 
-    if (current)
-    {
-        auto dialog =
-                new QMessageBox(QMessageBox::Warning,
-                                "Прерывание упражнения",
-                                "Вы прерываете выполнение упражнения."
-                                "Все данные будут потеряны.\n\n"
-                                "Вы согласны?",
-                                QMessageBox::Yes | QMessageBox::No);
+        auto title = QString(tr("Экзамен сдаёт ")) + _data.userName();
+        setWindowTitle(title);
 
-        if (QMessageBox::Yes == dialog->exec())
-        {
-            delete current;
-            setCentralWidget(e);
-        }
-    }
-    else
-        setCentralWidget(e);
-}
+        setCentralWidget(new DragWords(_data, this));
+    });
 
-// TODO Добавить перечисление классов упражнений
-void MainWindow::prepareToolBar()
-{
-    addToolBar(Qt::LeftToolBarArea, _panel);
-    _panel->setIconSize(QSize(64, 64));
+    auto l = new QVBoxLayout;
+    l->setSizeConstraint(QLayout::SetMinimumSize);
+    l->setMargin(15);
+    l->setSpacing(15);
 
-    QAction* dragWords = new QAction(QIcon(DragWords::icon), DragWords::text,
-                                     this);
-    dragWords->setToolTip(DragWords::toolTip);
-    dragWords->setWhatsThis(DragWords::whatsThis);
-    connect(dragWords, &QAction::triggered,
-            [=](){run(new DragWords(_data, this));});
-    _panel->addAction(dragWords);
+    l->addWidget(surnameL, 0, Qt::AlignCenter);
+    l->addWidget(surname, 0, Qt::AlignCenter);
+    l->addWidget(nameL, 0, Qt::AlignCenter);
+    l->addWidget(name, 0, Qt::AlignCenter);
+    l->addWidget(confirm, 0, Qt::AlignCenter);
 
-    QAction* listenWords = new QAction(QIcon(ListenWords::icon),
-                                       ListenWords::text,
-                                       this);
-    listenWords->setToolTip(ListenWords::toolTip);
-    listenWords->setWhatsThis(ListenWords::whatsThis);
-    connect(listenWords, &QAction::triggered,
-            [=](){run(new ListenWords(_data, this));});
-    _panel->addAction(listenWords);
+    auto f = new QFrame;
+    f->setObjectName("UserNameFormFrame");
+    f->setLayout(l);
+
+    auto ml = new QVBoxLayout;
+    ml->addWidget(f, 0, Qt::AlignCenter);
+
+    auto w = new QWidget(this);
+    w->setObjectName("UserNameForm");
+    w->setLayout(ml);
+
+    return w;
 }

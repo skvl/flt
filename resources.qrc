@@ -5,6 +5,9 @@
         <file>Resources/Icons/fail.png</file>
         <file>Resources/Icons/play.png</file>
         <file>Resources/Icons/simple_listen.png</file>
+        <file>Resources/Icons/show.png</file>
+        <file>Resources/Icons/restart.png</file>
+        <file>Resources/Icons/finish.png</file>
     </qresource>
     <qresource prefix="/exercies">
         <file>Resources/HSK/HSK-I/sentences.xml</file>

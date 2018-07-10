@@ -13,11 +13,9 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-public slots:
-    void run(Exercise *e);
-
 private:
     void prepareToolBar();
+    QWidget *userNameForm();
 
 private:
     QToolBar* _panel;

@@ -45,3 +45,21 @@ border-style:solid;
 color:white;
 font-size:30pt;
 }
+
+QWidget#UserNameForm
+{
+background-color: #002b36;
+}
+
+QFrame#UserNameFormFrame
+{
+border-width:1px;
+border-color :#eee8d5;
+border-radius:10px;
+border-style:solid;
+}
+
+QLabel#UserNameFormText
+{
+color: #93a1a1;
+}

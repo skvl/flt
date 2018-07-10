@@ -32,9 +32,9 @@ ExerciseData::ExerciseData()
     flush();
 }
 
-void ExerciseData::setUserName(QString name)
+void ExerciseData::setUserName(QString surname, QString name)
 {
-    _name = name;
+    _name = surname + " " + name;
 }
 
 QString ExerciseData::userName() const

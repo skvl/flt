@@ -29,8 +29,7 @@ SOURCES += \
     Exercises/dragwords.cpp \
     Exercises/exercisedata.cpp \
     Misc/desk.cpp \
-    Misc/block.cpp \
-    Exercises/listenwords.cpp
+    Misc/block.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -38,8 +37,7 @@ HEADERS += \
     Exercises/exercise.h \
     Exercises/exercisedata.h \
     Misc/desk.h \
-    Misc/block.h \
-    Exercises/listenwords.h
+    Misc/block.h
 
 RESOURCES += \
     resources.qrc

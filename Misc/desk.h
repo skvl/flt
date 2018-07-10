@@ -27,7 +27,7 @@ private:
     void mouseMoveEvent(QMouseEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);
     void dragLeaveEvent();
-    void dragMoveEvent(QDragMoveEvent *event);
+    void dragMoveEvent(QDragMoveEvent *);
     void dropEvent(QDropEvent *event);
 
 private:

@@ -25,17 +25,24 @@ public:
 public:
     explicit DragWords(ExerciseData& data, QWidget *parent = nullptr);
 
+protected:
+    void timerEvent(QTimerEvent *event);
+
 private slots:
     void done();
+    void play();
+    void restart();
+    void show();
     void skip();
     void timer();
 
 private:
+    void flush();
+    void load();
     void prepareResults();
     void prepareExercise();
     void prepareToolBar();
     void start();
-    void showSentence();
     void showResults();
 
 private:
