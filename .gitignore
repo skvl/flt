@@ -3,3 +3,6 @@ ForeignLanguageTrainer_2.pro.user
 
 # Ignore submodules which must contain exercises data
 .gitmodules
+
+# Generated files
+*~
