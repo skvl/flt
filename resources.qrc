@@ -9,9 +9,6 @@
         <file>Resources/Icons/restart.png</file>
         <file>Resources/Icons/finish.png</file>
     </qresource>
-    <qresource prefix="/exercies">
-        <file>Resources/HSK/HSK-I/sentences.xml</file>
-    </qresource>
     <qresource prefix="/styles">
         <file>Resources/Styles/solarized-dark.qss</file>
     </qresource>
