@@ -46,7 +46,6 @@ void Desk::setItems(QVector<QString> items)
     clear();
 
     int _columns = items.size();
-    int _rows = 1;
 
     // TODO Добавить статическую функцию `Block::minimalSize`
     const int minSide = 64;
@@ -68,7 +67,6 @@ void Desk::setItems(QVector<QString> items)
         {
             side = s;
             _columns = columns;
-            _rows = rows;
         }
     }
 
