@@ -6,3 +6,6 @@ ForeignLanguageTrainer_2.pro.user
 
 # Generated files
 *~
+
+# Android resources
+android/assets/data
