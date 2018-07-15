@@ -24,7 +24,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::loadData()
 {
-    QDir dir("data");
+    QDir dir("assets:/data");
 
     for (auto e: dir.entryInfoList())
         if (e.isDir() && !e.baseName().isEmpty())
