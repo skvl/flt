@@ -67,7 +67,6 @@ void Desk::setItems(QVector<QString> items)
         {
             side = s;
             _columns = columns;
-            _rows = rows;
         }
     }
 
