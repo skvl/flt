@@ -21,10 +21,26 @@
 
 import QtQuick 2.0
 import QtQuick.Window 2.0
+import QtQuick.Controls 1.4
+import QtQuick.Layouts 1.3
 
 Window {
     visible: true
-    width: 640
-    height: 480
+    width: 300
+    height: 300
     title: qsTr("Hello World")
+
+    ColumnLayout {
+        anchors.fill: parent
+
+        spacing: 5
+
+        Board {
+            Layout.alignment: Qt.AlignBottom
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+
+            dataModel: sentence
+        }
+    }
 }
