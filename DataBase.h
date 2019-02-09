@@ -33,8 +33,13 @@ public:
 
     // Open DataBase.
     void open();
+    // Get next sentece
+    Sentence* next();
+    // Re-order sentences and start from begin
+    void flush();
 
 private:
+    bool m_opened;
     QFile* m_file;
 
     QVector<Sentence*> m_data;

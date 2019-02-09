@@ -18,18 +18,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <algorithm>
+#include <random>
+
 #include <QXmlStreamReader>
 
 #include "DataBase.h"
 
 DataBase::DataBase(QString path)
-    : m_file(new QFile(path))
+    : m_opened(false)
+    , m_file(new QFile(path))
 {
 }
 
 DataBase::~DataBase()
 {
-
+    for (auto s: m_data)
+        delete s;
 }
 
 void DataBase::open()
@@ -100,4 +105,27 @@ void DataBase::open()
             } // sentence parser
         }
     }
+
+    m_opened = true;
+
+    flush();
+}
+
+Sentence* DataBase::next()
+{
+    if (m_opened && m_iterator < m_data.end())
+        return *m_iterator;
+
+    return nullptr;
+}
+
+void DataBase::flush()
+{
+    if (!m_opened)
+        return;
+
+    auto rng = std::default_random_engine {};
+    std::shuffle(m_data.begin(), m_data.end(), rng);
+
+    m_iterator = m_data.begin();
 }
