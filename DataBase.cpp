@@ -25,9 +25,11 @@
 
 #include "DataBase.h"
 
-DataBase::DataBase(QString path)
-    : m_opened(false)
+DataBase::DataBase(QString path, QObject *parent)
+    : QObject (parent)
+    , m_opened(false)
     , m_file(new QFile(path))
+    , m_path(path)
 {
 }
 
@@ -124,12 +126,12 @@ void DataBase::open()
     flush();
 }
 
-Sentence* DataBase::next()
+QVariant DataBase::next()
 {
     if (m_opened && m_iterator < m_data.end())
-        return *m_iterator;
+        return QVariant::fromValue(*m_iterator);
 
-    return nullptr;
+    return QVariant();
 }
 
 void DataBase::flush()

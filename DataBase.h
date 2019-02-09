@@ -22,25 +22,29 @@
 #define DATABASE_H
 
 #include <QFile>
+#include <QObject>
 
 #include "Sentence.h"
 
-class DataBase
+class DataBase : public QObject
 {
+    Q_OBJECT
+
 public:
-    DataBase(QString path);
+    DataBase(QString path = QString(), QObject *parent = nullptr);
     ~DataBase();
 
     // Open DataBase.
     void open();
     // Get next sentece
-    Sentence* next();
+    Q_INVOKABLE QVariant next();
     // Re-order sentences and start from begin
-    void flush();
+    Q_INVOKABLE void flush();
 
 private:
     bool m_opened;
     QFile* m_file;
+    QString m_path;
 
     QVector<Sentence*> m_data;
     QVector<Sentence*>::iterator m_iterator;

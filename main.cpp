@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     db.open();
 
     QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty("sentence", db.next());
+    engine.rootContext()->setContextProperty("dataBase", &db);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;

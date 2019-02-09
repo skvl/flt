@@ -40,7 +40,7 @@ Window {
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            dataModel: sentence
+            dataModel: dataBase.next()
         }
     }
 }
