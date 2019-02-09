@@ -35,7 +35,15 @@ Window {
 
         spacing: 5
 
+        Button {
+            text: "Next"
+
+            onClicked: board.dataModel = dataBase.next()
+        }
+
         Board {
+            id: board
+
             Layout.alignment: Qt.AlignBottom
             Layout.fillHeight: true
             Layout.fillWidth: true

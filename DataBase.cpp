@@ -128,10 +128,15 @@ void DataBase::open()
 
 QVariant DataBase::next()
 {
-    if (m_opened && m_iterator < m_data.end())
-        return QVariant::fromValue(*m_iterator);
+    QVariant v;
 
-    return QVariant();
+    if (m_opened && m_iterator < m_data.end())
+    {
+        v = QVariant::fromValue(*m_iterator);
+        m_iterator++;
+    }
+
+    return v;
 }
 
 void DataBase::flush()
