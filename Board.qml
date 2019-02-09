@@ -70,7 +70,7 @@ GridView {
                 width: root.cellWidth - 8
                 radius: width / 10
 
-                color: model.color
+                color: model.background
                 Text {
                     anchors.fill: parent
 
@@ -83,7 +83,7 @@ GridView {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
 
-                    color: "white"
+                    color: model.foreground
                 }
 
                 Drag.active: delegateRoot.drag.active

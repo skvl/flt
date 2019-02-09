@@ -18,35 +18,49 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <algorithm>
+#include <random>
+
 #include "Sentence.h"
 
-Sentence::Sentence(QObject *parent) : QAbstractListModel(parent)
+Sentence::Sentence(QString audio,
+                   QVector<Word> sentence,
+                   Translations translations,
+                   QObject *parent)
+    : QAbstractListModel(parent)
+    , m_audio(audio)
+    , m_sentence(sentence)
+    , m_translations(translations)
 {
+    auto rng = std::default_random_engine {};
+    std::shuffle(m_sentence.begin(), m_sentence.end(), rng);
 }
 
 int Sentence::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return m_words.count();
+    return m_sentence.count();
 }
 
 QVariant Sentence::data(const QModelIndex &index, int role) const
 {
-    if (index.row() < 0 || index.row() >= m_words.count())
+    if (index.row() < 0 || index.row() >= m_sentence.count())
         return QVariant();
 
-    const Word &block = m_words[index.row()];
+    const Word &w = m_sentence[index.row()];
     if (DataRole == role)
-        return block.data();
-    else if (ColorRole == role)
-        return block.color();
+        return w.data();
+    else if (BackgroundRole == role)
+        return w.background();
+    else if (ForegroundRole == role)
+        return w.foreground();
 
     return QVariant();
 }
 
 void Sentence::move(int from, int to)
 {
-    if (from == to || from < 0 || from >= m_words.count() || to < 0 || to >= m_words.count())
+    if (from == to || from < 0 || from >= m_sentence.count() || to < 0 || to >= m_sentence.count())
         return;
 
     /*
@@ -59,8 +73,8 @@ void Sentence::move(int from, int to)
         ++destinationChild;
 
     beginMoveRows(QModelIndex(), from, from, QModelIndex(), destinationChild);
-    auto b = m_words.takeAt(from);
-    m_words.insert(to, b);
+    auto b = m_sentence.takeAt(from);
+    m_sentence.insert(to, b);
     endMoveRows();
 }
 
@@ -68,6 +82,7 @@ QHash<int, QByteArray> Sentence::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[DataRole] = "data";
-    roles[ColorRole] = "color";
+    roles[BackgroundRole] = "background";
+    roles[ForegroundRole] = "foreground";
     return roles;
 }

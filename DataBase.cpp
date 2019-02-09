@@ -18,67 +18,86 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QXmlStreamReader>
+
 #include "DataBase.h"
 
 DataBase::DataBase(QString path)
-    : m_path(path)
+    : m_file(new QFile(path))
 {
+}
+
+DataBase::~DataBase()
+{
+
 }
 
 void DataBase::open()
 {
-    QDomDocument doc;
-    QFile file(m_path);
-
-    if (file.open(QIODevice::ReadOnly))
+    if (m_file->open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        auto errorMessage = QString("");
-        int errorLine = 0;
-        int errorColumn = 0;
+        QXmlStreamReader xml(m_file);
 
-        if (doc.setContent(&file, &errorMessage, &errorLine, &errorColumn))
+        while (!xml.atEnd() && !xml.hasError())
         {
-            parser(doc.documentElement());
-        }
-        else
-            qDebug() << errorMessage << errorLine << errorColumn;
-    }
-    else
-        qDebug() << "Failed to open file";
-}
+            QXmlStreamReader::TokenType token = xml.readNext();
 
-void DataBase::parser(const QDomNode &node)
-{
-    QDomNode current = node.firstChild();
+            if (token == QXmlStreamReader::StartDocument)
+                continue;
 
-    while ( !current.isNull() )
-    {
-        if ( current.isElement() )
-        {
-            QDomElement e = current.toElement();
+            if (token == QXmlStreamReader::StartElement
+                    && xml.name() == "sentences")
+                continue;
 
-            if ( !e.isNull() )
+            if (token == QXmlStreamReader::StartElement
+                    && xml.name() == "sentence")
             {
-                if (e.tagName() == "audio")
-                    m_data.last().audio = e.text();
-                else if (e.tagName() == "grapheme")
-                    m_data.last().graphemes.push_back(e.text());
-                else if (e.tagName() == "sentence")
-                    m_data.push_back(Sentence());
-                else if (e.tagName() == "translation")
-                {
-                    auto language = e.attribute("language", "");
-                    // TODO Обработать ошибку
-                    if ( !language.isEmpty() )
-                        m_data.last().translations[language] = e.text();
-                    else
-                        qDebug() << "XML parse error: tag" << e.tagName()
-                                 << ", line " << e.lineNumber();
-                }
-            }
-        }
+                int index = 0;
+                QString audio;
+                QVector<Word> sentence;
+                QMap<QString, QString> translations;
 
-        parser(current);
-        current = current.nextSibling();
+                while(!(xml.tokenType() == QXmlStreamReader::EndElement
+                        && xml.name() == "sentence"))
+                {
+                    xml.readNext();
+
+                    if (xml.tokenType() == QXmlStreamReader::StartElement)
+                    {
+                        if (xml.name() == "audio")
+                        {
+                            audio = xml.text().toString();
+                        }
+                        else if (xml.name() == "grapheme")
+                        {
+                            auto bg = QColor();
+                            auto fg = QColor();
+
+                            auto a = xml.attributes();
+                            if (a.hasAttribute("background"))
+                                bg = QColor(a.value("background").toUInt());
+                            if (a.hasAttribute("foreground"))
+                                fg = QColor(a.value("foreground").toUInt());
+
+                            auto w = Word(index++, xml.text().toString(), bg, fg);
+                            sentence.push_back(w);
+                        }
+                        else if (xml.name() == "translation")
+                        {
+                            auto a = xml.attributes();
+                            if (a.hasAttribute("language"))
+                            {
+                                auto l = a.value("language").toString();
+                                translations[l] = xml.text().toString();
+                            }
+                        }
+
+                        xml.readNext();
+                    }
+                }
+
+                m_data.push_back(new Sentence(audio, sentence, translations));
+            } // sentence parser
+        }
     }
 }

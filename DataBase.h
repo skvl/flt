@@ -21,8 +21,7 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
-#include <QMap>
-#include <QtXml>
+#include <QFile>
 
 #include "Sentence.h"
 
@@ -36,12 +35,10 @@ public:
     void open();
 
 private:
-    QString m_path;
+    QFile* m_file;
 
-    QVector<Sentence> m_data;
-    QVector<Sentence>::iterator m_iterator;
-
-    void parser(const QDomNode &node);
+    QVector<Sentence*> m_data;
+    QVector<Sentence*>::iterator m_iterator;
 };
 
 #endif // DATABASE_H

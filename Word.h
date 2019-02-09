@@ -34,14 +34,18 @@
 class Word
 {
 public:
-    Word(QString data = QString(), QColor color = QColor());
+    Word(int index = 0, QString data = QString(), QColor background = QColor(), QColor foreground = QColor());
 
+    int index();
     QString data() const;
-    QColor  color() const;
+    QColor  background() const;
+    QColor foreground() const;
 
 private:
+    int     m_index;
     QString m_data;
-    QColor  m_color;
+    QColor  m_background;
+    QColor  m_foreground;
 };
 
 #endif // WORD_H

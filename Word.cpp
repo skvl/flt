@@ -20,10 +20,17 @@
  */
 #include "Word.h"
 
-Word::Word(QString data, QColor color)
-    : m_data(data)
-    , m_color(color)
+Word::Word(int index, QString data, QColor background, QColor foreground)
+    : m_index(index)
+    , m_data(data)
+    , m_background(background)
+    , m_foreground(foreground)
 {
+}
+
+int Word::index()
+{
+    return m_index;
 }
 
 QString Word::data() const
@@ -31,7 +38,12 @@ QString Word::data() const
     return m_data;
 }
 
-QColor Word::color() const
+QColor Word::background() const
 {
-    return m_color;
+    return m_background;
+}
+
+QColor Word::foreground() const
+{
+    return m_foreground;
 }

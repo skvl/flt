@@ -35,12 +35,18 @@ class Sentence : public QAbstractListModel
     Q_OBJECT
 
 public:
+    using Translations = QMap<QString, QString>;
+
     enum Roles {
         DataRole = Qt::UserRole + 1,
-        ColorRole,
+        BackgroundRole,
+        ForegroundRole,
     };
 
-    explicit Sentence(QObject *parent = nullptr);
+    explicit Sentence(QString audio = QString(),
+                      QVector<Word> sentence = QVector<Word>(),
+                      Translations translations = Translations(),
+                      QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
@@ -50,7 +56,9 @@ protected:
     QHash<int, QByteArray> roleNames() const;
 
 private:
-    QVector<Word> m_words;
+    QString m_audio;
+    QVector<Word> m_sentence;
+    Translations m_translations;
 };
 
 #endif // SENTENCE_H
