@@ -71,12 +71,15 @@ void DataBase::open()
                     {
                         if (xml.name() == "audio")
                         {
+                            xml.readNext();
                             audio = xml.text().toString();
                         }
                         else if (xml.name() == "grapheme")
                         {
-                            auto bg = QColor();
-                            auto fg = QColor();
+                            xml.readNext();
+
+                            auto bg = QColor("blue");
+                            auto fg = QColor("white");
 
                             auto a = xml.attributes();
                             if (a.hasAttribute("background"))
@@ -87,13 +90,23 @@ void DataBase::open()
                             auto w = Word(index++, xml.text().toString(), bg, fg);
                             sentence.push_back(w);
                         }
-                        else if (xml.name() == "translation")
+                        else if (xml.name() == "translations")
                         {
-                            auto a = xml.attributes();
-                            if (a.hasAttribute("language"))
+                            while(!(xml.tokenType() == QXmlStreamReader::EndElement
+                                    && xml.name() == "translation"))
                             {
-                                auto l = a.value("language").toString();
-                                translations[l] = xml.text().toString();
+                                xml.readNext();
+
+                                if (xml.tokenType() == QXmlStreamReader::StartElement)
+                                {
+                                    auto a = xml.attributes();
+                                    if (a.hasAttribute("language"))
+                                    {
+                                        auto l = a.value("language").toString();
+                                        xml.readNext();
+                                        translations[l] = xml.text().toString();
+                                    }
+                                }
                             }
                         }
 
