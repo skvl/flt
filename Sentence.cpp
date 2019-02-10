@@ -32,6 +32,9 @@ Sentence::Sentence(QString audio,
     , m_sentence(sentence)
     , m_translations(translations)
 {
+    for (auto w: m_sentence)
+        m_origin += w.data();
+
     auto rng = std::default_random_engine {};
     std::shuffle(m_sentence.begin(), m_sentence.end(), rng);
 }
@@ -94,6 +97,21 @@ bool Sentence::wrong() const
             prev = w.index();
 
     return false;
+}
+
+QString Sentence::origin() const
+{
+    return m_origin;
+}
+
+QString Sentence::result() const
+{
+    QString v;
+
+    for (auto w: m_sentence)
+        v += w.data();
+
+    return v;
 }
 
 QHash<int, QByteArray> Sentence::roleNames() const

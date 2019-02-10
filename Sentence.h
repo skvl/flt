@@ -35,6 +35,8 @@ class Sentence : public QAbstractListModel
     Q_OBJECT
 
     Q_PROPERTY(QString audio READ audio CONSTANT)
+    Q_PROPERTY(QString origin READ origin CONSTANT)
+    Q_PROPERTY(QString result READ result CONSTANT)
 
 public:
     using Translations = QMap<QString, QString>;
@@ -57,6 +59,8 @@ public:
     QString audio() const;
 
     bool wrong() const;
+    QString origin() const;
+    QString result() const;
 
 protected:
     QHash<int, QByteArray> roleNames() const;
@@ -65,6 +69,7 @@ private:
     QString m_audio;
     QVector<Word> m_sentence;
     Translations m_translations;
+    QString m_origin;
 };
 
 #endif // SENTENCE_H

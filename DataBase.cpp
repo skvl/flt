@@ -171,14 +171,13 @@ int DataBase::wrongCount() const
     return wrong;
 }
 
-QVariant DataBase::nextWrong()
+QVariantList DataBase::allWrong()
 {
-    if (m_wrong > m_data.begin() && m_wrong < m_data.end())
-        ++m_wrong;
+    QVariantList v;
 
-    for (; m_wrong < m_data.end(); ++m_wrong)
-        if ((*m_wrong)->wrong())
-            return QVariant::fromValue(*m_wrong);
+    for (auto s: m_data)
+        if (s->wrong())
+            v.append(QVariant::fromValue(s));
 
-    return QVariant();
+    return v;
 }

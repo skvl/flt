@@ -47,8 +47,8 @@ public:
     Q_INVOKABLE int count() const;
     // Get number of wrong sentences
     Q_INVOKABLE int wrongCount() const;
-    // Get next wrong sentence
-    Q_INVOKABLE QVariant nextWrong();
+    // Get list of wrong sentences
+    Q_INVOKABLE QVariantList allWrong();
 
 private:
     bool m_opened;

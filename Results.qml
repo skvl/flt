@@ -55,8 +55,93 @@ Page {
         }
     }
 
-    Text {
-        id: body
-        text: qsTr("text")
+    ListView {
+        anchors.fill: parent
+        spacing: 10
+
+        model: dataBase.allWrong()
+
+        delegate: Item {
+            height: Math.min(120, width / 2)
+            width: parent.width
+
+            RowLayout {
+                anchors.fill: parent
+
+                Rectangle {
+                    Layout.alignment: Qt.AlignTop
+                    height: 20
+                    width: 20
+                    radius: 2
+                    border {
+                        color: "black"
+                        width: 1
+                    }
+
+                    Text {
+                        text: index
+
+                        fontSizeMode: Text.Fit
+                        minimumPointSize: 8
+                        font.pointSize: 1000
+
+                        anchors.fill: parent
+
+                        horizontalAlignment: Qt.AlignHCenter
+                        verticalAlignment: Qt.AlignVCenter
+                    }
+                }
+
+                Column {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+
+                    Rectangle {
+                        Text {
+                            text: modelData.result
+
+                            fontSizeMode: Text.Fit
+                            minimumPointSize: 8
+                            font.pointSize: 1000
+
+                            anchors.fill: parent
+                        }
+
+                        radius: 2
+                        color: "red"
+                        border {
+                            color: "black"
+                            width: 1
+                        }
+
+                        anchors.left: parent.left
+                        height: parent.height / 2
+                        width: parent.width - 20
+                    }
+
+                    Rectangle {
+                        Text {
+                            text: modelData.origin
+
+                            fontSizeMode: Text.Fit
+                            minimumPointSize: 8
+                            font.pointSize: 1000
+
+                            anchors.fill: parent
+                        }
+
+                        anchors.right: parent.right
+                        height: parent.height / 2
+                        width: parent.width - 20
+                        radius: 2
+                        color: "green"
+                        border {
+                            color: "black"
+                            width: 1
+                        }
+                    }
+                }
+            }
+        }
     }
 }

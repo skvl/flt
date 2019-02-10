@@ -152,7 +152,7 @@ Page {
                 DropArea {
                     anchors { fill: parent; margins: 15 }
 
-                    onEntered: dataModel.move(drag.source.visualIndex, delegateRoot.visualIndex)
+                    onEntered: root.dataModel.move(drag.source.visualIndex, delegateRoot.visualIndex)
                 }
             }
         }
