@@ -36,6 +36,8 @@ public:
 
     // Open DataBase.
     void open();
+    // Get current sentence
+    Q_INVOKABLE QVariant take();
     // Get next sentece
     Q_INVOKABLE QVariant next();
     // Re-order sentences and start from begin

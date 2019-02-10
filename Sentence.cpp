@@ -78,6 +78,11 @@ void Sentence::move(int from, int to)
     endMoveRows();
 }
 
+QString Sentence::audio() const
+{
+    return m_audio;
+}
+
 QHash<int, QByteArray> Sentence::roleNames() const
 {
     QHash<int, QByteArray> roles;

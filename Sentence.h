@@ -34,6 +34,8 @@ class Sentence : public QAbstractListModel
 {
     Q_OBJECT
 
+    Q_PROPERTY(QString audio READ audio CONSTANT)
+
 public:
     using Translations = QMap<QString, QString>;
 
@@ -51,6 +53,8 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     Q_INVOKABLE void move(int from, int to);
+
+    QString audio() const;
 
 protected:
     QHash<int, QByteArray> roleNames() const;

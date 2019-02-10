@@ -30,7 +30,7 @@ Page {
             ToolButton {
                 text: qsTr("♪")
 
-                onClicked: console.log("Play")
+                onClicked: console.log("Play " + dataBase.take().audio)
 
                 Layout.alignment: Qt.AlignVCenter
             }
