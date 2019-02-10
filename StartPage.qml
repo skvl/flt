@@ -21,22 +21,47 @@
 
 import QtQuick 2.0
 import QtQuick.Controls 2.0
-import QtQuick.Controls.Material 2.0
+import QtQuick.Layouts 1.0
 
-ApplicationWindow {
-    visible: true
-    width: 480
-    height: 640
-    title: "Hello " + settings.userName + " " + settings.userSirname
+Page {
+    Board {
+        id: board
 
-    Material.theme: Material.Dark
-    Material.accent: Material.Blue
+        visible: false
+    }
 
-    StackView {
-        id: stack
+    ColumnLayout {
+        Button {
+            text: qsTr("Start")
 
-        initialItem: StartPage {}
+            onClicked: stack.push(board)
+
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredHeight: 60
+            Layout.preferredWidth: 80
+        }
+
+        Button {
+            text: qsTr("History")
+
+            onClicked: console.log("History")
+
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredHeight: 60
+            Layout.preferredWidth: 80
+        }
+
+        Button {
+            text: qsTr("Settings")
+
+            onClicked: console.log("Settings")
+
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredHeight: 60
+            Layout.preferredWidth: 80
+        }
 
         anchors.fill: parent
+        spacing: 5
     }
 }

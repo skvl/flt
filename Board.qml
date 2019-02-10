@@ -20,127 +20,168 @@
  */
 
 import QtQuick 2.0
+import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.0
 import QtQml.Models 2.1
 
-GridView {
-    property var dataModel: ListModel{}
+Page {
+    header: ToolBar {
+        RowLayout {
+            ToolButton {
+                text: qsTr("♪")
 
-    onDataModelChanged: visualModel.model = dataModel
+                onClicked: console.log("Play")
 
-    id: root
+                Layout.alignment: Qt.AlignVCenter
+            }
 
-    height: parent.height - 10
-    width: parent.width - 10
-    x: 5
-    y: 5
+            ToolButton {
+                text: qsTr("⇨")
 
-    cellHeight: getSize()
-    cellWidth: cellHeight
+                onClicked: root.dataModel = dataBase.next()
 
-    displaced: Transition {
-        NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
+                Layout.alignment: Qt.AlignVCenter
+            }
+
+            Stopwatch {
+                horizontalAlignment: Text.AlignHCenter
+
+                Layout.alignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+            }
+
+            ToolButton {
+                text: qsTr("⚑")
+
+                onClicked: console.log("Finish")
+
+                Layout.alignment: Qt.AlignVCenter
+            }
+
+            anchors.fill: parent
+        }
     }
 
-    model: DelegateModel {
-        id: visualModel
+    GridView {
+        property var dataModel: dataBase.next()
 
-        model: parent.dataModel
+        onDataModelChanged: visualModel.model = dataModel
 
-        delegate: MouseArea {
-            property int visualIndex: DelegateModel.itemsIndex
+        id: root
 
-            id: delegateRoot
+        height: parent.height - 10
+        width: parent.width - 10
+        x: 5
+        y: 5
 
-            height: root.cellHeight
-            width: root.cellWidth
+        cellHeight: getSize()
+        cellWidth: cellHeight
 
-            drag.target: block
+        displaced: Transition {
+            NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
+        }
 
-            Rectangle {
-                id: block
+        model: DelegateModel {
+            id: visualModel
 
-                objectName: "Block"
+            model: parent.dataModel
 
-                anchors {
-                    horizontalCenter: parent.horizontalCenter
-                    verticalCenter: parent.verticalCenter
-                }
+            delegate: MouseArea {
+                property int visualIndex: DelegateModel.itemsIndex
 
-                height: root.cellHeight - 8
-                width: root.cellWidth - 8
-                radius: width / 10
+                id: delegateRoot
 
-                color: model.background
-                Text {
-                    anchors.fill: parent
+                height: root.cellHeight
+                width: root.cellWidth
 
-                    fontSizeMode: Text.Fit
-                    minimumPointSize: 8
-                    font.pointSize: 1000
+                drag.target: block
 
-                    text: model.data
+                Rectangle {
+                    id: block
 
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
+                    objectName: "Block"
 
-                    color: model.foreground
-                }
-
-                Drag.active: delegateRoot.drag.active
-                Drag.source: delegateRoot
-                Drag.hotSpot.x: width / 2
-                Drag.hotSpot.y: width / 2
-
-                states: [
-                    State {
-                        when: block.Drag.active
-                        ParentChange {
-                            target: block
-                            parent: root
-                        }
-
-                        AnchorChanges {
-                            target: block;
-                            anchors.horizontalCenter: undefined
-                            anchors.verticalCenter: undefined
-                        }
+                    anchors {
+                        horizontalCenter: parent.horizontalCenter
+                        verticalCenter: parent.verticalCenter
                     }
 
-                ]
-            }
+                    height: root.cellHeight - 8
+                    width: root.cellWidth - 8
+                    radius: width / 10
 
-            DropArea {
-                anchors { fill: parent; margins: 15 }
+                    color: model.background
+                    Text {
+                        anchors.fill: parent
 
-                onEntered: dataModel.move(drag.source.visualIndex, delegateRoot.visualIndex)
+                        fontSizeMode: Text.Fit
+                        minimumPointSize: 8
+                        font.pointSize: 1000
+
+                        text: model.data
+
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+
+                        color: model.foreground
+                    }
+
+                    Drag.active: delegateRoot.drag.active
+                    Drag.source: delegateRoot
+                    Drag.hotSpot.x: width / 2
+                    Drag.hotSpot.y: width / 2
+
+                    states: [
+                        State {
+                            when: block.Drag.active
+                            ParentChange {
+                                target: block
+                                parent: root
+                            }
+
+                            AnchorChanges {
+                                target: block;
+                                anchors.horizontalCenter: undefined
+                                anchors.verticalCenter: undefined
+                            }
+                        }
+
+                    ]
+                }
+
+                DropArea {
+                    anchors { fill: parent; margins: 15 }
+
+                    onEntered: dataModel.move(drag.source.visualIndex, delegateRoot.visualIndex)
+                }
             }
         }
-    }
 
-    function getSize() {
-        var minSize = 25
+        function getSize() {
+            var minSize = 25
 
-        if (model.count <= 0 || height <= 0 || width <= 0)
-            return minSize
+            if (model.count <= 0 || height <= 0 || width <= 0)
+                return minSize
 
-        var size = minSize
-        var p = 0
+            var size = minSize
+            var p = 0
 
-        for (var rows = 1, columns = model.count;
-             rows <= model.count;
-             ++rows, columns = 1 + (model.count - 1) / rows)
-        {
-            var s = Math.min(height / rows, width / columns)
+            for (var rows = 1, columns = model.count;
+                 rows <= model.count;
+                 ++rows, columns = 1 + (model.count - 1) / rows)
+            {
+                var s = Math.min(height / rows, width / columns)
 
-            if (s > size)
-                size = s
+                if (s > size)
+                    size = s
 
-            if (s < p)
-                return size
-            else
-                p = s
+                if (s < p)
+                    return size
+                else
+                    p = s
+            }
+
+            return size
         }
-
-        return size
     }
 }

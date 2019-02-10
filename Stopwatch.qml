@@ -19,35 +19,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
-#include <QQmlContext>
-#include <QQuickStyle>
+import QtQuick 2.0
+import QtQuick.Controls 2.0
 
-#include "DataBase.h"
-#include "Settings.h"
+Label {
+    property double startTime: new Date().getTime()
 
-int main(int argc, char *argv[])
-{
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    text: "00:00:00"
 
-    QGuiApplication app(argc, argv);
+    Timer {
+        interval: 1000; running: true; repeat: true
 
-    Settings st(ORGNAME, APPNAME);
-    st.load();
+        onTriggered: {
+            var t = ((new Date().getTime() - parent.startTime) / 1000) | 0
 
-    DataBase db("data/sentences.xml");
-    db.open();
+            var h = (t / 3600) | 0
+            var m = ((t - h * 3600) / 60) | 0
+            var s = (t - m * 60) | 0
 
-    // Should be defined before engine
-    QQuickStyle::setStyle("Material");
+            if (h < 10)
+                h = "0" + h
+            if (m < 10)
+                m = "0" + m
+            if (s < 10)
+                s = "0" + s
 
-    QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty("dataBase", &db);
-    engine.rootContext()->setContextProperty("settings", &st);
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-    if (engine.rootObjects().isEmpty())
-        return -1;
-
-    return app.exec();
+            parent.text = h + ":" + m + ":" + s
+        }
+    }
 }
