@@ -28,7 +28,7 @@ Window {
     visible: true
     width: 300
     height: 300
-    title: qsTr("Hello World")
+    title: "Hello " + settings.userName + " " + settings.userSirname
 
     ColumnLayout {
         anchors.fill: parent

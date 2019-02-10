@@ -24,6 +24,7 @@
 #include <QQmlContext>
 
 #include "DataBase.h"
+#include "Settings.h"
 
 int main(int argc, char *argv[])
 {
@@ -31,11 +32,15 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
+    Settings st(ORGNAME, APPNAME);
+    st.load();
+
     DataBase db("data/sentences.xml");
     db.open();
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("dataBase", &db);
+    engine.rootContext()->setContextProperty("settings", &st);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
