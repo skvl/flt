@@ -43,6 +43,13 @@ public:
     // Re-order sentences and start from begin
     Q_INVOKABLE void flush();
 
+    // Get total number of sentences
+    Q_INVOKABLE int count() const;
+    // Get number of wrong sentences
+    Q_INVOKABLE int wrongCount() const;
+    // Get next wrong sentence
+    Q_INVOKABLE QVariant nextWrong();
+
 private:
     bool m_opened;
     QFile* m_file;
@@ -50,6 +57,7 @@ private:
 
     QVector<Sentence*> m_data;
     QVector<Sentence*>::iterator m_iterator;
+    QVector<Sentence*>::iterator m_wrong;
 };
 
 #endif // DATABASE_H

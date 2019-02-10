@@ -83,6 +83,19 @@ QString Sentence::audio() const
     return m_audio;
 }
 
+bool Sentence::wrong() const
+{
+    int prev = 0;
+
+    for (auto w: m_sentence)
+        if (w.index() < prev)
+            return true;
+        else
+            prev = w.index();
+
+    return false;
+}
+
 QHash<int, QByteArray> Sentence::roleNames() const
 {
     QHash<int, QByteArray> roles;

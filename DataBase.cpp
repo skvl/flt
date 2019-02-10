@@ -35,8 +35,9 @@ DataBase::DataBase(QString path, QObject *parent)
 
 DataBase::~DataBase()
 {
-    for (auto s: m_data)
-        delete s;
+    // FIX The sentences are deleted somewhere else
+//    for (auto s: m_data)
+//        delete s;
 }
 
 void DataBase::open()
@@ -138,11 +139,8 @@ QVariant DataBase::take()
 
 QVariant DataBase::next()
 {
-    QVariant v = take();
-
     m_iterator++;
-
-    return v;
+    return take();
 }
 
 void DataBase::flush()
@@ -154,4 +152,33 @@ void DataBase::flush()
     std::shuffle(m_data.begin(), m_data.end(), rng);
 
     m_iterator = m_data.begin();
+    m_wrong = m_data.begin();
+}
+
+int DataBase::count() const
+{
+    return m_data.count();
+}
+
+int DataBase::wrongCount() const
+{
+    int wrong = 0;
+
+    for (auto s: m_data)
+        if (s->wrong())
+            ++wrong;
+
+    return wrong;
+}
+
+QVariant DataBase::nextWrong()
+{
+    if (m_wrong > m_data.begin() && m_wrong < m_data.end())
+        ++m_wrong;
+
+    for (; m_wrong < m_data.end(); ++m_wrong)
+        if ((*m_wrong)->wrong())
+            return QVariant::fromValue(*m_wrong);
+
+    return QVariant();
 }

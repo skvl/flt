@@ -24,38 +24,39 @@ import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
 
 Page {
-    ColumnLayout {
-        Button {
-            text: qsTr("Start")
+    header: ToolBar {
+        RowLayout {
+            ToolButton {
+                text: qsTr("<")
 
-            onClicked: stack.push(Qt.resolvedUrl("Board.qml"))
+                onClicked: stack.pop()
 
-            Layout.alignment: Qt.AlignHCenter
-            Layout.preferredHeight: 60
-            Layout.preferredWidth: 80
+                Layout.alignment: Qt.AlignVCenter
+            }
+
+            Item {
+                RowLayout {
+                    Label {
+                        text: dataBase.wrongCount()
+                    }
+
+                    Label {
+                        text: qsTr("/")
+                    }
+
+                    Label {
+                        text: dataBase.count()
+                    }
+                }
+
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+                Layout.fillWidth: true
+            }
         }
+    }
 
-        Button {
-            text: qsTr("History")
-
-            onClicked: console.log("History")
-
-            Layout.alignment: Qt.AlignHCenter
-            Layout.preferredHeight: 60
-            Layout.preferredWidth: 80
-        }
-
-        Button {
-            text: qsTr("Settings")
-
-            onClicked: console.log("Settings")
-
-            Layout.alignment: Qt.AlignHCenter
-            Layout.preferredHeight: 60
-            Layout.preferredWidth: 80
-        }
-
-        anchors.fill: parent
-        spacing: 5
+    Text {
+        id: body
+        text: qsTr("text")
     }
 }

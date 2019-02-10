@@ -53,7 +53,7 @@ Page {
             ToolButton {
                 text: qsTr("⚑")
 
-                onClicked: console.log("Finish")
+                onClicked: stack.replace(Qt.resolvedUrl("Results.qml"))
 
                 Layout.alignment: Qt.AlignVCenter
             }
@@ -63,7 +63,7 @@ Page {
     }
 
     GridView {
-        property var dataModel: dataBase.next()
+        property var dataModel: dataBase.take()
 
         onDataModelChanged: visualModel.model = dataModel
 

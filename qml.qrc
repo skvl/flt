@@ -4,5 +4,6 @@
         <file>Board.qml</file>
         <file>StartPage.qml</file>
         <file>Stopwatch.qml</file>
+        <file>Results.qml</file>
     </qresource>
 </RCC>

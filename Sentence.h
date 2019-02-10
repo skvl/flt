@@ -56,6 +56,8 @@ public:
 
     QString audio() const;
 
+    bool wrong() const;
+
 protected:
     QHash<int, QByteArray> roleNames() const;
 
