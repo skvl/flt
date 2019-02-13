@@ -48,7 +48,7 @@ Page {
         Button {
             text: qsTr("Settings")
 
-            onClicked: console.log("Settings")
+            onClicked: stack.push(Qt.resolvedUrl("Settings.qml"))
 
             Layout.alignment: Qt.AlignHCenter
             Layout.preferredHeight: 60

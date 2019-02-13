@@ -22,6 +22,8 @@
 #include "Settings.h"
 
 const QHash<int, QString> Settings::keys{
+    {AppInfo, "AppInfo"},
+    {Theme, "Theme"},
     {UserInfo, "UserInfo"},
     {UserName, "Name"},
     {UserSirname, "Sirname"},
@@ -30,7 +32,6 @@ const QHash<int, QString> Settings::keys{
 Settings::Settings(const QString &organization, const QString &application, QObject *parent)
     : QSettings (organization, application, parent)
 {
-
 }
 
 QString Settings::userName() const
@@ -63,6 +64,10 @@ void Settings::setUserSirname(const QString &userSirname)
 
 void Settings::save()
 {
+    beginGroup(keys[AppInfo]);
+    setValue(keys[Theme], m_theme);
+    endGroup();
+
     beginGroup(keys[UserInfo]);
     setValue(keys[UserName], m_userName);
     setValue(keys[UserSirname], m_userSirname);
@@ -71,8 +76,26 @@ void Settings::save()
 
 void Settings::load()
 {
+    beginGroup(keys[AppInfo]);
+    m_theme = value(keys[Theme], "Light").toString();
+    endGroup();
+
     beginGroup(keys[UserInfo]);
     m_userName = value(keys[UserName], "").toString();
     m_userSirname = value(keys[UserSirname], "").toString();
     endGroup();
+}
+
+QString Settings::theme() const
+{
+    return m_theme;
+}
+
+void Settings::setTheme(const QString &theme)
+{
+    if (theme == m_theme)
+        return;
+
+    m_theme = theme;
+    emit themeChanged();
 }

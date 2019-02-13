@@ -22,21 +22,40 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Material 2.0
+import QtQuick.Layouts 1.0
 
-ApplicationWindow {
-    visible: true
-    width: 480
-    height: 640
-    title: "Hello " + settings.userName + " " + settings.userSirname
+Page {
+    header: ToolBar {
+        ToolButton {
+            text: qsTr("Home")
 
-    Material.theme: "Light" === settings.theme ? Material.Light : Material.Dark
-    Material.accent: Material.Blue
+            onClicked: {
+                stack.pop()
+            }
 
-    StackView {
-        id: stack
+            Layout.alignment: Qt.AlignVCenter
+        }
+    }
 
-        initialItem: StartPage {}
+    RowLayout {
+        Text {
+            text: qsTr("Material Light")
 
-        anchors.fill: parent
+            color: Material.foreground
+        }
+
+        Switch {
+            checked: "Light" === settings.theme
+
+            onClicked: {
+                if (checked) {
+                    Material.theme = Material.Light
+                    settings.theme = "Light"
+                } else {
+                    Material.theme = Material.Dark
+                    settings.theme = "Dark"
+                }
+            }
+        }
     }
 }

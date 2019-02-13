@@ -30,6 +30,7 @@ class Settings : public QSettings
 
     Q_PROPERTY(QString userName READ userName WRITE setUserName NOTIFY userNameChanged)
     Q_PROPERTY(QString userSirname READ userSirname WRITE setUserSirname NOTIFY userSirnameChanged)
+    Q_PROPERTY(QString theme READ theme WRITE setTheme NOTIFY themeChanged)
 
 public:
     Settings(const QString &organization, const QString &application = QString(), QObject *parent = nullptr);
@@ -43,12 +44,18 @@ public:
     Q_INVOKABLE void save();
     Q_INVOKABLE void load();
 
+    QString theme() const;
+    void setTheme(const QString &theme);
+
 signals:
     void userNameChanged();
     void userSirnameChanged();
+    void themeChanged();
 
 private:
     enum {
+        AppInfo,
+        Theme,
         UserInfo,
         UserName,
         UserSirname,
@@ -58,6 +65,7 @@ private:
 
     QString m_userName;
     QString m_userSirname;
+    QString m_theme;
 };
 
 #endif // SETTINGS_H
