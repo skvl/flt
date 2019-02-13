@@ -31,6 +31,7 @@ DataBase::DataBase(QString path, QObject *parent)
     , m_file(new QFile(path))
     , m_path(path)
 {
+    connect(&m_timer, &QTimer::timeout, this, &DataBase::tick);
 }
 
 DataBase::~DataBase()
@@ -129,6 +130,9 @@ void DataBase::open()
 
 QVariant DataBase::take()
 {
+    if (m_data.begin() == m_iterator)
+        timerStart();
+
     QVariant v;
 
     if (m_opened && m_iterator < m_data.end())
@@ -179,6 +183,8 @@ int DataBase::correctCount() const
 
 QVariantList DataBase::allWrong()
 {
+    timerStop();
+
     QVariantList v;
 
     for (auto i = m_data.begin(); i <= m_iterator; ++i)
@@ -187,3 +193,36 @@ QVariantList DataBase::allWrong()
 
     return v;
 }
+
+void DataBase::timerStart()
+{
+    m_time.start();
+    m_timer.start(100);
+}
+
+void DataBase::timerStop()
+{
+    m_timer.stop();
+
+    m_elapsed = m_time.elapsed();
+}
+
+QString DataBase::elapsed() const
+{
+    int s = m_elapsed / 1000;
+    int m = (s / 60) % 60;
+    int h = s / 3600;
+    s %= 60;
+
+    return QString("%1:%2:%3")
+            .arg(h, 2, 10, QLatin1Char('0'))
+            .arg(m, 2, 10, QLatin1Char('0'))
+            .arg(s, 2, 10, QLatin1Char('0'));
+}
+
+void DataBase::tick()
+{
+    m_elapsed = m_time.elapsed();
+    elapsedChanged();
+}
+

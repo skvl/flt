@@ -51,7 +51,11 @@ Page {
                 Layout.alignment: Qt.AlignVCenter
             }
 
-            Stopwatch {
+            Label {
+                id: stopwatch
+
+                text: dataBase.elapsed
+
                 horizontalAlignment: Text.AlignHCenter
 
                 Layout.alignment: Qt.AlignVCenter

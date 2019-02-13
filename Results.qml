@@ -60,7 +60,7 @@ Page {
             }
 
             Text {
-                text: qsTr("Your time is XXX")
+                text: qsTr("Your time is %1".arg(dataBase.elapsed))
 
                 fontSizeMode: Text.Fit
                 minimumPointSize: 10

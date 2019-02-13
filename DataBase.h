@@ -23,12 +23,16 @@
 
 #include <QFile>
 #include <QObject>
+#include <QTime>
+#include <QTimer>
 
 #include "Sentence.h"
 
 class DataBase : public QObject
 {
     Q_OBJECT
+
+    Q_PROPERTY(QString elapsed READ elapsed NOTIFY elapsedChanged)
 
 public:
     DataBase(QString path = QString(), QObject *parent = nullptr);
@@ -52,6 +56,19 @@ public:
     // Get list of wrong sentences
     Q_INVOKABLE QVariantList allWrong();
 
+    // Time management
+    Q_INVOKABLE void timerStart();
+    Q_INVOKABLE void timerStop();
+
+    // How much time elapsed from exercise start
+    QString elapsed() const;
+
+signals:
+    void elapsedChanged();
+
+private slots:
+    void tick();
+
 private:
     bool m_opened;
     QFile* m_file;
@@ -60,6 +77,10 @@ private:
     QVector<Sentence*> m_data;
     QVector<Sentence*>::iterator m_iterator;
     QVector<Sentence*>::iterator m_wrong;
+
+    QTime m_time;
+    QTimer m_timer;
+    int m_elapsed;
 };
 
 #endif // DATABASE_H
