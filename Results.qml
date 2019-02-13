@@ -29,7 +29,10 @@ Page {
             ToolButton {
                 text: qsTr("Home")
 
-                onClicked: stack.pop()
+                onClicked: {
+                    dataBase.flush()
+                    stack.pop()
+                }
 
                 Layout.alignment: Qt.AlignVCenter
             }
