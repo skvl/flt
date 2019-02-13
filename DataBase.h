@@ -48,7 +48,7 @@ public:
     // Get total number of sentences
     Q_INVOKABLE int count() const;
     // Get number of wrong sentences
-    Q_INVOKABLE int wrongCount() const;
+    Q_INVOKABLE int correctCount() const;
     // Get list of wrong sentences
     Q_INVOKABLE QVariantList allWrong();
 

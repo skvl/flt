@@ -21,102 +21,131 @@
 
 import QtQuick 2.0
 import QtQuick.Controls 2.0
+import QtQuick.Controls.Material 2.0
 import QtQuick.Layouts 1.0
 
 Page {
     header: ToolBar {
-        RowLayout {
-            ToolButton {
-                text: qsTr("Home")
+        ToolButton {
+            text: qsTr("Home")
 
-                onClicked: {
-                    dataBase.flush()
-                    stack.pop()
-                }
-
-                Layout.alignment: Qt.AlignVCenter
+            onClicked: {
+                dataBase.flush()
+                stack.pop()
             }
 
-            Item {
-                RowLayout {
-                    Label {
-                        text: dataBase.wrongCount()
-                    }
-
-                    Label {
-                        text: qsTr("/")
-                    }
-
-                    Label {
-                        text: dataBase.count()
-                    }
-                }
-
-                Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-                Layout.fillWidth: true
-            }
+            Layout.alignment: Qt.AlignVCenter
         }
     }
 
-    ListView {
+    ColumnLayout {
         anchors.fill: parent
-        spacing: 20
+        anchors.margins: 10
 
-        model: dataBase.allWrong()
+        spacing: 40
 
-        delegate: Item {
-            height: Math.min(120, width / 2)
+        Column {
+            Text {
+                text: qsTr("Your result is %1 of %2".arg(dataBase.correctCount()).arg(dataBase.count()))
+
+                fontSizeMode: Text.Fit
+                minimumPointSize: 12
+                font.pointSize: 1000
+                horizontalAlignment: Text.AlignHCenter
+
+                color: Material.foreground
+
+                height: parent.height * 0.6
+                width: parent.width
+            }
+
+            Text {
+                text: qsTr("Your time is XXX")
+
+                fontSizeMode: Text.Fit
+                minimumPointSize: 10
+                font.pointSize: 1000
+                horizontalAlignment: Text.AlignHCenter
+
+                color: Material.foreground
+
+                height: parent.height * 0.4
+                width: parent.width
+            }
+
+            height: Math.min(80, parent.height / 10)
             width: parent.width
+        }
 
-            Column {
-                anchors.fill: parent
+        Button {
+            text: qsTr("Details")
 
-                Rectangle {
-                    Text {
-                        text: modelData.result
+            onClicked: list.visible = !list.visible
 
-                        fontSizeMode: Text.Fit
-                        minimumPointSize: 8
-                        font.pointSize: 1000
+            Layout.alignment: Qt.AlignHCenter
+        }
 
-                        anchors.fill: parent
-                        horizontalAlignment: Text.AlignHCenter
-                        color: "white"
+        ListView {
+            id: list
+
+            visible: false
+
+            // From https://stackoverflow.com/a/17191620
+            clip: true
+
+            spacing: 20
+
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+
+            model: dataBase.allWrong()
+
+            delegate: Item {
+                height: Math.min(120, width / 2)
+                width: parent.width
+
+                Column {
+                    anchors.fill: parent
+
+                    Rectangle {
+                        Text {
+                            text: modelData.result
+
+                            fontSizeMode: Text.Fit
+                            minimumPointSize: 8
+                            font.pointSize: 1000
+
+                            anchors.fill: parent
+                            horizontalAlignment: Text.AlignHCenter
+                            color: "white"
+                        }
+
+                        radius: 25
+                        color: Material.color(Material.Red)
+
+                        anchors.left: parent.left
+                        height: parent.height / 2
+                        width: parent.width
                     }
 
-                    radius: 25
-                    color: "#b00020"
-                    border {
-                        color: "black"
-                        width: 1
-                    }
+                    Rectangle {
+                        Text {
+                            text: modelData.origin
 
-                    anchors.left: parent.left
-                    height: parent.height / 2
-                    width: parent.width
-                }
+                            fontSizeMode: Text.Fit
+                            minimumPointSize: 8
+                            font.pointSize: 1000
 
-                Rectangle {
-                    Text {
-                        text: modelData.origin
+                            anchors.fill: parent
+                            horizontalAlignment: Text.AlignHCenter
+                            color: "white"
+                        }
 
-                        fontSizeMode: Text.Fit
-                        minimumPointSize: 8
-                        font.pointSize: 1000
-
-                        anchors.fill: parent
-                        horizontalAlignment: Text.AlignHCenter
-                        color: "white"
-                    }
-
-                    anchors.left: parent.left
-                    height: parent.height / 2
-                    width: parent.width
-                    radius: 25
-                    color: "#008b00"
-                    border {
-                        color: "black"
-                        width: 1
+                        anchors.left: parent.left
+                        height: parent.height / 2
+                        width: parent.width
+                        radius: 25
+                        color: Material.color(Material.Green)
                     }
                 }
             }

@@ -166,7 +166,7 @@ int DataBase::count() const
     return m_data.count();
 }
 
-int DataBase::wrongCount() const
+int DataBase::correctCount() const
 {
     int wrong = 0;
 
@@ -174,7 +174,7 @@ int DataBase::wrongCount() const
         if (s->wrong())
             ++wrong;
 
-    return wrong;
+    return m_data.count() - wrong;
 }
 
 QVariantList DataBase::allWrong()
