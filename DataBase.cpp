@@ -143,6 +143,12 @@ QVariant DataBase::next()
     return take();
 }
 
+QVariant DataBase::previous()
+{
+    m_iterator--;
+    return take();
+}
+
 void DataBase::flush()
 {
     if (!m_opened)

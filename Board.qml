@@ -28,7 +28,7 @@ Page {
     header: ToolBar {
         RowLayout {
             ToolButton {
-                text: qsTr("♪")
+                text: qsTr("Audio")
 
                 onClicked: console.log("Play " + dataBase.take().audio)
 
@@ -36,7 +36,15 @@ Page {
             }
 
             ToolButton {
-                text: qsTr("⇨")
+                text: qsTr("Previous")
+
+                onClicked: root.dataModel = dataBase.previous()
+
+                Layout.alignment: Qt.AlignVCenter
+            }
+
+            ToolButton {
+                text: qsTr("Next")
 
                 onClicked: root.dataModel = dataBase.next()
 
@@ -51,7 +59,7 @@ Page {
             }
 
             ToolButton {
-                text: qsTr("⚑")
+                text: qsTr("Finish")
 
                 onClicked: stack.replace(Qt.resolvedUrl("Results.qml"))
 

@@ -40,6 +40,8 @@ public:
     Q_INVOKABLE QVariant take();
     // Get next sentece
     Q_INVOKABLE QVariant next();
+    // Get next sentece
+    Q_INVOKABLE QVariant previous();
     // Re-order sentences and start from begin
     Q_INVOKABLE void flush();
 

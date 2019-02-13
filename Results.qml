@@ -27,7 +27,7 @@ Page {
     header: ToolBar {
         RowLayout {
             ToolButton {
-                text: qsTr("<")
+                text: qsTr("Home")
 
                 onClicked: stack.pop()
 
