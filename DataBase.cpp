@@ -181,9 +181,9 @@ QVariantList DataBase::allWrong()
 {
     QVariantList v;
 
-    for (auto s: m_data)
-        if (s->wrong())
-            v.append(QVariant::fromValue(s));
+    for (auto i = m_data.begin(); i <= m_iterator; ++i)
+        if ((*i)->wrong())
+            v.append(QVariant::fromValue(*i));
 
     return v;
 }
