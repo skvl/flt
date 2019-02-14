@@ -34,6 +34,11 @@ Settings::Settings(const QString &organization, const QString &application, QObj
 {
 }
 
+Settings::~Settings()
+{
+    save();
+}
+
 QString Settings::userName() const
 {
     return m_userName;

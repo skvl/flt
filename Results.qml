@@ -73,7 +73,7 @@ Page {
                 width: parent.width
             }
 
-            height: Math.min(80, parent.height / 10)
+            height: Math.max(80, parent.height / 10)
             width: parent.width
         }
 

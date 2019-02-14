@@ -34,6 +34,7 @@ class Settings : public QSettings
 
 public:
     Settings(const QString &organization, const QString &application = QString(), QObject *parent = nullptr);
+    ~Settings();
 
     QString userName() const;
     void setUserName(const QString &userName);

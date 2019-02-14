@@ -30,6 +30,8 @@ Page {
             text: qsTr("Home")
 
             onClicked: {
+                settings.userSirname = sirname.text
+                settings.userName = name.text
                 stack.pop()
             }
 
@@ -37,25 +39,93 @@ Page {
         }
     }
 
-    RowLayout {
-        Text {
-            text: qsTr("Material Light")
+    Column {
+        Row {
+            Text {
+                text: qsTr("Material Light")
 
-            color: Material.foreground
-        }
+                fontSizeMode: Text.Fit
+                minimumPointSize: 12
+                font.pointSize: 20
 
-        Switch {
-            checked: "Light" === settings.theme
+                color: Material.foreground
+                verticalAlignment: Text.AlignVCenter
 
-            onClicked: {
-                if (checked) {
-                    Material.theme = Material.Light
-                    settings.theme = "Light"
-                } else {
-                    Material.theme = Material.Dark
-                    settings.theme = "Dark"
-                }
+                height: parent.height
+                width: parent.width * 0.8
             }
+
+            Switch {
+                checked: "Light" === settings.theme
+
+                onClicked: {
+                    if (checked) {
+                        Material.theme = Material.Light
+                        settings.theme = "Light"
+                    } else {
+                        Material.theme = Material.Dark
+                        settings.theme = "Dark"
+                    }
+                }
+
+                anchors.right: parent.right
+
+                height: parent.height
+                width: parent.width * 0.2
+            }
+
+            height: Math.max(80, parent.height / 10)
+            width: parent.width
         }
+
+        ColumnLayout {
+            Text {
+                text: qsTr("Your name")
+
+                fontSizeMode: Text.Fit
+                minimumPointSize: 12
+                font.pointSize: 20
+
+                color: Material.foreground
+
+                Layout.fillWidth: true
+            }
+
+            TextField {
+                id: sirname
+
+                placeholderText: qsTr("Sirname")
+
+                font.pointSize: 14
+
+                color: Material.foreground
+
+                Layout.fillWidth: true
+            }
+
+            TextField {
+                id: name
+
+                placeholderText: qsTr("Name")
+
+                font.pointSize: 14
+
+                color: Material.foreground
+
+                Layout.fillWidth: true
+            }
+
+            Item {
+                Layout.fillHeight: true
+            }
+
+            height: Math.max(200, parent.height / 5)
+            width: parent.width
+        }
+
+        anchors.margins: 10
+        anchors.fill: parent
+
+        spacing: 10
     }
 }
