@@ -31,6 +31,8 @@ CppApplication {
     files: [
         "DataBase.cpp",
         "DataBase.h",
+        "HistoryRecord.cpp",
+        "HistoryRecord.h",
         "Sentence.cpp",
         "Sentence.h",
         "Settings.cpp",

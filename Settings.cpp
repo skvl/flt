@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDebug>
+
+#include "HistoryRecord.h"
 #include "Settings.h"
 
 const QHash<int, QString> Settings::keys{
@@ -27,6 +30,9 @@ const QHash<int, QString> Settings::keys{
     {UserInfo, "UserInfo"},
     {UserName, "Name"},
     {UserSirname, "Sirname"},
+    {HistoryInfo, "HistoryInfo"},
+    {HistoryCount, "Count"},
+    {HistoryRecord, "Record "},
 };
 
 Settings::Settings(const QString &organization, const QString &application, QObject *parent)
@@ -91,6 +97,55 @@ void Settings::load()
     endGroup();
 }
 
+void Settings::saveResult(QDateTime date, int correct, int total, int elapsed)
+{
+    beginGroup(keys[HistoryInfo]);
+
+    auto count = value(keys[HistoryCount], 0).toInt() + 1;
+    setValue(keys[HistoryCount], count);
+
+    auto k = keys[HistoryRecord] + QString::number(count);
+    auto v = QString("DATE:%1 SIRNAME:%2 NAME:%3 CORRECT:%4 TOTAL:%5 ELAPSED:%6")
+            .arg(date.toString("yyyyMMddHHmmss"))
+            .arg(m_userSirname)
+            .arg(m_userName)
+            .arg(correct)
+            .arg(total)
+            .arg(elapsed);
+    setValue(k, v);
+
+    endGroup();
+}
+
+QVariantList Settings::getResults()
+{
+    QVariantList r;
+
+    beginGroup(keys[HistoryInfo]);
+
+    auto c = value(keys[HistoryCount], 0).toInt();
+
+    for (auto i = 1; i <= c; ++i)
+    {
+        auto v = value(keys[HistoryRecord] + QString::number(i), QString()).toString();
+        if (!v.isEmpty())
+        {
+            auto date = QDateTime::fromString(parseValue(v, "DATE"), "yyyyMMddHHmmss");
+            auto correct = parseValue(v, "CORRECT").toInt();
+            auto total = parseValue(v, "TOTAL").toInt();
+            auto elapsed = parseValue(v, "ELAPSED").toInt();
+
+            auto hr = new Record(date, correct, total, elapsed);
+
+            r << QVariant::fromValue(hr);
+        }
+    }
+
+    endGroup();
+
+    return r;
+}
+
 QString Settings::theme() const
 {
     return m_theme;
@@ -103,4 +158,18 @@ void Settings::setTheme(const QString &theme)
 
     m_theme = theme;
     emit themeChanged();
+}
+
+QString Settings::parseValue(QString kv, QString key) const
+{
+    QHash<QString, QString> map;
+
+    auto paires = kv.split(" ");
+    for (auto i: paires)
+    {
+        auto pair = i.split(":");
+        map.insert(pair[0], pair[1]);
+    }
+
+    return map.value(key);
 }

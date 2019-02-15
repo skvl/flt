@@ -60,7 +60,7 @@ Page {
             }
 
             Text {
-                text: qsTr("Your time is %1".arg(dataBase.elapsed))
+                text: qsTr("Your time is %1".arg(dataBase.elapsedToString(dataBase.elapsed)))
 
                 fontSizeMode: Text.Fit
                 minimumPointSize: 10
@@ -151,4 +151,9 @@ Page {
             }
         }
     }
+
+    Component.onCompleted: settings.saveResult(dataBase.date,
+                                               dataBase.correctCount(),
+                                               dataBase.count(),
+                                               dataBase.elapsed)
 }

@@ -196,6 +196,9 @@ QVariantList DataBase::allWrong()
 
 void DataBase::timerStart()
 {
+    m_date = QDateTime::currentDateTime();
+    emit dateChanged();
+
     m_time.start();
     m_timer.start(100);
 }
@@ -207,9 +210,19 @@ void DataBase::timerStop()
     m_elapsed = m_time.elapsed();
 }
 
-QString DataBase::elapsed() const
+QDateTime DataBase::date() const
 {
-    int s = m_elapsed / 1000;
+    return m_date;
+}
+
+int DataBase::elapsed() const
+{
+    return m_elapsed;
+}
+
+QString DataBase::elapsedToString(int elapsed)
+{
+    int s = elapsed / 1000;
     int m = (s / 60) % 60;
     int h = s / 3600;
     s %= 60;

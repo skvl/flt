@@ -38,7 +38,7 @@ Page {
         Button {
             text: qsTr("History")
 
-            onClicked: console.log("History")
+            onClicked: stack.push(Qt.resolvedUrl("History.qml"))
 
             Layout.alignment: Qt.AlignHCenter
             Layout.preferredHeight: 60

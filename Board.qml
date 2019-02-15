@@ -54,7 +54,7 @@ Page {
             Label {
                 id: stopwatch
 
-                text: dataBase.elapsed
+                text: dataBase.elapsedToString(dataBase.elapsed)
 
                 horizontalAlignment: Text.AlignHCenter
 

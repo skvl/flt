@@ -22,6 +22,7 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include <QDateTime>
 #include <QSettings>
 
 class Settings : public QSettings
@@ -45,6 +46,9 @@ public:
     Q_INVOKABLE void save();
     Q_INVOKABLE void load();
 
+    Q_INVOKABLE void saveResult(QDateTime date, int correct, int total, int elapsed);
+    Q_INVOKABLE QVariantList getResults();
+
     QString theme() const;
     void setTheme(const QString &theme);
 
@@ -60,6 +64,9 @@ private:
         UserInfo,
         UserName,
         UserSirname,
+        HistoryInfo,
+        HistoryCount,
+        HistoryRecord,
     };
 
     static const QHash<int, QString> keys;
@@ -67,6 +74,8 @@ private:
     QString m_userName;
     QString m_userSirname;
     QString m_theme;
+
+    QString parseValue(QString kv, QString key) const;
 };
 
 #endif // SETTINGS_H

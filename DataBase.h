@@ -21,6 +21,7 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
+#include <QDateTime>
 #include <QFile>
 #include <QObject>
 #include <QTime>
@@ -32,7 +33,8 @@ class DataBase : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString elapsed READ elapsed NOTIFY elapsedChanged)
+    Q_PROPERTY(int elapsed READ elapsed NOTIFY elapsedChanged)
+    Q_PROPERTY(QDateTime date READ date NOTIFY dateChanged)
 
 public:
     DataBase(QString path = QString(), QObject *parent = nullptr);
@@ -49,6 +51,7 @@ public:
     // Re-order sentences and start from begin
     Q_INVOKABLE void flush();
 
+    // TODO Use Q_PROPERTY
     // Get total number of sentences
     Q_INVOKABLE int count() const;
     // Get number of wrong sentences
@@ -60,11 +63,15 @@ public:
     Q_INVOKABLE void timerStart();
     Q_INVOKABLE void timerStop();
 
+    // Date and time of exercise start
+    QDateTime date() const;
     // How much time elapsed from exercise start
-    QString elapsed() const;
+    int elapsed() const;
+    static Q_INVOKABLE QString elapsedToString(int elapsed);
 
 signals:
     void elapsedChanged();
+    void dateChanged();
 
 private slots:
     void tick();
@@ -78,7 +85,9 @@ private:
     QVector<Sentence*>::iterator m_iterator;
     QVector<Sentence*>::iterator m_wrong;
 
+    QDateTime m_date;
     QTime m_time;
+    // TODO Use QObject timer instead
     QTimer m_timer;
     int m_elapsed;
 };
