@@ -94,6 +94,7 @@ Page {
             TextField {
                 id: sirname
 
+                text: settings.userSirname
                 placeholderText: qsTr("Sirname")
 
                 font.pointSize: 14
@@ -106,6 +107,7 @@ Page {
             TextField {
                 id: name
 
+                text: settings.userName
                 placeholderText: qsTr("Name")
 
                 font.pointSize: 14
