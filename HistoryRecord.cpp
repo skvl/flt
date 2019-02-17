@@ -20,19 +20,34 @@
  */
 #include "HistoryRecord.h"
 
-Record::Record(QDateTime date, int correct, int total, int elapsed, QObject *parent)
-    : QObject(parent)
+Record::Record(QString name,
+               QString sirname,
+               QDateTime date,
+               int correct,
+               int total,
+               int elapsed)
+    : m_name(name)
+    , m_sirname(sirname)
     , m_date(date)
     , m_correct(correct)
     , m_total(total)
     , m_elapsed(elapsed)
 {
-
 }
 
-QString Record::date() const
+QString Record::name() const
 {
-    return m_date.toString("dd.MM.yyyy HH:mm");
+    return m_name;
+}
+
+QString Record::sirname() const
+{
+    return m_sirname;
+}
+
+QDateTime Record::date() const
+{
+    return m_date;
 }
 
 int Record::correct() const

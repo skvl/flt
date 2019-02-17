@@ -18,40 +18,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef HISTORYRECORD_H
-#define HISTORYRECORD_H
+#ifndef HISTORYTABLE_H
+#define HISTORYTABLE_H
 
-#include <QDateTime>
+#include <QAbstractTableModel>
+#include "HistoryRecord.h"
 
-class Record
+class HistoryTable : public QAbstractTableModel
 {
+    Q_OBJECT
+
+    Q_PROPERTY(QVariantList columnHeaders READ columnHeaders CONSTANT)
+    Q_PROPERTY(QVariantList rowHeaders READ rowHeaders CONSTANT)
+
 public:
-    explicit Record(QString name,
-                    QString sirname,
-                    QDateTime date,
-                    int correct,
-                    int total,
-                    int elapsed);
+    explicit HistoryTable(QList<Record> list, QObject *parent = nullptr);
 
-    QString name() const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-    QString sirname() const;
+    int columnCount(const QModelIndex & = QModelIndex()) const;
+    int rowCount(const QModelIndex & = QModelIndex()) const;
 
-    QDateTime date() const;
+    // Workaround
+    QVariantList columnHeaders() const;
+    QVariantList rowHeaders() const;
 
-    int correct() const;
-
-    int total() const;
-
-    int elapsed() const;
+protected:
+    QHash<int, QByteArray> roleNames() const;
 
 private:
-    QString m_name;
-    QString m_sirname;
-    QDateTime m_date;
-    int m_correct;
-    int m_total;
-    int m_elapsed;
+    QList<Record> m_list;
 };
 
-#endif // HISTORYRECORD_H
+#endif // HISTORYTABLE_H

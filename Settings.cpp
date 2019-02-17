@@ -22,6 +22,7 @@
 #include <QDebug>
 
 #include "HistoryRecord.h"
+#include "HistoryTable.h"
 #include "Settings.h"
 
 const QHash<int, QString> Settings::keys{
@@ -117,35 +118,6 @@ void Settings::saveResult(QDateTime date, int correct, int total, int elapsed)
     endGroup();
 }
 
-QVariantList Settings::getResults()
-{
-    QVariantList r;
-
-    beginGroup(keys[HistoryInfo]);
-
-    auto c = value(keys[HistoryCount], 0).toInt();
-
-    for (auto i = 1; i <= c; ++i)
-    {
-        auto v = value(keys[HistoryRecord] + QString::number(i), QString()).toString();
-        if (!v.isEmpty())
-        {
-            auto date = QDateTime::fromString(parseValue(v, "DATE"), "yyyyMMddHHmmss");
-            auto correct = parseValue(v, "CORRECT").toInt();
-            auto total = parseValue(v, "TOTAL").toInt();
-            auto elapsed = parseValue(v, "ELAPSED").toInt();
-
-            auto hr = new Record(date, correct, total, elapsed);
-
-            r << QVariant::fromValue(hr);
-        }
-    }
-
-    endGroup();
-
-    return r;
-}
-
 QString Settings::theme() const
 {
     return m_theme;
@@ -158,6 +130,37 @@ void Settings::setTheme(const QString &theme)
 
     m_theme = theme;
     emit themeChanged();
+}
+
+QVariant Settings::history()
+{
+    QList<Record> r;
+
+    beginGroup(keys[HistoryInfo]);
+
+    auto c = value(keys[HistoryCount], 0).toInt();
+
+    for (auto i = 1; i <= c; ++i)
+    {
+        auto v = value(keys[HistoryRecord] + QString::number(i), QString()).toString();
+        if (!v.isEmpty())
+        {
+            auto name = parseValue(v, "NAME");
+            auto sirname = parseValue(v, "SIRNAME");
+            auto date = QDateTime::fromString(parseValue(v, "DATE"), "yyyyMMddHHmmss");
+            auto correct = parseValue(v, "CORRECT").toInt();
+            auto total = parseValue(v, "TOTAL").toInt();
+            auto elapsed = parseValue(v, "ELAPSED").toInt();
+
+            Record hr(name, sirname, date, correct, total, elapsed);
+
+            r.push_back(hr);
+        }
+    }
+
+    endGroup();
+
+    return QVariant::fromValue(new HistoryTable(r));
 }
 
 QString Settings::parseValue(QString kv, QString key) const

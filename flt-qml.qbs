@@ -33,6 +33,8 @@ CppApplication {
         "DataBase.h",
         "HistoryRecord.cpp",
         "HistoryRecord.h",
+        "HistoryTable.cpp",
+        "HistoryTable.h",
         "Sentence.cpp",
         "Sentence.h",
         "Settings.cpp",

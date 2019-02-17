@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.0
+import QtQuick 2.12
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Material 2.0
 import QtQuick.Layouts 1.0
@@ -35,85 +35,90 @@ Page {
         }
     }
 
-    ListView {
-        anchors.fill: parent
-        anchors.margins: 10
+    // It was quit difficult to deal with headers
+    // Links:
+    // - https://stackoverflow.com/a/27657021
+    // - https://forum.qt.io/post/504932
+    TableView {
+            id: tableView
 
-        // From https://stackoverflow.com/a/17191620
-        clip: true
+            columnWidthProvider: function (column) { return 120; }
+            rowHeightProvider: function (column) { return 80; }
+            anchors.fill: parent
+            leftMargin: rowsHeader.implicitWidth
+            topMargin: columnsHeader.implicitHeight
+            model: settings.history
+            delegate: Item {
+                Text {
+                    text: display
+                    anchors.fill: parent
+                    anchors.margins: 10
 
-        spacing: 20
+                    color: '#aaaaaa'
+                    font.pixelSize: 15
+                    verticalAlignment: Text.AlignVCenter
 
-        model: settings.getResults()
-
-        delegate: Item {
-            height: Math.min(120, width / 2)
-            width: parent.width
-
-            Column {
-                anchors.fill: parent
-
-                Rectangle {
-                    Text {
-                        id: name
-
-                        text: "%1 %2".arg(settings.userSirname).arg(settings.userName)
-
-                        fontSizeMode: Text.Fit
-                        minimumPointSize: 8
-                        font.pointSize: 1000
-
-                        height: parent.height / 3
-                        width: parent.width
-                        horizontalAlignment: Text.AlignHCenter
-                        color: "white"
-
-                        anchors.top: parent.top
-                    }
-
-                    Text {
-                        id: date
-
-                        text: modelData.date
-
-                        fontSizeMode: Text.Fit
-                        minimumPointSize: 8
-                        font.pointSize: 1000
-
-                        height: parent.height / 3
-                        width: parent.width
-                        horizontalAlignment: Text.AlignHCenter
-                        color: "white"
-
-                        anchors.top: name.bottom
-                    }
-
-                    Text {
-                        text: qsTr("Correct %1 of %2 during %3"
-                                   .arg(modelData.correct)
-                                   .arg(modelData.total)
-                                   .arg(dataBase.elapsedToString(modelData.elapsed)))
-
-                        fontSizeMode: Text.Fit
-                        minimumPointSize: 8
-                        font.pointSize: 1000
-
-                        height: parent.height / 3
-                        width: parent.width
-                        horizontalAlignment: Text.AlignHCenter
-                        color: "white"
-
-                        anchors.top: date.bottom
-                    }
-
-                    radius: 25
-                    color: Material.color(Material.BlueGrey)
-
-                    anchors.left: parent.left
-                    height: parent.height / 2
-                    width: parent.width
+                    wrapMode: Text.Wrap
+                    clip: true
                 }
             }
+
+            Rectangle { // mask the headers
+                z: 3
+                color: "#222222"
+                y: tableView.contentY
+                x: tableView.contentX
+                width: tableView.leftMargin
+                height: tableView.topMargin
+            }
+
+            Row {
+                id: columnsHeader
+                y: tableView.contentY
+                z: 2
+                Repeater {
+                    model: settings.history.columnHeaders
+                    Label {
+                        width: tableView.columnWidthProvider(modelData)
+                        height: 35
+                        text: modelData
+                        color: '#aaaaaa'
+                        font.pixelSize: 15
+                        padding: 10
+                        verticalAlignment: Text.AlignVCenter
+
+                        background: Rectangle { color: "#333333" }
+
+                        wrapMode: Text.Wrap
+                        clip: true
+                    }
+                }
+            }
+
+            Column {
+                id: rowsHeader
+                x: tableView.contentX
+                z: 2
+                Repeater {
+                    model: settings.history.rowHeaders
+                    Label {
+                        width: 120
+                        height: tableView.rowHeightProvider(modelData)
+                        text: modelData
+                        color: '#aaaaaa'
+                        font.pixelSize: 15
+                        padding: 10
+                        verticalAlignment: Text.AlignVCenter
+
+                        background: Rectangle { color: "#333333" }
+
+                        wrapMode: Text.Wrap
+                        clip: true
+                    }
+                }
+            }
+
+            ScrollIndicator.horizontal: ScrollIndicator { }
+            ScrollIndicator.vertical: ScrollIndicator { }
         }
-    }
 }

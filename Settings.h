@@ -32,10 +32,16 @@ class Settings : public QSettings
     Q_PROPERTY(QString userName READ userName WRITE setUserName NOTIFY userNameChanged)
     Q_PROPERTY(QString userSirname READ userSirname WRITE setUserSirname NOTIFY userSirnameChanged)
     Q_PROPERTY(QString theme READ theme WRITE setTheme NOTIFY themeChanged)
+    Q_PROPERTY(QVariant history READ history NOTIFY historyChanged)
 
 public:
     Settings(const QString &organization, const QString &application = QString(), QObject *parent = nullptr);
     ~Settings();
+
+    Q_INVOKABLE void save();
+    Q_INVOKABLE void load();
+
+    Q_INVOKABLE void saveResult(QDateTime date, int correct, int total, int elapsed);
 
     QString userName() const;
     void setUserName(const QString &userName);
@@ -43,19 +49,16 @@ public:
     QString userSirname() const;
     void setUserSirname(const QString &userSirname);
 
-    Q_INVOKABLE void save();
-    Q_INVOKABLE void load();
-
-    Q_INVOKABLE void saveResult(QDateTime date, int correct, int total, int elapsed);
-    Q_INVOKABLE QVariantList getResults();
-
     QString theme() const;
     void setTheme(const QString &theme);
+
+    QVariant history();
 
 signals:
     void userNameChanged();
     void userSirnameChanged();
     void themeChanged();
+    void historyChanged();
 
 private:
     enum {
