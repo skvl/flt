@@ -79,7 +79,6 @@ private slots:
 private:
     bool m_opened;
     QFile* m_file;
-    QString m_path;
 
     QVector<Sentence*> m_data;
     QVector<Sentence*>::iterator m_iterator;

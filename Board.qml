@@ -23,14 +23,21 @@ import QtQuick 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
 import QtQml.Models 2.1
+import QtMultimedia 5.0
 
 Page {
+    Audio {
+        id: audio
+
+        source: dataBase.take().audio
+    }
+
     header: ToolBar {
         RowLayout {
             ToolButton {
                 text: qsTr("Audio")
 
-                onClicked: console.log("Play " + dataBase.take().audio)
+                onClicked: audio.play()
 
                 Layout.alignment: Qt.AlignVCenter
             }

@@ -3,7 +3,7 @@ import qbs
 CppApplication {
     Depends {
         name: "Qt"
-        submodules: [ "quick", "quickcontrols2", "xml" ]
+        submodules: [ "multimedia", "quick", "quickcontrols2", "xml" ]
     }
 
     // Additional import path used to resolve QML modules in Qt Creator's code model

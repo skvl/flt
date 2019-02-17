@@ -21,6 +21,8 @@
 #include <algorithm>
 #include <random>
 
+#include <QDir>
+#include <QFileInfo>
 #include <QXmlStreamReader>
 
 #include "DataBase.h"
@@ -29,7 +31,6 @@ DataBase::DataBase(QString path, QObject *parent)
     : QObject (parent)
     , m_opened(false)
     , m_file(new QFile(path))
-    , m_path(path)
 {
     connect(&m_timer, &QTimer::timeout, this, &DataBase::tick);
 }
@@ -43,6 +44,8 @@ DataBase::~DataBase()
 
 void DataBase::open()
 {
+    QDir dir(QFileInfo(m_file->fileName()).absoluteDir());
+
     if (m_file->open(QIODevice::ReadOnly | QIODevice::Text))
     {
         QXmlStreamReader xml(m_file);
@@ -76,7 +79,7 @@ void DataBase::open()
                         if (xml.name() == "audio")
                         {
                             xml.readNext();
-                            audio = xml.text().toString();
+                            audio = "file:" + dir.filePath(xml.text().toString());
                         }
                         else if (xml.name() == "grapheme")
                         {
