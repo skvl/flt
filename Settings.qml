@@ -68,8 +68,6 @@ Page {
                     }
                 }
 
-                anchors.right: parent.right
-
                 height: parent.height
                 width: parent.width * 0.2
             }
