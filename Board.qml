@@ -29,7 +29,7 @@ Page {
     Audio {
         id: audio
 
-        source: dataBase.audio
+        source: root.dataModel.audio
     }
 
     header: ToolBar {
