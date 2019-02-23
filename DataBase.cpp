@@ -131,29 +131,39 @@ void DataBase::open()
     flush();
 }
 
-QVariant DataBase::take()
+QString DataBase::audio()
+{
+    return take()->audio();
+}
+
+QVariant DataBase::data()
+{
+    return QVariant::fromValue(take());
+}
+
+Sentence *DataBase::take()
 {
     if (m_data.begin() == m_iterator)
         timerStart();
 
-    QVariant v;
+    Sentence* v = nullptr;
 
     if (m_opened && m_iterator < m_data.end())
-        v = QVariant::fromValue(*m_iterator);
+        v = *m_iterator;
 
     return v;
 }
 
-QVariant DataBase::next()
+void DataBase::next()
 {
     m_iterator++;
-    return take();
+    emit(dataChanged());
 }
 
-QVariant DataBase::previous()
+void DataBase::previous()
 {
     m_iterator--;
-    return take();
+    emit(dataChanged());
 }
 
 void DataBase::flush()

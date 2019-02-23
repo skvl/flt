@@ -29,7 +29,7 @@ Page {
     Audio {
         id: audio
 
-        source: dataBase.take().audio
+        source: dataBase.audio
     }
 
     header: ToolBar {
@@ -45,7 +45,7 @@ Page {
             ToolButton {
                 text: qsTr("Previous")
 
-                onClicked: root.dataModel = dataBase.previous()
+                onClicked: dataBase.previous()
 
                 Layout.alignment: Qt.AlignVCenter
             }
@@ -53,7 +53,7 @@ Page {
             ToolButton {
                 text: qsTr("Next")
 
-                onClicked: root.dataModel = dataBase.next()
+                onClicked: dataBase.next()
 
                 Layout.alignment: Qt.AlignVCenter
             }
@@ -82,7 +82,7 @@ Page {
     }
 
     GridView {
-        property var dataModel: dataBase.take()
+        property var dataModel: dataBase.data
 
         onDataModelChanged: visualModel.model = dataModel
 

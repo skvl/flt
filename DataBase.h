@@ -35,6 +35,8 @@ class DataBase : public QObject
 
     Q_PROPERTY(int elapsed READ elapsed NOTIFY elapsedChanged)
     Q_PROPERTY(QDateTime date READ date NOTIFY dateChanged)
+    Q_PROPERTY(QVariant data READ data NOTIFY dataChanged)
+    Q_PROPERTY(QString audio READ audio NOTIFY audioChanged)
 
 public:
     DataBase(QString path = QString(), QObject *parent = nullptr);
@@ -43,11 +45,12 @@ public:
     // Open DataBase.
     void open();
     // Get current sentence
-    Q_INVOKABLE QVariant take();
+    QString audio();
+    QVariant data();
     // Get next sentece
-    Q_INVOKABLE QVariant next();
+    Q_INVOKABLE void next();
     // Get next sentece
-    Q_INVOKABLE QVariant previous();
+    Q_INVOKABLE void previous();
     // Re-order sentences and start from begin
     Q_INVOKABLE void flush();
 
@@ -72,6 +75,8 @@ public:
 signals:
     void elapsedChanged();
     void dateChanged();
+    void dataChanged();
+    void audioChanged();
 
 private slots:
     void tick();
@@ -89,6 +94,8 @@ private:
     // TODO Use QObject timer instead
     QTimer m_timer;
     int m_elapsed;
+
+    Sentence* take();
 };
 
 #endif // DATABASE_H
