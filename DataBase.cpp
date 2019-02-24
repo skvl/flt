@@ -58,8 +58,30 @@ void DataBase::open()
                 continue;
 
             if (token == QXmlStreamReader::StartElement
-                    && xml.name() == "sentences")
+                    && (xml.name() == "sentences"
+                        || xml.name() == "info"))
                 continue;
+
+            if (token == QXmlStreamReader::StartElement
+                    && xml.name() == "fonts")
+            {
+                while(!(xml.tokenType() == QXmlStreamReader::EndElement
+                        && xml.name() == "fonts"))
+                {
+                    xml.readNext();
+
+                    if (xml.tokenType() == QXmlStreamReader::StartElement)
+                    {
+                        if (xml.name() == "word")
+                        {
+                            xml.readNext();
+                            m_wordFont = "file:" + dir.filePath(xml.text().toString());
+                        }
+
+                        xml.readNext();
+                    }
+                }
+            }
 
             if (token == QXmlStreamReader::StartElement
                     && xml.name() == "sentence")
@@ -129,6 +151,11 @@ void DataBase::open()
     m_opened = true;
 
     flush();
+}
+
+QString DataBase::wordFont() const
+{
+    return m_wordFont;
 }
 
 QString DataBase::audio()

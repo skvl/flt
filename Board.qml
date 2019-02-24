@@ -26,6 +26,12 @@ import QtQml.Models 2.1
 import QtMultimedia 5.0
 
 Page {
+    FontLoader {
+        id: wordFont
+
+        source: dataBase.wordFont
+    }
+
     Audio {
         id: audio
 
@@ -134,6 +140,7 @@ Page {
                         anchors.fill: parent
 
                         fontSizeMode: Text.Fit
+                        font.family: wordFont.name
                         minimumPointSize: 8
                         font.pointSize: 1000
 

@@ -37,6 +37,7 @@ class DataBase : public QObject
     Q_PROPERTY(QDateTime date READ date NOTIFY dateChanged)
     Q_PROPERTY(QVariant data READ data NOTIFY dataChanged)
     Q_PROPERTY(QString audio READ audio NOTIFY audioChanged)
+    Q_PROPERTY(QString wordFont READ wordFont CONSTANT)
 
 public:
     DataBase(QString path = QString(), QObject *parent = nullptr);
@@ -44,6 +45,8 @@ public:
 
     // Open DataBase.
     void open();
+    // Get fonts
+    QString wordFont() const;
     // Get current sentence
     QString audio();
     QVariant data();
@@ -88,6 +91,8 @@ private:
     QVector<Sentence*> m_data;
     QVector<Sentence*>::iterator m_iterator;
     QVector<Sentence*>::iterator m_wrong;
+
+    QString m_wordFont;
 
     QDateTime m_date;
     QTime m_time;
