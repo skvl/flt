@@ -35,22 +35,27 @@
 <context>
     <name>HistoryTable</name>
     <message>
-        <location filename="../HistoryTable.cpp" line="38"/>
+        <location filename="../HistoryTable.cpp" line="26"/>
         <source>Date</source>
         <translation>Дата</translation>
     </message>
     <message>
-        <location filename="../HistoryTable.cpp" line="38"/>
+        <location filename="../HistoryTable.cpp" line="26"/>
         <source>Score</source>
         <translation>Оценка</translation>
     </message>
     <message>
-        <location filename="../HistoryTable.cpp" line="38"/>
+        <location filename="../HistoryTable.cpp" line="26"/>
         <source>Elapsed</source>
         <translation>Время</translation>
     </message>
     <message>
-        <location filename="../HistoryTable.cpp" line="70"/>
+        <location filename="../HistoryTable.cpp" line="26"/>
+        <source>Level</source>
+        <translation>Уровень сложности</translation>
+    </message>
+    <message>
+        <location filename="../HistoryTable.cpp" line="77"/>
         <source>%1 of %2</source>
         <translation>%1 из %2</translation>
     </message>
@@ -86,62 +91,66 @@
         <translation>Русский</translation>
     </message>
     <message>
-        <location filename="../Settings.qml" line="70"/>
+        <location filename="../Settings.qml" line="69"/>
         <source>English</source>
         <translation>Английский</translation>
     </message>
     <message>
-        <location filename="../Settings.qml" line="82"/>
+        <location filename="../Settings.qml" line="81"/>
         <source>Material Light</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Settings.qml" line="118"/>
+        <location filename="../Settings.qml" line="117"/>
         <source>Your name</source>
         <translation>Как Вас зовут</translation>
     </message>
     <message>
-        <location filename="../Settings.qml" line="133"/>
+        <location filename="../Settings.qml" line="132"/>
         <source>Sirname</source>
         <translation>Фамилия</translation>
     </message>
     <message>
-        <location filename="../Settings.qml" line="146"/>
+        <location filename="../Settings.qml" line="145"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../Settings.qml" line="169"/>
+        <location filename="../Settings.qml" line="168"/>
         <source>Difficulty</source>
         <translation>Уровень сложности</translation>
     </message>
     <message>
-        <location filename="../Settings.qml" line="184"/>
+        <location filename="../Settings.qml" line="183"/>
         <source>Audio</source>
         <translation>Озвучка</translation>
     </message>
     <message>
-        <location filename="../Settings.qml" line="194"/>
+        <location filename="../Settings.qml" line="193"/>
         <source>Text</source>
         <translation>Перевод</translation>
     </message>
     <message>
-        <location filename="../Settings.qml" line="204"/>
-        <source>None</source>
+        <location filename="../Settings.qml" line="203"/>
+        <source>No Clues</source>
         <translation>Без подсказок</translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="194"/>
+        <source>None</source>
+        <translation type="vanished">Без подсказок</translation>
+    </message>
+    <message>
+        <location filename="../Settings.cpp" line="200"/>
         <source>The simplest level: allows to listen the sentence.</source>
         <translation>Низкий уровень сложности: позволяетсф прослушивать предложение.</translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="196"/>
+        <location filename="../Settings.cpp" line="202"/>
         <source>The medium level: displays the translated sentence.</source>
         <translation>Средний уровень сложности: отображается перевод предложения.</translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="198"/>
+        <location filename="../Settings.cpp" line="204"/>
         <source>The hardest level: gives no clues to construct the sentence.</source>
         <translation>Высокий уровень сложности: никаких подсказок.</translation>
     </message>

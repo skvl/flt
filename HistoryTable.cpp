@@ -22,6 +22,10 @@
 #include "DataBase.h"
 #include "HistoryTable.h"
 
+QVariantList HistoryTable::m_columnHeaders = {
+    tr("Date"), tr("Score"), tr("Elapsed"), tr("Level")
+};
+
 HistoryTable::HistoryTable(QList<Record> list, QObject *parent)
     : QAbstractTableModel(parent)
     , m_list(list)
@@ -35,7 +39,10 @@ int HistoryTable::rowCount(const QModelIndex &) const
 
 QVariantList HistoryTable::columnHeaders() const
 {
-    return QVariantList { tr("Date"), tr("Score"), tr("Elapsed") };
+    QVariantList v;
+    for (auto i: m_columnHeaders)
+        v.append(tr(qPrintable(i.toString())));
+    return v;
 }
 
 QVariantList HistoryTable::rowHeaders() const
@@ -50,7 +57,7 @@ QVariantList HistoryTable::rowHeaders() const
 
 int HistoryTable::columnCount(const QModelIndex &) const
 {
-    return 3;
+    return m_columnHeaders.count();
 }
 
 QVariant HistoryTable::data(const QModelIndex &index, int role) const
@@ -72,6 +79,8 @@ QVariant HistoryTable::data(const QModelIndex &index, int role) const
                     .arg(v->total());
         case 2:
             return DataBase::elapsedToString(v->elapsed());
+        case 3:
+            return tr(qPrintable(v->level()));
         }
         break;
 

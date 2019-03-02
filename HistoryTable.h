@@ -48,6 +48,7 @@ protected:
 
 private:
     QList<Record> m_list;
+    static QVariantList m_columnHeaders;
 };
 
 #endif // HISTORYTABLE_H

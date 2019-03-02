@@ -65,7 +65,6 @@ Page {
                 }
 
                 RadioButton {
-                    id: levelNone
                     checked: "EN" === settings.language
                     text: qsTr("English")
 
@@ -201,7 +200,7 @@ Page {
 
                     RadioButton {
                         checked: "None" === settings.level
-                        text: qsTr("None")
+                        text: qsTr("No Clues")
 
                         onCheckedChanged: {
                             if (checked)

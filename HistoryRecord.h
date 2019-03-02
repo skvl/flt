@@ -31,7 +31,8 @@ public:
                     QDateTime date,
                     int correct,
                     int total,
-                    int elapsed);
+                    int elapsed,
+                    QString level);
 
     QString name() const;
 
@@ -45,6 +46,8 @@ public:
 
     int elapsed() const;
 
+    QString level() const;
+
 private:
     QString m_name;
     QString m_sirname;
@@ -52,6 +55,7 @@ private:
     int m_correct;
     int m_total;
     int m_elapsed;
+    QString m_level;
 };
 
 #endif // HISTORYRECORD_H

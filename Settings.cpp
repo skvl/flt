@@ -120,13 +120,14 @@ void Settings::saveResult(QDateTime date, int correct, int total, int elapsed)
     setValue(keys[HistoryCount], count);
 
     auto k = keys[HistoryRecord] + QString::number(count);
-    auto v = QString("DATE:%1 SIRNAME:%2 NAME:%3 CORRECT:%4 TOTAL:%5 ELAPSED:%6")
+    auto v = QString("DATE:%1 SIRNAME:%2 NAME:%3 CORRECT:%4 TOTAL:%5 ELAPSED:%6 LEVEL:%7")
             .arg(date.toString("yyyyMMddHHmmss"))
             .arg(m_userSirname)
             .arg(m_userName)
             .arg(correct)
             .arg(total)
-            .arg(elapsed);
+            .arg(elapsed)
+            .arg(m_level);
     setValue(k, v);
 
     endGroup();
@@ -165,8 +166,9 @@ QVariant Settings::history()
             auto correct = parseValue(v, "CORRECT").toInt();
             auto total = parseValue(v, "TOTAL").toInt();
             auto elapsed = parseValue(v, "ELAPSED").toInt();
+            auto level = parseValue(v, "LEVEL");
 
-            Record hr(name, sirname, date, correct, total, elapsed);
+            Record hr(name, sirname, date, correct, total, elapsed, level);
 
             r.push_back(hr);
         }
@@ -198,7 +200,7 @@ QString Settings::levelDescription() const
         return QString(tr("The simplest level: allows to listen the sentence."));
     else if ("Text" == m_level)
         return QString(tr("The medium level: displays the translated sentence."));
-    else if ("None" == m_level)
+    else if ("No Clues" == m_level)
         return QString(tr("The hardest level: gives no clues to construct the sentence."));
 
     return QString();
