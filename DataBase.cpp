@@ -103,21 +103,37 @@ void DataBase::open()
                             xml.readNext();
                             audio = "file:" + dir.filePath(xml.text().toString());
                         }
-                        else if (xml.name() == "grapheme")
+                        else if (xml.name() == "graphemes")
                         {
-                            xml.readNext();
+                            while(!(xml.tokenType() == QXmlStreamReader::EndElement
+                                    && xml.name() == "graphemes"))
+                            {
+                                xml.readNext();
 
-                            auto bg = QColor("blue");
-                            auto fg = QColor("white");
+                                if (xml.tokenType() == QXmlStreamReader::StartElement)
+                                {
+                                    if (xml.name() == "grapheme")
+                                    {
+                                        auto bg = QColor("blue");
+                                        auto fg = QColor("white");
 
-                            auto a = xml.attributes();
-                            if (a.hasAttribute("background"))
-                                bg = QColor(a.value("background").toUInt());
-                            if (a.hasAttribute("foreground"))
-                                fg = QColor(a.value("foreground").toUInt());
+                                        auto a = xml.attributes();
 
-                            auto w = Word(index++, xml.text().toString(), bg, fg);
-                            sentence.push_back(w);
+                                        if (a.hasAttribute("background"))
+                                            bg = QColor(a.value("background").toString());
+
+                                        if (a.hasAttribute("foreground"))
+                                            fg = QColor(a.value("foreground").toString());
+
+                                        xml.readNext();
+
+                                        auto w = Word(index++, xml.text().toString(), bg, fg);
+                                        sentence.push_back(w);
+                                    }
+
+                                    xml.readNext();
+                                }
+                            }
                         }
                         else if (xml.name() == "translations")
                         {
