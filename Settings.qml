@@ -40,6 +40,43 @@ Page {
     }
 
     Column {
+        GroupBox {
+            title: qsTr("Language")
+
+            width: parent.width
+
+            ButtonGroup {
+                buttons: language.children
+            }
+
+            RowLayout {
+                id: language
+
+                width: parent.width
+
+                RadioButton {
+                    checked: "RU" === settings.language
+                    text: qsTr("Russian")
+
+                    onCheckedChanged: {
+                        if (checked)
+                            settings.language = "RU"
+                    }
+                }
+
+                RadioButton {
+                    id: levelNone
+                    checked: "EN" === settings.language
+                    text: qsTr("English")
+
+                    onCheckedChanged: {
+                        if (checked)
+                            settings.language = "EN"
+                    }
+                }
+            }
+        }
+
         Row {
             Text {
                 text: qsTr("Material Light")
@@ -143,7 +180,6 @@ Page {
                     width: parent.width
 
                     RadioButton {
-                        id: levelAudio
                         checked: "Audio" === settings.level
                         text: qsTr("Audio")
 
@@ -154,7 +190,6 @@ Page {
                     }
 
                     RadioButton {
-                        id: levelText
                         checked: "Text" === settings.level
                         text: qsTr("Text")
 
@@ -165,7 +200,6 @@ Page {
                     }
 
                     RadioButton {
-                        id: levelNone
                         checked: "None" === settings.level
                         text: qsTr("None")
 

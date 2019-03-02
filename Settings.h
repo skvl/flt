@@ -23,7 +23,9 @@
 #define SETTINGS_H
 
 #include <QDateTime>
+#include <QQmlApplicationEngine>
 #include <QSettings>
+#include <QTranslator>
 
 class Settings : public QSettings
 {
@@ -35,9 +37,10 @@ class Settings : public QSettings
     Q_PROPERTY(QVariant history READ history NOTIFY historyChanged)
     Q_PROPERTY(QString level READ level WRITE setLevel NOTIFY levelChanged)
     Q_PROPERTY(QString levelDescription READ levelDescription NOTIFY levelDescriptionChanged)
+    Q_PROPERTY(QString language READ language WRITE setLanguage NOTIFY languageChanged)
 
 public:
-    Settings(const QString &organization, const QString &application = QString(), QObject *parent = nullptr);
+    Settings(QQmlApplicationEngine *engine, const QString &organization, const QString &application = QString(), QObject *parent = nullptr);
     ~Settings();
 
     Q_INVOKABLE void save();
@@ -61,6 +64,9 @@ public:
 
     QString levelDescription() const;
 
+    QString language() const;
+    void setLanguage(const QString &language);
+
 signals:
     void userNameChanged();
     void userSirnameChanged();
@@ -68,10 +74,12 @@ signals:
     void historyChanged();
     void levelChanged();
     void levelDescriptionChanged();
+    void languageChanged();
 
 private:
     enum {
         AppInfo,
+        Language,
         Theme,
         Level,
         UserInfo,
@@ -86,11 +94,16 @@ private:
 
     QString m_userName;
     QString m_userSirname;
+    QString m_language;
     QString m_theme;
     QString m_level;
     QList<QString> m_levelDescription;
 
+    QTranslator m_translator;
+    QQmlApplicationEngine *m_engine;
+
     QString parseValue(QString kv, QString key) const;
+    void loadTranslator();
 };
 
 #endif // SETTINGS_H

@@ -44,6 +44,7 @@ CppApplication {
         "main.cpp",
         "main.qml",
         "qml.qrc",
+        "translations.qrc",
     ]
 
     Group {     // Properties for the produced executable

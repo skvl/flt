@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QDebug>
+#include <QGuiApplication>
 
 #include "HistoryRecord.h"
 #include "HistoryTable.h"
@@ -27,6 +27,7 @@
 
 const QHash<int, QString> Settings::keys{
     {AppInfo, "AppInfo"},
+    {Language, "Language"},
     {Theme, "Theme"},
     {Level, "Level"},
     {UserInfo, "UserInfo"},
@@ -37,9 +38,11 @@ const QHash<int, QString> Settings::keys{
     {HistoryRecord, "Record "},
 };
 
-Settings::Settings(const QString &organization, const QString &application, QObject *parent)
+Settings::Settings(QQmlApplicationEngine *engine, const QString &organization, const QString &application, QObject *parent)
     : QSettings (organization, application, parent)
+    , m_engine(engine)
 {
+    m_translator.load(":/translations/ru.qm");
 }
 
 Settings::~Settings()
@@ -78,6 +81,7 @@ void Settings::setUserSirname(const QString &userSirname)
 void Settings::save()
 {
     beginGroup(keys[AppInfo]);
+    setValue(keys[Language], m_language);
     setValue(keys[Theme], m_theme);
     setValue(keys[Level], m_level);
     endGroup();
@@ -90,7 +94,12 @@ void Settings::save()
 
 void Settings::load()
 {
+    QString defaultLocale = QLocale::system().name(); // e.g. "de_DE"
+    defaultLocale.truncate(defaultLocale.lastIndexOf('_')); // e.g. "de"
+    defaultLocale = defaultLocale.toUpper();
+
     beginGroup(keys[AppInfo]);
+    m_language = value(keys[Language], defaultLocale).toString();
     m_theme = value(keys[Theme], "Light").toString();
     m_level = value(keys[Level], "Audio").toString();
     endGroup();
@@ -99,6 +108,8 @@ void Settings::load()
     m_userName = value(keys[UserName], "").toString();
     m_userSirname = value(keys[UserSirname], "").toString();
     endGroup();
+
+    loadTranslator();
 }
 
 void Settings::saveResult(QDateTime date, int correct, int total, int elapsed)
@@ -193,6 +204,21 @@ QString Settings::levelDescription() const
     return QString();
 }
 
+QString Settings::language() const
+{
+    return m_language;
+}
+
+void Settings::setLanguage(const QString &language)
+{
+    if (language == m_language)
+        return;
+
+    m_language = language;
+    loadTranslator();
+    emit languageChanged();
+}
+
 QString Settings::parseValue(QString kv, QString key) const
 {
     QHash<QString, QString> map;
@@ -205,4 +231,14 @@ QString Settings::parseValue(QString kv, QString key) const
     }
 
     return map.value(key);
+}
+
+void Settings::loadTranslator()
+{
+    if ("RU" == m_language)
+        qApp->installTranslator(&m_translator);
+    else
+        qApp->removeTranslator(&m_translator);
+
+    m_engine->retranslate();
 }

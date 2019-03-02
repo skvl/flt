@@ -33,9 +33,6 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    Settings st(ORGNAME, APPNAME);
-    st.load();
-
     DataBase db("data/sentences.xml");
     db.open();
 
@@ -43,6 +40,10 @@ int main(int argc, char *argv[])
     QQuickStyle::setStyle("Material");
 
     QQmlApplicationEngine engine;
+
+    Settings st(&engine, ORGNAME, APPNAME);
+    st.load();
+
     engine.rootContext()->setContextProperty("dataBase", &db);
     engine.rootContext()->setContextProperty("settings", &st);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
