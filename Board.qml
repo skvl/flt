@@ -90,7 +90,7 @@ Page {
             }
 
             Label {
-                visible: "Text" == settings.level
+                visible: 2 === settings.level
 
                 Layout.fillWidth: true
 
