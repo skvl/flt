@@ -67,7 +67,7 @@ Page {
                     clip: true
                 }
 
-                x: index * tableView.columnWidthProvider(index)
+                x: column * tableView.columnWidthProvider(column)
             }
 
             Rectangle { // mask the headers
