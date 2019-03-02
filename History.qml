@@ -52,9 +52,9 @@ Page {
             topMargin: columnsHeader.implicitHeight
             model: settings.history
             delegate: Item {
-                // FIX
                 width: tableView.columnWidthProvider(modelData)
                 Text {
+                    id: txt
                     text: display
                     anchors.fill: parent
                     anchors.margins: 10
@@ -66,6 +66,8 @@ Page {
                     wrapMode: Text.Wrap
                     clip: true
                 }
+
+                x: index * tableView.columnWidthProvider(index)
             }
 
             Rectangle { // mask the headers
