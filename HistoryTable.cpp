@@ -21,6 +21,7 @@
 
 #include "DataBase.h"
 #include "HistoryTable.h"
+#include "Settings.h"
 
 QVariantList HistoryTable::m_columnHeaders = {
     tr("Date"), tr("Score"), tr("Elapsed"), tr("Level")
@@ -80,7 +81,7 @@ QVariant HistoryTable::data(const QModelIndex &index, int role) const
         case 2:
             return DataBase::elapsedToString(v->elapsed());
         case 3:
-            return tr(qPrintable(v->level()));
+            return Settings::toString(v->level());
         }
         break;
 

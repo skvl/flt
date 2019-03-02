@@ -101,7 +101,7 @@ void Settings::load()
     beginGroup(keys[AppInfo]);
     m_language = value(keys[Language], defaultLocale).toString();
     m_theme = value(keys[Theme], "Light").toString();
-    m_level = value(keys[Level], "Audio").toString();
+    m_level = toLevels(value(keys[Level], 1).toInt());
     endGroup();
 
     beginGroup(keys[UserInfo]);
@@ -166,7 +166,7 @@ QVariant Settings::history()
             auto correct = parseValue(v, "CORRECT").toInt();
             auto total = parseValue(v, "TOTAL").toInt();
             auto elapsed = parseValue(v, "ELAPSED").toInt();
-            auto level = parseValue(v, "LEVEL");
+            auto level = parseValue(v, "LEVEL").toInt();
 
             Record hr(name, sirname, date, correct, total, elapsed, level);
 
@@ -179,29 +179,65 @@ QVariant Settings::history()
     return QVariant::fromValue(new HistoryTable(r));
 }
 
-QString Settings::level() const
+int Settings::level() const
 {
     return m_level;
 }
 
-void Settings::setLevel(const QString &level)
+void Settings::setLevel(const int level)
 {
-    if (level == m_level)
+    auto l = toLevels(level);
+    if (l == m_level)
         return;
 
-    m_level = level;
+    m_level = l;
+
     emit levelChanged();
     emit levelDescriptionChanged();
 }
 
+Settings::Levels Settings::toLevels(int level)
+{
+    switch (level) {
+    default:
+    case 1:
+        return Audio;
+    case 2:
+        return Text;
+    case 3:
+        return NoClues;
+    }
+}
+
+QString Settings::toString(enum Levels level)
+{
+    switch (level) {
+    case Audio:
+        return tr("Audio");
+    case Text:
+        return tr("Text");
+    case NoClues:
+        return tr("No Clues");
+    }
+
+    return tr("Audio");
+}
+
+QString Settings::toString(int level)
+{
+    return toString(toLevels(level));
+}
+
 QString Settings::levelDescription() const
 {
-    if ("Audio" == m_level)
+    switch (m_level) {
+    case Audio:
         return QString(tr("The simplest level: allows to listen the sentence."));
-    else if ("Text" == m_level)
+    case Text:
         return QString(tr("The medium level: displays the translated sentence."));
-    else if ("No Clues" == m_level)
+    case NoClues:
         return QString(tr("The hardest level: gives no clues to construct the sentence."));
+    }
 
     return QString();
 }

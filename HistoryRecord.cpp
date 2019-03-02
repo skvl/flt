@@ -26,7 +26,7 @@ Record::Record(QString name,
                int correct,
                int total,
                int elapsed,
-               QString level)
+               int level)
     : m_name(name)
     , m_sirname(sirname)
     , m_date(date)
@@ -67,7 +67,7 @@ int Record::elapsed() const
     return m_elapsed;
 }
 
-QString Record::level() const
+int Record::level() const
 {
     return m_level;
 }

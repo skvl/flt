@@ -35,11 +35,17 @@ class Settings : public QSettings
     Q_PROPERTY(QString userSirname READ userSirname WRITE setUserSirname NOTIFY userSirnameChanged)
     Q_PROPERTY(QString theme READ theme WRITE setTheme NOTIFY themeChanged)
     Q_PROPERTY(QVariant history READ history NOTIFY historyChanged)
-    Q_PROPERTY(QString level READ level WRITE setLevel NOTIFY levelChanged)
+    Q_PROPERTY(int level READ level WRITE setLevel NOTIFY levelChanged)
     Q_PROPERTY(QString levelDescription READ levelDescription NOTIFY levelDescriptionChanged)
     Q_PROPERTY(QString language READ language WRITE setLanguage NOTIFY languageChanged)
 
 public:
+    enum Levels {
+        Audio = 1,
+        Text,
+        NoClues,
+    };
+
     Settings(QQmlApplicationEngine *engine, const QString &organization, const QString &application = QString(), QObject *parent = nullptr);
     ~Settings();
 
@@ -59,8 +65,12 @@ public:
 
     QVariant history();
 
-    QString level() const;
-    void setLevel(const QString &level);
+    int level() const;
+    void setLevel(const int level);
+
+    static enum Levels toLevels(int level);
+    static QString toString(enum Levels level);
+    static QString toString(int level);
 
     QString levelDescription() const;
 
@@ -96,7 +106,7 @@ private:
     QString m_userSirname;
     QString m_language;
     QString m_theme;
-    QString m_level;
+    enum Levels m_level;
     QList<QString> m_levelDescription;
 
     QTranslator m_translator;

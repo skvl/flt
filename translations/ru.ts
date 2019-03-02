@@ -35,27 +35,27 @@
 <context>
     <name>HistoryTable</name>
     <message>
-        <location filename="../HistoryTable.cpp" line="26"/>
+        <location filename="../HistoryTable.cpp" line="27"/>
         <source>Date</source>
         <translation>Дата</translation>
     </message>
     <message>
-        <location filename="../HistoryTable.cpp" line="26"/>
+        <location filename="../HistoryTable.cpp" line="27"/>
         <source>Score</source>
         <translation>Оценка</translation>
     </message>
     <message>
-        <location filename="../HistoryTable.cpp" line="26"/>
+        <location filename="../HistoryTable.cpp" line="27"/>
         <source>Elapsed</source>
         <translation>Время</translation>
     </message>
     <message>
-        <location filename="../HistoryTable.cpp" line="26"/>
+        <location filename="../HistoryTable.cpp" line="27"/>
         <source>Level</source>
         <translation>Уровень сложности</translation>
     </message>
     <message>
-        <location filename="../HistoryTable.cpp" line="77"/>
+        <location filename="../HistoryTable.cpp" line="78"/>
         <source>%1 of %2</source>
         <translation>%1 из %2</translation>
     </message>
@@ -122,16 +122,20 @@
     </message>
     <message>
         <location filename="../Settings.qml" line="183"/>
+        <location filename="../Settings.cpp" line="216"/>
+        <location filename="../Settings.cpp" line="223"/>
         <source>Audio</source>
         <translation>Озвучка</translation>
     </message>
     <message>
         <location filename="../Settings.qml" line="193"/>
+        <location filename="../Settings.cpp" line="218"/>
         <source>Text</source>
         <translation>Перевод</translation>
     </message>
     <message>
         <location filename="../Settings.qml" line="203"/>
+        <location filename="../Settings.cpp" line="220"/>
         <source>No Clues</source>
         <translation>Без подсказок</translation>
     </message>
@@ -140,17 +144,17 @@
         <translation type="vanished">Без подсказок</translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="200"/>
+        <location filename="../Settings.cpp" line="235"/>
         <source>The simplest level: allows to listen the sentence.</source>
         <translation>Низкий уровень сложности: позволяетсф прослушивать предложение.</translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="202"/>
+        <location filename="../Settings.cpp" line="237"/>
         <source>The medium level: displays the translated sentence.</source>
         <translation>Средний уровень сложности: отображается перевод предложения.</translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="204"/>
+        <location filename="../Settings.cpp" line="239"/>
         <source>The hardest level: gives no clues to construct the sentence.</source>
         <translation>Высокий уровень сложности: никаких подсказок.</translation>
     </message>

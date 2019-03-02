@@ -32,7 +32,7 @@ public:
                     int correct,
                     int total,
                     int elapsed,
-                    QString level);
+                    int level);
 
     QString name() const;
 
@@ -46,7 +46,7 @@ public:
 
     int elapsed() const;
 
-    QString level() const;
+    int level() const;
 
 private:
     QString m_name;
@@ -55,7 +55,7 @@ private:
     int m_correct;
     int m_total;
     int m_elapsed;
-    QString m_level;
+    int m_level;
 };
 
 #endif // HISTORYRECORD_H

@@ -179,32 +179,32 @@ Page {
                     width: parent.width
 
                     RadioButton {
-                        checked: "Audio" === settings.level
+                        checked: 1 === settings.level
                         text: qsTr("Audio")
 
                         onCheckedChanged: {
                             if (checked)
-                                settings.level = "Audio"
+                                settings.level = 1
                         }
                     }
 
                     RadioButton {
-                        checked: "Text" === settings.level
+                        checked: 2 === settings.level
                         text: qsTr("Text")
 
                         onCheckedChanged: {
                             if (checked)
-                                settings.level = "Text"
+                                settings.level = 2
                         }
                     }
 
                     RadioButton {
-                        checked: "None" === settings.level
+                        checked: 3 === settings.level
                         text: qsTr("No Clues")
 
                         onCheckedChanged: {
                             if (checked)
-                                settings.level = "None"
+                                settings.level = 3
                         }
                     }
                 }
