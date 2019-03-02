@@ -38,6 +38,7 @@ class DataBase : public QObject
     Q_PROPERTY(QVariant data READ data NOTIFY dataChanged)
     Q_PROPERTY(QString audio READ audio NOTIFY audioChanged)
     Q_PROPERTY(QString wordFont READ wordFont CONSTANT)
+    Q_PROPERTY(QString translation READ translation NOTIFY translationChanged)
 
 public:
     DataBase(QString path = QString(), QObject *parent = nullptr);
@@ -50,6 +51,7 @@ public:
     // Get current sentence
     QString audio();
     QVariant data();
+    QString translation();
     // Get next sentece
     Q_INVOKABLE void next();
     // Get next sentece
@@ -80,6 +82,7 @@ signals:
     void dateChanged();
     void dataChanged();
     void audioChanged();
+    void translationChanged();
 
 private slots:
     void tick();

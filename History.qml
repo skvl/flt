@@ -39,16 +39,21 @@ Page {
     // Links:
     // - https://stackoverflow.com/a/27657021
     // - https://forum.qt.io/post/504932
+    // - https://forum.qt.io/post/502134
     TableView {
             id: tableView
 
-            columnWidthProvider: function (column) { return 120; }
+            columnWidthProvider: function (column) {
+                return tableView.width / (tableView.columns + 1);
+            }
             rowHeightProvider: function (column) { return 80; }
             anchors.fill: parent
             leftMargin: rowsHeader.implicitWidth
             topMargin: columnsHeader.implicitHeight
             model: settings.history
             delegate: Item {
+                // FIX
+                width: tableView.columnWidthProvider(modelData)
                 Text {
                     text: display
                     anchors.fill: parent
@@ -102,7 +107,7 @@ Page {
                 Repeater {
                     model: settings.history.rowHeaders
                     Label {
-                        width: 120
+                        width: tableView.columnWidthProvider(modelData)
                         height: tableView.rowHeightProvider(modelData)
                         text: modelData
                         color: '#aaaaaa'

@@ -28,6 +28,7 @@
 const QHash<int, QString> Settings::keys{
     {AppInfo, "AppInfo"},
     {Theme, "Theme"},
+    {Level, "Level"},
     {UserInfo, "UserInfo"},
     {UserName, "Name"},
     {UserSirname, "Sirname"},
@@ -78,6 +79,7 @@ void Settings::save()
 {
     beginGroup(keys[AppInfo]);
     setValue(keys[Theme], m_theme);
+    setValue(keys[Level], m_level);
     endGroup();
 
     beginGroup(keys[UserInfo]);
@@ -90,6 +92,7 @@ void Settings::load()
 {
     beginGroup(keys[AppInfo]);
     m_theme = value(keys[Theme], "Light").toString();
+    m_level = value(keys[Level], "Audio").toString();
     endGroup();
 
     beginGroup(keys[UserInfo]);
@@ -163,10 +166,37 @@ QVariant Settings::history()
     return QVariant::fromValue(new HistoryTable(r));
 }
 
+QString Settings::level() const
+{
+    return m_level;
+}
+
+void Settings::setLevel(const QString &level)
+{
+    if (level == m_level)
+        return;
+
+    m_level = level;
+    emit levelChanged();
+    emit levelDescriptionChanged();
+}
+
+QString Settings::levelDescription() const
+{
+    if ("Audio" == m_level)
+        return QString(tr("The simplest level: allows to listen the sentence."));
+    else if ("Text" == m_level)
+        return QString(tr("The medium level: displays the translated sentence."));
+    else if ("None" == m_level)
+        return QString(tr("The hardest level: gives no clues to construct the sentence."));
+
+    return QString();
+}
+
 QString Settings::parseValue(QString kv, QString key) const
 {
     QHash<QString, QString> map;
-
+    
     auto paires = kv.split(" ");
     for (auto i: paires)
     {

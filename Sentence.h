@@ -35,6 +35,7 @@ class Sentence : public QAbstractListModel
     Q_OBJECT
 
     Q_PROPERTY(QString audio READ audio CONSTANT)
+    Q_PROPERTY(QString translation READ translation CONSTANT)
     Q_PROPERTY(QString origin READ origin CONSTANT)
     Q_PROPERTY(QString result READ result CONSTANT)
 
@@ -57,6 +58,7 @@ public:
     Q_INVOKABLE void move(int from, int to);
 
     QString audio() const;
+    QString translation() const;
 
     bool wrong() const;
     QString origin() const;

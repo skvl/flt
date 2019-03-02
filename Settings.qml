@@ -123,6 +123,67 @@ Page {
             width: parent.width
         }
 
+        Column {
+            width: parent.width
+
+            spacing: 5
+
+            GroupBox {
+                title: qsTr("Difficulty")
+
+                width: parent.width
+
+                ButtonGroup {
+                    buttons: level.children
+                }
+
+                RowLayout {
+                    id: level
+
+                    width: parent.width
+
+                    RadioButton {
+                        id: levelAudio
+                        checked: "Audio" === settings.level
+                        text: qsTr("Audio")
+
+                        onCheckedChanged: {
+                            if (checked)
+                                settings.level = "Audio"
+                        }
+                    }
+
+                    RadioButton {
+                        id: levelText
+                        checked: "Text" === settings.level
+                        text: qsTr("Text")
+
+                        onCheckedChanged: {
+                            if (checked)
+                                settings.level = "Text"
+                        }
+                    }
+
+                    RadioButton {
+                        id: levelNone
+                        checked: "None" === settings.level
+                        text: qsTr("None")
+
+                        onCheckedChanged: {
+                            if (checked)
+                                settings.level = "None"
+                        }
+                    }
+                }
+            }
+
+            Label {
+                id: levelDescription
+
+                text: settings.levelDescription
+            }
+        }
+
         anchors.margins: 10
         anchors.fill: parent
 

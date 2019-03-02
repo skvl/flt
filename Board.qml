@@ -39,48 +39,62 @@ Page {
     }
 
     header: ToolBar {
-        RowLayout {
-            ToolButton {
-                text: qsTr("Audio")
+        ColumnLayout {
+            RowLayout {
+                ToolButton {
+                    text: qsTr("Audio")
+                    visible: "Audio" === settings.level
 
-                onClicked: audio.play()
+                    onClicked: audio.play()
 
-                Layout.alignment: Qt.AlignVCenter
-            }
+                    Layout.alignment: Qt.AlignVCenter
+                }
 
-            ToolButton {
-                text: qsTr("Previous")
+                ToolButton {
+                    text: qsTr("Previous")
 
-                onClicked: dataBase.previous()
+                    onClicked: dataBase.previous()
 
-                Layout.alignment: Qt.AlignVCenter
-            }
+                    Layout.alignment: Qt.AlignVCenter
+                }
 
-            ToolButton {
-                text: qsTr("Next")
+                ToolButton {
+                    text: qsTr("Next")
 
-                onClicked: dataBase.next()
+                    onClicked: dataBase.next()
 
-                Layout.alignment: Qt.AlignVCenter
-            }
+                    Layout.alignment: Qt.AlignVCenter
+                }
 
-            Label {
-                id: stopwatch
+                Label {
+                    id: stopwatch
 
-                text: dataBase.elapsedToString(dataBase.elapsed)
+                    text: dataBase.elapsedToString(dataBase.elapsed)
 
-                horizontalAlignment: Text.AlignHCenter
+                    horizontalAlignment: Text.AlignHCenter
 
-                Layout.alignment: Qt.AlignVCenter
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.fillWidth: true
+                }
+
+                ToolButton {
+                    text: qsTr("Finish")
+
+                    onClicked: stack.replace(Qt.resolvedUrl("Results.qml"))
+
+                    Layout.alignment: Qt.AlignVCenter
+                }
+
+                Layout.fillHeight: true
                 Layout.fillWidth: true
             }
 
-            ToolButton {
-                text: qsTr("Finish")
+            Label {
+                visible: "Text" == settings.level
 
-                onClicked: stack.replace(Qt.resolvedUrl("Results.qml"))
+                Layout.fillWidth: true
 
-                Layout.alignment: Qt.AlignVCenter
+                text: root.dataModel.translation
             }
 
             anchors.fill: parent

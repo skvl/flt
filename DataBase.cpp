@@ -168,6 +168,11 @@ QVariant DataBase::data()
     return QVariant::fromValue(take());
 }
 
+QString DataBase::translation()
+{
+    return take()->translation();
+}
+
 Sentence *DataBase::take()
 {
     if (m_data.begin() == m_iterator)

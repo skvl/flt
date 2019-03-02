@@ -33,6 +33,8 @@ class Settings : public QSettings
     Q_PROPERTY(QString userSirname READ userSirname WRITE setUserSirname NOTIFY userSirnameChanged)
     Q_PROPERTY(QString theme READ theme WRITE setTheme NOTIFY themeChanged)
     Q_PROPERTY(QVariant history READ history NOTIFY historyChanged)
+    Q_PROPERTY(QString level READ level WRITE setLevel NOTIFY levelChanged)
+    Q_PROPERTY(QString levelDescription READ levelDescription NOTIFY levelDescriptionChanged)
 
 public:
     Settings(const QString &organization, const QString &application = QString(), QObject *parent = nullptr);
@@ -54,16 +56,24 @@ public:
 
     QVariant history();
 
+    QString level() const;
+    void setLevel(const QString &level);
+
+    QString levelDescription() const;
+
 signals:
     void userNameChanged();
     void userSirnameChanged();
     void themeChanged();
     void historyChanged();
+    void levelChanged();
+    void levelDescriptionChanged();
 
 private:
     enum {
         AppInfo,
         Theme,
+        Level,
         UserInfo,
         UserName,
         UserSirname,
@@ -77,6 +87,8 @@ private:
     QString m_userName;
     QString m_userSirname;
     QString m_theme;
+    QString m_level;
+    QList<QString> m_levelDescription;
 
     QString parseValue(QString kv, QString key) const;
 };

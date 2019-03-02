@@ -86,6 +86,11 @@ QString Sentence::audio() const
     return m_audio;
 }
 
+QString Sentence::translation() const
+{
+    return m_translations["RU"];
+}
+
 bool Sentence::wrong() const
 {
     int prev = 0;
