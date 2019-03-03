@@ -4,22 +4,32 @@
 <context>
     <name>Board</name>
     <message>
-        <location filename="../Board.qml" line="45"/>
+        <location filename="../Board.qml" line="93"/>
         <source>Audio</source>
         <translation>Озвучка</translation>
     </message>
     <message>
-        <location filename="../Board.qml" line="54"/>
+        <location filename="../Board.qml" line="102"/>
         <source>Previous</source>
         <translation>Предыдущее</translation>
     </message>
     <message>
-        <location filename="../Board.qml" line="62"/>
+        <location filename="../Board.qml" line="106"/>
+        <source>This is the first sentence.</source>
+        <translation>Это первое предложение.</translation>
+    </message>
+    <message>
+        <location filename="../Board.qml" line="116"/>
         <source>Next</source>
         <translation>Следующее</translation>
     </message>
     <message>
-        <location filename="../Board.qml" line="81"/>
+        <location filename="../Board.qml" line="120"/>
+        <source>This is the last sentence.</source>
+        <translation>Это последнее предложение.</translation>
+    </message>
+    <message>
+        <location filename="../Board.qml" line="141"/>
         <source>Finish</source>
         <translation>Завершить</translation>
     </message>

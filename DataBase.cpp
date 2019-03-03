@@ -189,6 +189,20 @@ QString DataBase::translation()
     return take()->translation();
 }
 
+bool DataBase::first()
+{
+    if (m_data.begin() == m_iterator)
+        return true;
+    return false;
+}
+
+bool DataBase::last()
+{
+    if (m_data.end() == m_iterator + 1)
+        return true;
+    return false;
+}
+
 Sentence *DataBase::take()
 {
     if (m_data.begin() == m_iterator)
@@ -204,14 +218,22 @@ Sentence *DataBase::take()
 
 void DataBase::next()
 {
-    m_iterator++;
-    emit(dataChanged());
+    if (m_iterator + 1 < m_data.end()) {
+        m_iterator++;
+        emit dataChanged();
+        emit firstChanged();
+        emit lastChanged();
+    }
 }
 
 void DataBase::previous()
 {
-    m_iterator--;
-    emit(dataChanged());
+    if (m_iterator - 1 >= m_data.begin()) {
+        m_iterator--;
+        emit dataChanged();
+        emit firstChanged();
+        emit lastChanged();
+    }
 }
 
 void DataBase::flush()

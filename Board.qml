@@ -22,8 +22,10 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
+import QtQuick.Controls.Material 2.0
 import QtQml.Models 2.1
 import QtMultimedia 5.0
+
 
 Page {
     FontLoader {
@@ -36,6 +38,52 @@ Page {
         id: audio
 
         source: root.dataModel.audio
+    }
+
+    Rectangle {
+        id: message
+
+        property string text: ""
+
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.margins: 10
+        height: 50; width: parent.width * 0.8
+        radius: 3
+        color: Material.primary
+        visible: false
+        z: 10
+
+        onVisibleChanged: {
+            if (visible)
+                timer.running = true
+        }
+
+        Text {
+            text: parent.text
+
+            anchors.fill: parent
+            anchors.margins: 5
+
+            fontSizeMode: Text.Fit
+            minimumPointSize: 8
+            font.pointSize: 1000
+
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+
+            color: "white"
+        }
+
+        Timer {
+            id: timer
+
+            interval: 1500
+            running: false
+            repeat: true
+
+            onTriggered: message.visible = false
+        }
     }
 
     header: ToolBar {
@@ -53,7 +101,13 @@ Page {
                 ToolButton {
                     text: qsTr("Previous")
 
-                    onClicked: dataBase.previous()
+                    onClicked: {
+                        if (dataBase.first) {
+                            message.text = qsTr("This is the first sentence.")
+                            message.visible = true
+                        } else
+                            dataBase.previous()
+                    }
 
                     Layout.alignment: Qt.AlignVCenter
                 }
@@ -61,7 +115,13 @@ Page {
                 ToolButton {
                     text: qsTr("Next")
 
-                    onClicked: dataBase.next()
+                    onClicked: {
+                        if (dataBase.last) {
+                            message.text = qsTr("This is the last sentence.")
+                            message.visible = true
+                        } else
+                            dataBase.next()
+                    }
 
                     Layout.alignment: Qt.AlignVCenter
                 }
