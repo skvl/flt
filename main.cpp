@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    DataBase db("data/sentences.xml");
+    DataBase db("data/data.json");
     db.open();
 
     // Should be defined before engine

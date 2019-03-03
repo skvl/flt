@@ -21,9 +21,12 @@
 #include <algorithm>
 #include <random>
 
+#include <QDebug>
 #include <QDir>
 #include <QFileInfo>
-#include <QXmlStreamReader>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 #include "DataBase.h"
 
@@ -46,124 +49,117 @@ void DataBase::open()
 {
     QDir dir(QFileInfo(m_file->fileName()).absoluteDir());
 
-    if (m_file->open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        QXmlStreamReader xml(m_file);
-
-        while (!xml.atEnd() && !xml.hasError())
-        {
-            QXmlStreamReader::TokenType token = xml.readNext();
-
-            if (token == QXmlStreamReader::StartDocument)
-                continue;
-
-            if (token == QXmlStreamReader::StartElement
-                    && (xml.name() == "sentences"
-                        || xml.name() == "info"))
-                continue;
-
-            if (token == QXmlStreamReader::StartElement
-                    && xml.name() == "fonts")
-            {
-                while(!(xml.tokenType() == QXmlStreamReader::EndElement
-                        && xml.name() == "fonts"))
-                {
-                    xml.readNext();
-
-                    if (xml.tokenType() == QXmlStreamReader::StartElement)
-                    {
-                        if (xml.name() == "word")
-                        {
-                            xml.readNext();
-                            m_wordFont = "file:" + dir.filePath(xml.text().toString());
-                        }
-
-                        xml.readNext();
-                    }
-                }
-            }
-
-            if (token == QXmlStreamReader::StartElement
-                    && xml.name() == "sentence")
-            {
-                int index = 0;
-                QString audio;
-                QVector<Word> sentence;
-                QMap<QString, QString> translations;
-
-                while(!(xml.tokenType() == QXmlStreamReader::EndElement
-                        && xml.name() == "sentence"))
-                {
-                    xml.readNext();
-
-                    if (xml.tokenType() == QXmlStreamReader::StartElement)
-                    {
-                        if (xml.name() == "audio")
-                        {
-                            xml.readNext();
-                            audio = "file:" + dir.filePath(xml.text().toString());
-                        }
-                        else if (xml.name() == "graphemes")
-                        {
-                            while(!(xml.tokenType() == QXmlStreamReader::EndElement
-                                    && xml.name() == "graphemes"))
-                            {
-                                xml.readNext();
-
-                                if (xml.tokenType() == QXmlStreamReader::StartElement)
-                                {
-                                    if (xml.name() == "grapheme")
-                                    {
-                                        auto bg = QColor("blue");
-                                        auto fg = QColor("white");
-
-                                        auto a = xml.attributes();
-
-                                        if (a.hasAttribute("background"))
-                                            bg = QColor(a.value("background").toString());
-
-                                        if (a.hasAttribute("foreground"))
-                                            fg = QColor(a.value("foreground").toString());
-
-                                        xml.readNext();
-
-                                        auto w = Word(index++, xml.text().toString(), bg, fg);
-                                        sentence.push_back(w);
-                                    }
-
-                                    xml.readNext();
-                                }
-                            }
-                        }
-                        else if (xml.name() == "translations")
-                        {
-                            while(!(xml.tokenType() == QXmlStreamReader::EndElement
-                                    && xml.name() == "translation"))
-                            {
-                                xml.readNext();
-
-                                if (xml.tokenType() == QXmlStreamReader::StartElement)
-                                {
-                                    auto a = xml.attributes();
-                                    if (a.hasAttribute("language"))
-                                    {
-                                        auto l = a.value("language").toString();
-                                        xml.readNext();
-                                        translations[l] = xml.text().toString();
-                                    }
-                                }
-                            }
-                        }
-
-                        xml.readNext();
-                    }
-                }
-
-                m_data.push_back(new Sentence(audio, sentence, translations));
-            } // sentence parser
-        }
+    if (!m_file->open(QIODevice::ReadOnly)) {
+        qWarning("Couldn't open save file.");
+        return;
     }
 
+    QJsonDocument doc(QJsonDocument::fromJson(m_file->readAll()));
+    if (!doc.isObject()) {
+        qWarning("Malformed JSON file!");
+        return;
+    }
+
+    /********************
+     * Parse basic info *
+     *******************/
+    auto info = doc["info"];
+    if (info.isUndefined()) {
+        qWarning("No 'info'!");
+        return;
+    }
+
+    auto fonts = info["fonts"];
+    if (fonts.isUndefined()) {
+        qWarning("No 'fonts'!");
+        return;
+    }
+
+    m_wordFont = dir.filePath(fonts["grapheme"].toString());
+    if (m_wordFont.isNull() || !QFileInfo(m_wordFont).exists()) {
+        qWarning("No grapheme font!");
+        return;
+    }
+    m_wordFont = "file:" + m_wordFont;
+
+    /*******************
+     * Parse sentences *
+     ******************/
+    auto s = doc["sentences"];
+    if (!s.isArray()) {
+        qWarning("No sentences array!");
+        return;
+    }
+
+    for (auto sv: s.toArray()) {
+        auto so = sv.toObject();
+        if (so.isEmpty()) {
+            qWarning("Sentence is not an object!");
+            return;
+        }
+
+        QString audio = dir.filePath(so["audio"].toString());
+        if (audio.isEmpty() || !QFileInfo(audio).exists()) {
+            qWarning("No audio!");
+            return;
+        }
+        audio = "file:" + audio;
+
+        int lesson = so["lesson"].toInt(-1);
+        int dialog = so["dialog"].toInt(-1);
+        if (-1 == lesson || -1 == dialog) {
+            qWarning("No lesson or dialog");
+            return;
+        }
+
+        QVector<Word> graphemes;
+        for (auto gv: so["graphemes"].toArray()) {
+            auto go = gv.toObject();
+            if (go.isEmpty()) {
+                qWarning("Malformed JSON file: grapheme is not an object!");
+                return;
+            }
+
+            QColor bg = QColor(go["background"].toString("blue"));
+            QColor fg = QColor(go["foreground"].toString("white"));
+
+            QString g = go["grapheme"].toString();
+            if (g.isEmpty()) {
+                qWarning("Malformed JSON file: no grapheme!");
+                return;
+            }
+
+            graphemes.push_back(Word(graphemes.count(), g, bg, fg));
+        }
+
+        QMap<QString, QString> translations;
+        for (auto tv: so["translations"].toArray()) {
+            auto to = tv.toObject();
+            if (to.isEmpty()) {
+                qWarning("Malformed JSON file: translation is not an object!");
+                return;
+            }
+
+            QString l = to["language"].toString();
+            QString t = to["translation"].toString();
+            if (l.isEmpty() || t.isEmpty() || translations.contains(l)) {
+                qWarning("Malformed JSON file: empty language or translation or redudant translation!");
+                return;
+            }
+
+            translations[l] = t;
+        }
+
+        m_data.push_back(new Sentence(audio, graphemes, translations));
+    }
+
+    /***************
+     * Parse words *
+     **************/
+
+    /*******
+     * End *
+     ******/
     m_opened = true;
 
     flush();
