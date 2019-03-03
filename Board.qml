@@ -91,7 +91,7 @@ Page {
             RowLayout {
                 ToolButton {
                     text: qsTr("Audio")
-                    visible: "Audio" === settings.level
+                    visible: 1 >= settings.level
 
                     onClicked: audio.play()
 
@@ -150,7 +150,7 @@ Page {
             }
 
             Label {
-                visible: 2 === settings.level
+                visible: 2 >= settings.level
 
                 Layout.fillWidth: true
 
