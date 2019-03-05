@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    Settings st(&engine, ORGNAME, APPNAME);
+    Settings st(&engine, "Sergey Kovalev", "Foreign Language Trainer");
     st.load();
 
     engine.rootContext()->setContextProperty("dataBase", &db);
