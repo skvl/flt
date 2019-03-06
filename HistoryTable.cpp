@@ -23,9 +23,14 @@
 #include "HistoryTable.h"
 #include "Settings.h"
 
-QVariantList HistoryTable::m_columnHeaders = {
-    tr("Date"), tr("Score"), tr("Elapsed"), tr("Level")
+namespace  {
+QVariantList m_columnHeaders = {
+    QObject::tr("Date"),
+    QObject::tr("Score"),
+    QObject::tr("Elapsed"),
+    QObject::tr("Level")
 };
+}
 
 HistoryTable::HistoryTable(QList<Record> list, QObject *parent)
     : QAbstractTableModel(parent)
