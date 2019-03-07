@@ -71,14 +71,22 @@ void Sentence::move(int from, int to)
      * - https://doc.qt.io/qt-5/qabstractitemmodel.html#beginMoveRows
      * - https://bugreports.qt.io/browse/QTBUG-6940
      */
-    int destinationChild = to;
-    if (destinationChild - from == 1)
-        ++destinationChild;
 
-    beginMoveRows(QModelIndex(), from, from, QModelIndex(), destinationChild);
+//    int destinationChild = to;
+//    if (destinationChild > from)
+//        ++destinationChild;
+//    else if (destinationChild > 0)
+//        --destinationChild;
+//    beginMoveRows(QModelIndex(), from, from, QModelIndex(), destinationChild);
+//    ...
+//    endMoveRows();
+
+    // Because of smooth animation in GridView it sometimes difficult to guess
+    // the correct indexes so hard reset the model with new indexes
+    beginResetModel();
     auto b = m_sentence.takeAt(from);
     m_sentence.insert(to, b);
-    endMoveRows();
+    endResetModel();
 }
 
 QString Sentence::audio() const
