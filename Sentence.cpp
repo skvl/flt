@@ -35,7 +35,8 @@ Sentence::Sentence(QString audio,
     for (auto w: m_sentence)
         m_origin += w.data();
 
-    auto rng = std::default_random_engine {};
+    std::random_device r;
+    std::default_random_engine rng(r());
     std::shuffle(m_sentence.begin(), m_sentence.end(), rng);
 }
 

@@ -241,7 +241,8 @@ void DataBase::flush()
     if (!m_opened)
         return;
 
-    auto rng = std::default_random_engine {};
+    std::random_device r;
+    std::default_random_engine rng(r());
     std::shuffle(m_data.begin(), m_data.end(), rng);
 
     m_iterator = m_data.begin();
