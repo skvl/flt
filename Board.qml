@@ -209,7 +209,7 @@ Page {
                     width: root.cellWidth - 8
                     radius: width / 10
 
-                    color: model.background
+                    color: settings.level < 3 ? model.background : "blue"
                     Text {
                         anchors.fill: parent
 
@@ -223,7 +223,7 @@ Page {
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
 
-                        color: model.foreground
+                        color: settings.level < 3 ? model.foreground : "white"
                     }
 
                     Drag.active: delegateRoot.drag.active
