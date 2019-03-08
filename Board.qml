@@ -195,6 +195,8 @@ Page {
 
                 drag.target: block
 
+                onReleased: block.Drag.drop()
+
                 Rectangle {
                     id: block
 
@@ -252,7 +254,8 @@ Page {
                 DropArea {
                     anchors { fill: parent; margins: 15 }
 
-                    onEntered: root.dataModel.move(drag.source.visualIndex, delegateRoot.visualIndex)
+                    onDropped: root.dataModel.move(drag.source.visualIndex,
+                                                   delegateRoot.visualIndex)
                 }
             }
         }
