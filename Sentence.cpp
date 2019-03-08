@@ -35,9 +35,11 @@ Sentence::Sentence(QString audio,
     for (auto w: m_sentence)
         m_origin += w.data();
 
-    std::random_device r;
-    std::default_random_engine rng(r());
-    std::shuffle(m_sentence.begin(), m_sentence.end(), rng);
+    do {
+        std::random_device r;
+        std::default_random_engine rng(r());
+        std::shuffle(m_sentence.begin(), m_sentence.end(), rng);
+    } while (!wrong());
 }
 
 int Sentence::rowCount(const QModelIndex &parent) const
