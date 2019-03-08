@@ -102,13 +102,9 @@ QString Sentence::translation() const
 
 bool Sentence::wrong() const
 {
-    int prev = 0;
-
     for (auto w: m_sentence)
-        if (w.index() < prev)
+        if (w.data() != m_sentence.at(w.index()).data())
             return true;
-        else
-            prev = w.index();
 
     return false;
 }
